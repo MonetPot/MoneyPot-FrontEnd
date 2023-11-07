@@ -1,0 +1,4 @@
+## Changelog
+
+### 1.1.0 (2023-11-06)
+- Added new authentication feature to handle OAuth (auth_service.dart, new_auth_module.dart)

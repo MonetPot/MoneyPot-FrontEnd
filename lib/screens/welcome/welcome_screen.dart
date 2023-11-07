@@ -69,8 +69,10 @@
 
 
 import 'package:flutter/material.dart';
+import 'package:flutter_svg/svg.dart';
 
 import '../../components/background.dart';
+import '../../const/gradient.dart';
 import '../../responsive.dart';
 import 'components/login_signup_button.dart';
 import 'components/welcome_image.dart';
@@ -145,6 +147,41 @@ class MobileWelcomeScreen extends StatelessWidget {
       ),
     );
   }
+
+  // @override
+  // Widget build(BuildContext context) {
+  //   return Scaffold(
+  //     body: Container(
+  //       padding: EdgeInsets.only(top: 64.0),
+  //       decoration: BoxDecoration(gradient: SIGNUP_BACKGROUND),
+  //       child: ListView(
+  //         physics: BouncingScrollPhysics(),
+  //         children: <Widget>[
+  //           // Center(
+  //           //   child: Image.asset(
+  //           //     'assets/icons/login.svg',
+  //           //     width: 100.0,
+  //           //     height: 100.0,
+  //           //     fit: BoxFit.cover,
+  //           //   ),
+  //           // ),
+  //           Center(
+  //             child: SvgPicture.asset(
+  //               'assets/icons/login.svg',
+  //               width: 100.0,
+  //               height: 100.0,
+  //             ),
+  //           ),
+  //           // headlinesWidget(),
+  //           // emailTextFieldWidget(),
+  //           // passwordTextFieldWidget(),
+  //           // loginButtonWidget(),
+  //           // signupWidget(context)
+  //         ],
+  //       ),
+  //     ),
+  //   );
+  // }
 
   @override
   Widget build(BuildContext context) {

@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 
 import '../../../screens/signup/components/divider.dart';
 import '../../../screens/signup/components/social_icon.dart';
+import '../phone/phone.dart';
 
 class SocialSignUp extends StatelessWidget {
   const SocialSignUp({
@@ -17,6 +18,19 @@ class SocialSignUp extends StatelessWidget {
           mainAxisAlignment: MainAxisAlignment.center,
           children: <Widget>[
             SocialIcon(
+              iconSrc: "assets/icons/phone.svg",
+              press: () {
+                Navigator.push(
+                  context,
+                  MaterialPageRoute(
+                    builder: (context) {
+                      return Phone();
+                    },
+                  ),
+                );
+              },
+            ),
+            SocialIcon(
               iconSrc: "assets/icons/facebook.svg",
               press: () {},
             ),
@@ -28,6 +42,7 @@ class SocialSignUp extends StatelessWidget {
               iconSrc: "assets/icons/google.svg",
               press: () {},
             ),
+
           ],
         ),
       ],

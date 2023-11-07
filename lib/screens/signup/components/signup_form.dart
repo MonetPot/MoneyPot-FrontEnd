@@ -6,6 +6,9 @@ import '../../../constants.dart';
 import '../../../toast.dart';
 import '../../login/auth_page.dart';
 import '../../login/login_screen.dart';
+import 'package:money_pot/screens/widgets/date_picker.dart';
+import 'package:money_pot/const/gradient.dart';
+import 'package:money_pot/const/styles.dart';
 
 class SignUpForm extends StatefulWidget {
   const SignUpForm({Key? key}) : super(key: key);
@@ -51,74 +54,12 @@ class _SignUpFormState extends State<SignUpForm> {
     return Form(
       child: Column(
         children: [
-          TextFormField(
-            keyboardType: TextInputType.text,
-            textInputAction: TextInputAction.next,
-            cursorColor: kPrimaryColor,
-            controller: _usernameController,
-            decoration: InputDecoration(
-              hintText: "Your username",
-              prefixIcon: Padding(
-                padding: const EdgeInsets.all(defaultPadding),
-                child: Icon(Icons.person),
-              ),
-            ),
-          ),
-          Padding(
-            padding: const EdgeInsets.symmetric(vertical: defaultPadding),
-            child: TextFormField(
-              controller: _dateController,
-              textInputAction: TextInputAction.next,
-              readOnly: true,
-              onTap: () => _selectDate(context),
-              cursorColor: kPrimaryColor,
-              decoration: InputDecoration(
-                hintText: "Date of Birth",
-                prefixIcon: Padding(
-                  padding: const EdgeInsets.all(defaultPadding),
-                  child: Icon(Icons.calendar_today),
-                ),
-              ),
-            ),
-          ),
-          TextFormField(
-            keyboardType: TextInputType.emailAddress,
-            textInputAction: TextInputAction.next,
-            cursorColor: kPrimaryColor,
-            controller: _emailController,
-            decoration: InputDecoration(
-
-              hintText: "Your email",
-              prefixIcon: Padding(
-                padding: const EdgeInsets.all(defaultPadding),
-                child: Icon(Icons.email),
-              ),
-            ),
-          ),
-          Padding(
-            padding: const EdgeInsets.symmetric(vertical: defaultPadding),
-            child: TextFormField(
-              textInputAction: TextInputAction.done,
-              obscureText: true,
-              cursorColor: kPrimaryColor,
-              controller: _passwordController,
-              decoration: InputDecoration(
-                hintText: "Your password",
-                prefixIcon: Padding(
-                  padding: const EdgeInsets.all(defaultPadding),
-                  child: Icon(Icons.lock),
-                ),
-              ),
-            ),
-          ),
+          _usernameTextField(),
+          _dateTextField(context),
+          _emailTextField(),
+          _passwordTextField(),
           const SizedBox(height: defaultPadding / 2),
-          signupButton("Sign Up"),
-          // ElevatedButton(
-          //   onPressed: () {
-          //     _signUp();
-          //   },
-          //   child: Text("Sign Up".toUpperCase()),
-          // ),
+          signupButton("Sign Up"), // Assuming this is a custom button widget
           const SizedBox(height: defaultPadding),
           AlreadyHaveAnAccountCheck(
             login: false,
@@ -126,9 +67,7 @@ class _SignUpFormState extends State<SignUpForm> {
               Navigator.push(
                 context,
                 MaterialPageRoute(
-                  builder: (context) {
-                    return LoginScreen();
-                  },
+                  builder: (context) => LoginScreen(),
                 ),
               );
             },
@@ -137,6 +76,34 @@ class _SignUpFormState extends State<SignUpForm> {
       ),
     );
   }
+
+  // Widget _buildTextInputField({
+  //   required TextEditingController controller,
+  //   required IconData icon,
+  //   required String hintText,
+  //   bool isPassword = false,
+  //   TextInputType keyboardType = TextInputType.text,
+  //   TextInputAction textInputAction = TextInputAction.next,
+  //   VoidCallback? onTap,
+  //   bool readOnly = false,
+  // }) {
+  //   return TextFormField(
+  //     controller: controller,
+  //     cursorColor: kPrimaryColor,
+  //     obscureText: isPassword,
+  //     keyboardType: keyboardType,
+  //     textInputAction: textInputAction,
+  //     decoration: InputDecoration(
+  //       hintText: hintText,
+  //       prefixIcon: Padding(
+  //         padding: const EdgeInsets.all(defaultPadding),
+  //         child: Icon(icon),
+  //       ),
+  //     ),
+  //     onTap: onTap,
+  //     readOnly: readOnly,
+  //   );
+  // }
 
   void _signUp() async {
 
@@ -167,6 +134,165 @@ class _SignUpFormState extends State<SignUpForm> {
       showToast(message: "Some error happened");
     }
   }
+
+  Widget _buildGradientTextField({
+    required TextEditingController controller,
+    required String hintText,
+    IconData? suffixIcon,
+    bool obscureText = false,
+    TextInputType keyboardType = TextInputType.text,
+    VoidCallback? onTap,
+  }) {
+    return Container(
+      margin: EdgeInsets.only(left: 16.0, right: 32.0, top: 32.0),
+      decoration: BoxDecoration(
+        boxShadow: [
+          BoxShadow(
+            color: Colors.black12,
+            blurRadius: 15,
+            spreadRadius: 0,
+            offset: Offset(0.0, 16.0),
+          ),
+        ],
+        borderRadius: new BorderRadius.circular(12.0),
+        gradient: LinearGradient(
+          begin: FractionalOffset(0.0, 0.4),
+          end: FractionalOffset(0.9, 0.7),
+          stops: [0.2, 0.9],
+          colors: [
+            Color(0xffFFC3A0),
+            Color(0xffFFAFBD),
+          ],
+        ),
+      ),
+      child: TextField(
+        controller: controller,
+        style: hintAndValueStyle,
+        obscureText: obscureText,
+        keyboardType: keyboardType,
+        readOnly: onTap != null,
+        onTap: onTap,
+        decoration: InputDecoration(
+          suffixIcon: suffixIcon != null
+              ? Icon(suffixIcon, color: Color(0xff35AA90), size: 10.0)
+              : null,
+          contentPadding: EdgeInsets.fromLTRB(40.0, 30.0, 10.0, 10.0),
+          border: OutlineInputBorder(
+            borderRadius: BorderRadius.circular(12.0),
+            borderSide: BorderSide.none,
+          ),
+          hintText: hintText,
+          hintStyle: hintAndValueStyle,
+        ),
+      ),
+    );
+  }
+
+
+  Widget _emailTextField() {
+    return _buildGradientTextField(
+      controller: _emailController,
+      hintText: 'Email',
+      suffixIcon: IconData(0xe902, fontFamily: 'Icons'), // Change this as needed
+    );
+  }
+
+  Widget _usernameTextField() {
+    return _buildGradientTextField(
+      controller: _usernameController,
+      hintText: 'Username',
+      // You can provide the specific icon you need here
+    );
+  }
+
+  Widget _passwordTextField() {
+    return _buildGradientTextField(
+      controller: _passwordController,
+      hintText: 'Password',
+      obscureText: true, // to hide the password input
+      // You can provide the specific icon you need here
+    );
+  }
+
+// Then, you create the date text field like this:
+  Widget _dateTextField(BuildContext context) {
+    return _buildGradientTextField(
+      controller: _dateController,
+      hintText: 'Date of Birth',
+      suffixIcon: Icons.calendar_today, // Change this as needed
+      keyboardType: TextInputType.none, // To prevent the keyboard from showing up
+      onTap: () {
+        // Prevent the focus from going to the text field (and hence, opening the keyboard)
+        FocusScope.of(context).requestFocus(new FocusNode());
+        // Call the method to show the date picker dialog.
+        _selectDate(context);
+      },
+    );
+  }
+
+
+
+
+
+  // Widget passwordTextFieldWidget() {
+  //   return Container(
+  //     margin: EdgeInsets.only(left: 32.0, right: 16.0),
+  //     child: TextField(
+  //       controller: _passwordController,
+  //       style: hintAndValueStyle,
+  //       obscureText: true,
+  //       decoration: new InputDecoration(
+  //           fillColor: Color(0x3305756D),
+  //           filled: true,
+  //           contentPadding: new EdgeInsets.fromLTRB(40.0, 30.0, 10.0, 10.0),
+  //           border: OutlineInputBorder(
+  //               borderRadius: new BorderRadius.circular(12.0),
+  //               borderSide: BorderSide.none),
+  //           hintText: 'Password',
+  //           hintStyle: hintAndValueStyle),
+  //     ),
+  //   );
+  // }
+
+  // Widget emailTextFieldWidget() {
+  //   return Container(
+  //     margin: EdgeInsets.only(left: 16.0, right: 32.0, top: 32.0),
+  //     decoration: BoxDecoration(
+  //         boxShadow: [
+  //           BoxShadow(
+  //               color: Colors.black12,
+  //               blurRadius: 15,
+  //               spreadRadius: 0,
+  //               offset: Offset(0.0, 16.0)),
+  //         ],
+  //         borderRadius: new BorderRadius.circular(12.0),
+  //         gradient: LinearGradient(
+  //             begin: FractionalOffset(0.0, 0.4),
+  //             end: FractionalOffset(0.9, 0.7),
+  //             // Add one stop for each color. Stops should increase from 0 to 1
+  //             stops: [
+  //               0.2,
+  //               0.9
+  //             ],
+  //             colors: [
+  //               Color(0xffFFC3A0),
+  //               Color(0xffFFAFBD),
+  //             ])),
+  //     child: TextField(
+  //       controller: _emailController,
+  //       style: hintAndValueStyle,
+  //       decoration: new InputDecoration(
+  //           suffixIcon: Icon(IconData(0xe902, fontFamily: 'Icons'),
+  //               color: Color(0xff35AA90), size: 10.0),
+  //           contentPadding: new EdgeInsets.fromLTRB(40.0, 30.0, 10.0, 10.0),
+  //           border: OutlineInputBorder(
+  //               borderRadius: new BorderRadius.circular(12.0),
+  //               borderSide: BorderSide.none),
+  //           hintText: 'Email',
+  //           hintStyle: hintAndValueStyle),
+  //     ),
+  //   );
+  // }
 
   Widget signupButton(title) {
     return InkWell(

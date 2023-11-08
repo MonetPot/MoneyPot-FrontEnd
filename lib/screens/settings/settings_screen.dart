@@ -1,4 +1,6 @@
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
+import 'package:money_pot/Screens/login/login_screen.dart';
 import 'package:money_pot/screens/user/user_screen.dart';
 
 class SettingsScreen extends StatelessWidget {
@@ -114,6 +116,20 @@ class SettingsScreen extends StatelessWidget {
             trailing: Icon(Icons.arrow_forward_ios),
             onTap: () {
               // Handle Terms and conditions logic
+            },
+          ),
+          ListTile(
+            title: Text('Sign out'),
+            trailing: Icon(Icons.exit_to_app),
+            onTap: () async {
+              await FirebaseAuth.instance.signOut();
+              // Use the following line if you have defined the route '/sign-in' in your route table.
+              // Navigator.of(context).pushReplacementNamed('/sign-in');
+
+              // If you haven't defined named routes, use MaterialPageRoute directly as below:
+              Navigator.of(context).pushReplacement(MaterialPageRoute(
+                builder: (context) => LoginScreen(), // Make sure you have imported LoginScreen at the top
+              ));
             },
           ),
         ],

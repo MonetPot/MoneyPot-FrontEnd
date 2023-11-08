@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:money_pot/screens/signup/services/auth_service.dart';
 
 import '../../../screens/signup/components/divider.dart';
 import '../../../screens/signup/components/social_icon.dart';
@@ -19,7 +20,7 @@ class SocialSignUp extends StatelessWidget {
           children: <Widget>[
             SocialIcon(
               iconSrc: "assets/icons/phone.svg",
-              press: () {
+              onTap: () {
                 Navigator.push(
                   context,
                   MaterialPageRoute(
@@ -31,18 +32,17 @@ class SocialSignUp extends StatelessWidget {
               },
             ),
             SocialIcon(
-              iconSrc: "assets/icons/facebook.svg",
-              press: () {},
-            ),
-            SocialIcon(
-              iconSrc: "assets/icons/twitter.svg",
-              press: () {},
+              iconSrc: "assets/icons/apple.svg",
+              onTap: () => AuthService().signInWithApple(context),
             ),
             SocialIcon(
               iconSrc: "assets/icons/google.svg",
-              press: () {},
+              onTap: () => AuthService().signInWithGoogle(context),
             ),
-
+            SocialIcon(
+              iconSrc: "assets/icons/facebook.svg",
+              onTap: () {},
+            ),
           ],
         ),
       ],

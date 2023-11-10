@@ -1,82 +1,13 @@
-// import 'package:flutter/material.dart';
-// import 'package:money_pot/responsive.dart';
-//
-// import '../../components/background.dart';
-// import 'components/login_form.dart';
-// import 'components/login_screen_image.dart';
-//
-// class LoginScreen extends StatelessWidget {
-//   const LoginScreen({Key? key}) : super(key: key);
-//
-//   @override
-//   Widget build(BuildContext context) {
-//     return Background(
-//       child: SingleChildScrollView(
-//         child: Responsive(
-//           mobile: const MobileLoginScreen(),
-//           desktop: Row(
-//             children: [
-//               const Expanded(
-//                 child: LoginScreenTopImage(),
-//               ),
-//               Expanded(
-//                 child: Row(
-//                   mainAxisAlignment: MainAxisAlignment.center,
-//                   children: const [
-//                     SizedBox(
-//                       width: 450,
-//                       child: LoginForm(),
-//                     ),
-//                   ],
-//                 ),
-//               ),
-//             ],
-//           ),
-//         ),
-//       ),
-//     );
-//   }
-// }
-//
-// class MobileLoginScreen extends StatelessWidget {
-//   const MobileLoginScreen({
-//     Key? key,
-//   }) : super(key: key);
-//
-//   @override
-//   Widget build(BuildContext context) {
-//     return Column(
-//       mainAxisAlignment: MainAxisAlignment.center,
-//       children: <Widget>[
-//         const LoginScreenTopImage(),
-//         Row(
-//           children: const [
-//             Spacer(),
-//             Expanded(
-//               flex: 8,
-//               child: LoginForm(),
-//             ),
-//             Spacer(),
-//           ],
-//         ),
-//       ],
-//     );
-//   }
-// }
-
-///
-/// Created by NieBin on 2018/12/25
-/// Github: https://github.com/nb312
-/// Email: niebin312@gmail.com
-///
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import "package:flutter/material.dart";
 import 'package:money_pot/const/gradient.dart';
 import 'package:money_pot/const/styles.dart';
+import 'package:money_pot/screens/login/social_login.dart';
+import 'package:money_pot/screens/navigation.dart';
 import '../../../toast.dart';
-import 'package:money_pot/screens/login/auth_page.dart';
-import 'package:money_pot/screens/groups/group_screen.dart';
+import 'package:money_pot/screens/login/auth_login_page.dart';
+import 'package:money_pot/screens/main_screen.dart';
 
 import '../../Screens/signup/signup_screen.dart';
 
@@ -91,12 +22,14 @@ class _LoginScreenState extends State<LoginScreen> {
   final FirebaseAuthService _auth = FirebaseAuthService();
   TextEditingController _emailController = TextEditingController();
   TextEditingController _passwordController = TextEditingController();
+  final _passwordFocusNode = FocusNode();
   bool _isSigningIn = false;
 
   @override
   void dispose() {
     _emailController.dispose();
     _passwordController.dispose();
+    _passwordFocusNode.dispose();
     super.dispose();
   }
 
@@ -109,7 +42,7 @@ class _LoginScreenState extends State<LoginScreen> {
     String email = _emailController.text;
     String password = _passwordController.text;
 
-    User? user = await _auth.signInWithEmailAndPassword(email, password);
+    User? user = await _auth.signInWithEmailAndPassword(email, password, context);
 
     setState(() {
       _isSigning = false;
@@ -118,7 +51,7 @@ class _LoginScreenState extends State<LoginScreen> {
     if (user != null) {
       showToast(message: "User is successfully signed in");
       Navigator.of(context).pushReplacement(
-        MaterialPageRoute(builder: (context) => GroupsScreen()),
+        MaterialPageRoute(builder: (context) => Navigation()),
 
       );
     } else {
@@ -156,6 +89,7 @@ class _LoginScreenState extends State<LoginScreen> {
             emailTextFieldWidget(),
             passwordTextFieldWidget(),
             loginButtonWidget(),
+            SocialLogin(),
             signupWidget(context)
           ],
         ),
@@ -190,6 +124,10 @@ class _LoginScreenState extends State<LoginScreen> {
       child: TextField(
         controller: _emailController,
         style: hintAndValueStyle,
+        onSubmitted: (value) {
+          // When the user presses "Enter", focus the password field
+          FocusScope.of(context).requestFocus(_passwordFocusNode);
+        },
         decoration: new InputDecoration(
             suffixIcon: Icon(IconData(0xe902, fontFamily: 'Icons'),
                 color: Color(0xff35AA90), size: 10.0),
@@ -207,6 +145,7 @@ class _LoginScreenState extends State<LoginScreen> {
     return Container(
       margin: EdgeInsets.only(left: 32.0, right: 16.0),
       child: TextField(
+        focusNode: _passwordFocusNode,
         controller: _passwordController,
         style: hintAndValueStyle,
         obscureText: true,
@@ -333,44 +272,3 @@ Widget headlinesWidget() {
     ),
   );
 }
-
-// import "package:flutter/material.dart";
-//
-// import '../../const/gradient.dart';
-// import '../widgets/date_picker.dart';
-// // import 'widgets/gender_picker.dart';
-// // import 'widgets/location_picker.dart';
-// import '../widgets/signup_appbar.dart';
-// import '../widgets/signup_profile_image_picker.dart';
-// import '../widgets/signup_button.dart';
-//
-// class LoginScreen extends StatelessWidget {
-//   @override
-//   Widget build(BuildContext context) {
-//     return Scaffold(
-//       appBar: SignupAppbar(
-//         title: 'CREATE ACCOUNT',
-//       ),
-//       body: Container(
-//         padding: EdgeInsets.only(top: 64.0),
-//         decoration: BoxDecoration(gradient: SIGNUP_BACKGROUND),
-//         child: ListView(
-//           physics: BouncingScrollPhysics(),
-//           children: <Widget>[
-//             // Center(
-//             //   child: ProfileImagePicker(
-//             //     margin: EdgeInsets.only(top: 32.0, left: 32.0, right: 32.0),
-//             //   ),
-//             // ),
-//             DatePicker(),
-//             // GenderPicker(),
-//             // LocationPicker(),
-//             Container(
-//                 margin: EdgeInsets.only(top: 32.0),
-//                 child: Center(child: signupButton('NEXT')))
-//           ],
-//         ),
-//       ),
-//     );
-//   }
-// }

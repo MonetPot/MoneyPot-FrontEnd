@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:money_pot/Screens/Welcome/welcome_screen.dart';
+import 'package:money_pot/Screens/login/login_screen.dart';
 import 'package:money_pot/constants.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'firebase_options.dart';
@@ -44,7 +45,7 @@ class MyApp extends StatelessWidget {
               borderSide: BorderSide.none,
             ),
           )),
-      home: const WelcomeScreen(),
+      home: LoginScreen(),
     );
   }
 }

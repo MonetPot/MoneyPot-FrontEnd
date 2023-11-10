@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:money_pot/Screens/groups/group_screen.dart';
+import 'package:money_pot/screens/main_screen.dart';
 import 'package:money_pot/Screens/settings/settings_screen.dart';
 import 'package:money_pot/screens/user/user_screen.dart';
 
@@ -105,13 +105,13 @@ class ProfilePage extends StatelessWidget {
           ],
         ),
       ),
-      bottomNavigationBar: BottomNavigationBar(
-        items: [
-          BottomNavigationBarItem(icon: Icon(Icons.search), label: 'Search'),
-          BottomNavigationBarItem(icon: Icon(Icons.add), label: 'Add'),
-          BottomNavigationBarItem(icon: Icon(Icons.more_horiz), label: 'More'),
-        ],
-      ),
+      // bottomNavigationBar: BottomNavigationBar(
+      //   items: [
+      //     BottomNavigationBarItem(icon: Icon(Icons.search), label: 'Search'),
+      //     BottomNavigationBarItem(icon: Icon(Icons.add), label: 'Add'),
+      //     BottomNavigationBarItem(icon: Icon(Icons.more_horiz), label: 'More'),
+      //   ],
+      // ),
     );
   }
 }

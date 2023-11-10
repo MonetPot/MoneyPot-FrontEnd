@@ -3,15 +3,13 @@ import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:money_pot/constants.dart';
 import 'package:money_pot/responsive.dart';
-import '../../Screens/groups/group_screen.dart';
-import '../../Screens/login/auth_page.dart';
+import 'package:money_pot/screens/navigation.dart';
+import '../../Screens/login/auth_login_page.dart';
 import '../../Screens/login/login_screen.dart';
 import '../../components/background.dart';
 import '../../toast.dart';
 import 'package:money_pot/const/gradient.dart';
 import 'package:money_pot/const/styles.dart';
-import 'components/signup_image.dart';
-import 'components/signup_form.dart';
 import 'components/social_signup.dart';
 
 class SignUpScreen extends StatefulWidget {
@@ -29,6 +27,9 @@ class _SignUpScreenState extends State<SignUpScreen> {
   TextEditingController _usernameController = TextEditingController();
   TextEditingController _emailController = TextEditingController();
   TextEditingController _passwordController = TextEditingController();
+  final _emailFocusNode = FocusNode();
+  final _usernameFocusNode = FocusNode();
+  final _passwordFocusNode = FocusNode();
 
   bool isSigningUp = false;
 
@@ -38,6 +39,9 @@ class _SignUpScreenState extends State<SignUpScreen> {
     _usernameController.dispose();
     _emailController.dispose();
     _passwordController.dispose();
+    _emailFocusNode.dispose();
+    _usernameFocusNode.dispose();
+    _passwordFocusNode.dispose();
     super.dispose();
   }
 
@@ -63,7 +67,7 @@ class _SignUpScreenState extends State<SignUpScreen> {
         context,
         MaterialPageRoute(
           builder: (context) {
-            return GroupsScreen();
+            return Navigation();
           },
         ),
       );
@@ -113,7 +117,7 @@ class _SignUpScreenState extends State<SignUpScreen> {
             _usernameTextField(),
             _emailTextField(),
             _passwordTextField(),
-            _dateTextField(context),
+             // _dateTextField(context),
             SignUpButtonWidget(),
             SocialSignUp(),
             loginWidget(context),
@@ -178,6 +182,8 @@ class _SignUpScreenState extends State<SignUpScreen> {
     bool obscureText = false,
     TextInputType keyboardType = TextInputType.text,
     VoidCallback? onTap,
+    required FocusNode focusNode,
+    Function(String)? onFieldSubmitted,
   }) {
     return Container(
       margin: EdgeInsets.only(left: 30.0, right: 30.0, top: 15.0),
@@ -204,6 +210,7 @@ class _SignUpScreenState extends State<SignUpScreen> {
       child: TextField(
         controller: controller,
         style: hintAndValueStyle,
+        focusNode: focusNode,
         obscureText: obscureText,
         keyboardType: keyboardType,
         readOnly: onTap != null,
@@ -220,7 +227,20 @@ class _SignUpScreenState extends State<SignUpScreen> {
           hintText: hintText,
           hintStyle: hintAndValueStyle,
         ),
+        onSubmitted: onFieldSubmitted,
       ),
+    );
+  }
+
+  Widget _usernameTextField() {
+    return _buildGradientTextField(
+      controller: _usernameController,
+      hintText: 'Username',
+      focusNode: _usernameFocusNode,
+      onFieldSubmitted: (term) {
+        _fieldFocusChange(context, _usernameFocusNode, _emailFocusNode);
+      },
+      // You can provide the specific icon you need here
     );
   }
 
@@ -229,16 +249,12 @@ class _SignUpScreenState extends State<SignUpScreen> {
     return _buildGradientTextField(
       controller: _emailController,
       hintText: 'Email',
+      focusNode: _emailFocusNode,
+      onFieldSubmitted: (term) {
+        _fieldFocusChange(context, _emailFocusNode, _passwordFocusNode);
+      },
       suffixIcon: IconData(
           0xe902, fontFamily: 'Icons'), // Change this as needed
-    );
-  }
-
-  Widget _usernameTextField() {
-    return _buildGradientTextField(
-      controller: _usernameController,
-      hintText: 'Username',
-      // You can provide the specific icon you need here
     );
   }
 
@@ -246,28 +262,40 @@ class _SignUpScreenState extends State<SignUpScreen> {
     return _buildGradientTextField(
       controller: _passwordController,
       hintText: 'Password',
+      focusNode: _passwordFocusNode,
+      onFieldSubmitted: (term) {
+        _passwordFocusNode.unfocus();
+      },
       obscureText: true, // to hide the password input
       // You can provide the specific icon you need here
     );
   }
 
-// Then, you create the date text field like this:
-  Widget _dateTextField(BuildContext context) {
-    return _buildGradientTextField(
-      controller: _dateController,
-      hintText: 'Date of Birth',
-      suffixIcon: Icons.calendar_today,
-      // Change this as needed
-      keyboardType: TextInputType.none,
-      // To prevent the keyboard from showing up
-      onTap: () {
-        // Prevent the focus from going to the text field (and hence, opening the keyboard)
-        FocusScope.of(context).requestFocus(new FocusNode());
-        // Call the method to show the date picker dialog.
-        _selectDate(context);
-      },
-    );
+  void _fieldFocusChange(BuildContext context, FocusNode currentFocus, FocusNode nextFocus) {
+    currentFocus.unfocus();
+    // This is a small delay after unfocusing the current focus node before focusing the next one.
+    // This ensures the focus node has completely unfocused before attempting to focus the next node.
+    Future.delayed(Duration(milliseconds: 100), () {
+      FocusScope.of(context).requestFocus(nextFocus);
+    });
   }
+
+//   Widget _dateTextField(BuildContext context) {
+//     return _buildGradientTextField(
+//       controller: _dateController,
+//       hintText: 'Date of Birth',
+//       suffixIcon: Icons.calendar_today,
+//       // Change this as needed
+//       keyboardType: TextInputType.none,
+//       // To prevent the keyboard from showing up
+//       onTap: () {
+//         // Prevent the focus from going to the text field (and hence, opening the keyboard)
+//         FocusScope.of(context).requestFocus(new FocusNode());
+//         // Call the method to show the date picker dialog.
+//         _selectDate(context);
+//       },
+//     );
+//   }
 
 
   Widget loginWidget(BuildContext context) {

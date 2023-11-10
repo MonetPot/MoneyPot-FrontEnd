@@ -1,32 +1,38 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:google_sign_in/google_sign_in.dart';
+import 'package:money_pot/screens/navigation.dart';
 import 'package:sign_in_with_apple/sign_in_with_apple.dart';
-
-import '../../../Screens/groups/group_screen.dart';
 
 class AuthService {
   Future<void> signInWithGoogle(BuildContext context) async {
     try {
+
       final GoogleSignInAccount? gUser = await GoogleSignIn().signIn();
       if (gUser != null) {
         final GoogleSignInAuthentication gAuth = await gUser.authentication;
-        final credential = GoogleAuthProvider.credential(
+        final OAuthCredential credential = GoogleAuthProvider.credential(
           accessToken: gAuth.accessToken,
           idToken: gAuth.idToken,
         );
 
-        // Sign in with the Google credential
+        // Attempt to sign in the user with Firebase
         UserCredential userCredential = await FirebaseAuth.instance.signInWithCredential(credential);
 
-        // After the sign-in is successful, navigate to the new page.
+        // Retrieve the Firebase ID token
+        String? idToken = await userCredential.user!.getIdToken();
+        // Now you can use this idToken to authenticate with your backend
+
+        // If the user is new, link the credentials (if the email matches)
+        // TO DO
+        await linkCredentials(userCredential, credential);
+
+        // After the sign-in is successful, navigate to the GroupsScreen
         Navigator.of(context).pushReplacement(
-          MaterialPageRoute(builder: (context) => GroupsScreen()),
+          MaterialPageRoute(builder: (context) => Navigation()),
         );
       }
     } catch (e) {
-      // If there is an error with sign-in, handle it here
-      // For example, show a Snackbar with the error message
       ScaffoldMessenger.of(context).showSnackBar(
         SnackBar(
           content: Text('Failed to sign in with Google: $e'),
@@ -35,36 +41,35 @@ class AuthService {
     }
   }
 
+// Sign in with Apple
   Future<void> signInWithApple(BuildContext context) async {
     try {
-      // Request credential for the currently signed in Apple account.
-
       final appleIdCredential = await SignInWithApple.getAppleIDCredential(
         scopes: [
           AppleIDAuthorizationScopes.email,
           AppleIDAuthorizationScopes.fullName,
         ],
       );
-
-      // Create an `OAuthCredential` from the credential returned by Apple.
-      final oauthCredential = OAuthProvider("apple.com").credential(
+      final OAuthCredential credential = OAuthProvider("apple.com").credential(
         idToken: appleIdCredential.identityToken,
         accessToken: appleIdCredential.authorizationCode,
       );
 
-      // Sign in the user with Firebase. If the user is new, a new account is created,
-      // otherwise, they are signed in to their existing account.
-      UserCredential userCredential = await FirebaseAuth.instance.signInWithCredential(oauthCredential);
+      // Attempt to sign in the user with Firebase
+      UserCredential userCredential = await FirebaseAuth.instance.signInWithCredential(credential);
 
-      // After the sign-in is successful, navigate to the GroupsScreen.
+      // Retrieve the Firebase ID token
+      String? idToken = await userCredential.user!.getIdToken();
+      // Now you can use this idToken to authenticate with your backend
+
+      // If the user is new, link the credentials (if the email matches)
+      await linkCredentials(userCredential, credential);
+
+      // After the sign-in is successful, navigate to the GroupsScreen
       Navigator.of(context).pushReplacement(
-        MaterialPageRoute(builder: (context) => GroupsScreen()),
+        MaterialPageRoute(builder: (context) => Navigation()),
       );
-
-      // Optionally, if you need to use the credential details sent back by Apple, you can do so here.
-      // For example, you might want to send the `authorizationCode` to your server.
     } catch (e) {
-      // Handle the error from Apple sign-in or Firebase.
       ScaffoldMessenger.of(context).showSnackBar(
         SnackBar(
           content: Text('Failed to sign in with Apple: $e'),
@@ -73,8 +78,24 @@ class AuthService {
     }
   }
 
-
-
+  // Function to handle credential linking
+  Future<void> linkCredentials(UserCredential userCredential, AuthCredential newCredential) async {
+    final user = userCredential.user;
+    if (userCredential.additionalUserInfo!.isNewUser) {
+      // Check if the email is already associated with another account
+      final emailSignInMethod = await FirebaseAuth.instance.fetchSignInMethodsForEmail(user!.email!);
+      if (emailSignInMethod.isNotEmpty && emailSignInMethod.first != newCredential.providerId) {
+        //attempt to link the credentials if email is associated with another email
+        try {
+          await user.linkWithCredential(newCredential);
+        } catch (e) {
+          // Handle error if cannot link
+          print('Failed to link credentials: $e');
+        }
+      }
+    }
+  }
 }
+
 
 

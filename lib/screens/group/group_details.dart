@@ -5,7 +5,7 @@ import 'package:money_pot/const/color_const.dart';
 
 import '../../Screens/settings/settings_screen.dart';
 import '../../const/gradient.dart';
-import '../main_screen.dart';
+import '../groups_screen.dart';
 import '../search/search_screen.dart';
 import 'bills/text_scanner.dart';
 
@@ -82,7 +82,6 @@ class _GroupDetailsScreenState extends State<GroupDetailsScreen> with SingleTick
         ],
         backgroundColor: Colors.transparent, // Make the AppBar background transparent
         elevation: 0,
-
       ),
       floatingActionButton: SpeedDial(
         animatedIcon: AnimatedIcons.view_list,

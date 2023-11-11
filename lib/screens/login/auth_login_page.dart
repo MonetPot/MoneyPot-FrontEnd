@@ -1,7 +1,7 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:money_pot/screens/login/login_screen.dart';
-import 'package:money_pot/screens/main_screen.dart';
+import 'package:money_pot/screens/groups_screen.dart';
 import 'package:money_pot/screens/navigation.dart';
 import 'package:money_pot/toast.dart';
 

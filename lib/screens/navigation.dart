@@ -4,8 +4,8 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:money_pot/Screens/settings/settings_screen.dart';
-import 'package:money_pot/screens/groups/add_group.dart';
-import 'package:money_pot/screens/main_screen.dart';
+import 'package:money_pot/screens/group/add_group.dart';
+import 'package:money_pot/screens/groups_screen.dart';
 import 'package:money_pot/screens/user/user_screen.dart';
 
 class Navigation extends StatefulWidget {

@@ -7,7 +7,7 @@ import 'package:money_pot/screens/login/social_login.dart';
 import 'package:money_pot/screens/navigation.dart';
 import '../../../toast.dart';
 import 'package:money_pot/screens/login/auth_login_page.dart';
-import 'package:money_pot/screens/main_screen.dart';
+import 'package:money_pot/screens/groups_screen.dart';
 
 import '../../Screens/signup/signup_screen.dart';
 

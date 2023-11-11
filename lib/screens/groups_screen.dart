@@ -1,11 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_speed_dial/flutter_speed_dial.dart';
-import 'package:money_pot/screens/groups/group_details.dart';
+import 'package:money_pot/screens/group/group_details.dart';
 import 'package:money_pot/screens/search/search_screen.dart';
 
 import '../const/gradient.dart';
 import 'settings/settings_screen.dart';
-import 'groups/bills/text_scanner.dart';
+import 'group/bills/text_scanner.dart';
 
 class MainScreen extends StatelessWidget {
   const MainScreen({Key? key}) : super(key: key);
@@ -51,6 +51,7 @@ class MainScreen extends StatelessWidget {
         backgroundColor: Colors.transparent,
         elevation: 0,
       ),
+
       body: Container(
         decoration: groupScreenDecoration,
         child: ListView(
@@ -58,6 +59,7 @@ class MainScreen extends StatelessWidget {
           Container  (
             child: Column(
               children: [
+                SizedBox(height: 25),
                 GroupTile(
                   groupName: 'Friday Night',
                   amount: '\$700',

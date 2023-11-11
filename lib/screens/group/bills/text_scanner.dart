@@ -5,7 +5,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:google_mlkit_text_recognition/google_mlkit_text_recognition.dart';
 import 'package:permission_handler/permission_handler.dart';
-import 'package:money_pot/screens/groups/bills/results_screen.dart';
+import 'package:money_pot/screens/group/bills/results_screen.dart';
 
 class TextScanner extends StatefulWidget {
   const TextScanner({Key? key}) : super(key: key);

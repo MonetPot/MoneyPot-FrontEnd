@@ -39,10 +39,10 @@ class SocialSignUp extends StatelessWidget {
               iconSrc: "assets/icons/google.svg",
               onTap: () => AuthService().signInWithGoogle(context),
             ),
-            SocialIcon(
-              iconSrc: "assets/icons/facebook.svg",
-              onTap: () {},
-            ),
+            // SocialIcon(
+            //   iconSrc: "assets/icons/facebook.svg",
+            //   onTap: () {},
+            // ),
           ],
         ),
       ],

@@ -5,7 +5,6 @@ import 'package:money_pot/screens/search/search_screen.dart';
 
 import '../const/gradient.dart';
 import 'settings/settings_screen.dart';
-import 'user/user_screen.dart';
 import 'groups/bills/text_scanner.dart';
 
 class MainScreen extends StatelessWidget {
@@ -49,48 +48,16 @@ class MainScreen extends StatelessWidget {
                   },
                 ),
               ],
-        backgroundColor: Colors.transparent, // Make the AppBar background transparent
+        backgroundColor: Colors.transparent,
         elevation: 0,
       ),
-      // floatingActionButton: SpeedDial(
-      //   animatedIcon: AnimatedIcons.view_list,
-      //   children: [
-      //     SpeedDialChild(
-      //       child: Icon(Icons.camera_enhance_rounded),
-      //       label: 'Scan Bill',
-      //       onTap: () {
-      //         Navigator.push(context,
-      //             MaterialPageRoute(builder: (context) => TextScanner()));
-      //         // Handle Option 1
-      //       },
-      //     ),
-      //     SpeedDialChild(
-      //       child: Icon(Icons.front_hand_rounded),
-      //       label: 'Enter Bill Manually',
-      //       onTap: () {
-      //         // Handle Option 2
-      //       },
-      //     ),
-      //   ],
-      // ),
       body: Container(
         decoration: groupScreenDecoration,
-        // Edit this padding to arrange the groups better
-        // padding: EdgeInsets.symmetric(horizontal: 16.0, vertical: 10.0),
         child: ListView(
         children: [
           Container  (
             child: Column(
               children: [
-                // Padding(
-                //   padding: const EdgeInsets.all(16.0),
-                //   child: ElevatedButton(
-                //     onPressed: () {
-                //       // Add Group functionality
-                //     },
-                //     child: Text("Add Group"),
-                //   ),
-                // ),
                 GroupTile(
                   groupName: 'Friday Night',
                   amount: '\$700',
@@ -104,10 +71,6 @@ class MainScreen extends StatelessWidget {
                       ),
                     );
                   },
-                  // Navigator.push(
-                  //     context,
-                  //     MaterialPageRoute(
-                  //         builder: (context) => SettingsScreen()));
                   groupImage: AssetImage("assets/images/edsheeran.png"),
                 ),
                 GroupTile(

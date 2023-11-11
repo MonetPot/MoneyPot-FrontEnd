@@ -7,15 +7,6 @@ class SettingsScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      // appBar: AppBar(
-      //   leading: IconButton(
-      //     icon: Icon(Icons.arrow_back),
-      //     onPressed: () {
-      //       Navigator.pop(context);
-      //     },
-      //   ),
-      //   title: Text('Settings'),
-      // ),
       body: ListView(
         children: [
           Container(
@@ -133,33 +124,6 @@ class SettingsScreen extends StatelessWidget {
             },
           ),
         ],
-      ),
-      bottomNavigationBar: BottomNavigationBar(
-        items: [
-          BottomNavigationBarItem(
-            icon: Icon(Icons.search),
-            label: 'Search',
-          ),
-          BottomNavigationBarItem(
-            icon: Icon(Icons.add),
-            label: 'Add',
-          ),
-          BottomNavigationBarItem(
-            icon: CircleAvatar(
-              backgroundImage: AssetImage("assets/images/edsheeran.png"),
-            ),
-            label: 'Profile',
-          ),
-        ],
-        onTap: (index) {
-          if (index == 2) {
-            Navigator.push(
-              context,
-              MaterialPageRoute(builder: (context) => UserScreen()),
-            );
-          }
-
-        },
       ),
 
     );

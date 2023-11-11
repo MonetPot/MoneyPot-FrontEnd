@@ -3,6 +3,7 @@
 
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:money_pot/Screens/settings/settings_screen.dart';
 import 'package:money_pot/screens/groups/add_group.dart';
 import 'package:money_pot/screens/main_screen.dart';
 import 'package:money_pot/screens/user/user_screen.dart';
@@ -19,7 +20,7 @@ class _NavigationState extends State<Navigation> {
   final PageController _pageController = PageController();
 
   void _onNavBarTapped(int index) {
-    if (index == 1) { // Assuming 'Add' is at index 1
+    if (index == 1) {
       _openAddGroupScreen(context);
     } else {
       _pageController.animateToPage(
@@ -74,7 +75,7 @@ class _NavigationState extends State<Navigation> {
         onPageChanged: _onPageChanged,
         children: <Widget>[
           MainScreen(),
-          Container(), // Placeholder for 'Add' as it will be handled separately
+          AddGroup(),
           UserScreen(),
         ],
       ),
@@ -98,17 +99,17 @@ class _NavigationState extends State<Navigation> {
           // Changed to white for better visibility
           items: <BottomNavigationBarItem>[
             BottomNavigationBarItem(
-              icon: Icon(Icons.search),
-              label: 'Search',
+              icon: Icon(Icons.groups_2_rounded),
+              label: 'Groups',
             ),
             BottomNavigationBarItem(
               icon: Icon(Icons.add),
               label: 'Add',
             ),
-            BottomNavigationBarItem(
-              icon: Icon(Icons.people),
-              label: 'Friends',
-            ),
+            // BottomNavigationBarItem(
+            //   icon: Icon(Icons.emoji_people_rounded),
+            //   label: 'Friends',
+            // ),
             BottomNavigationBarItem(
               icon: CircleAvatar(
                 backgroundImage: AssetImage("assets/images/edsheeran.png"),

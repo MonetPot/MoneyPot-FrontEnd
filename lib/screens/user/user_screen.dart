@@ -6,23 +6,9 @@ import 'package:money_pot/screens/user/user_screen.dart';
 class UserScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
-    return ProfilePage();
-  }
-}
-
-class ProfilePage extends StatelessWidget {
-  @override
-  Widget build(BuildContext context) {
     return Scaffold(
       // debugShowCheckedModeBanner: false,
       appBar: AppBar(
-        leading: IconButton(
-          icon: Icon(Icons.arrow_back),
-          onPressed: () {
-            Navigator.pop(context);
-
-          },
-        ),
         actions: [
           IconButton(
             icon: Icon(Icons.settings),
@@ -40,6 +26,7 @@ class ProfilePage extends StatelessWidget {
           children: [
             SizedBox(height: 20),
             CircleAvatar(
+
               radius: 50,
               backgroundImage: AssetImage('assets/images/edsheeran.png'),
             ),

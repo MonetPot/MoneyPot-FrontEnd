@@ -7,7 +7,6 @@ import 'package:money_pot/screens/login/social_login.dart';
 import 'package:money_pot/screens/navigation.dart';
 import '../../../toast.dart';
 import 'package:money_pot/screens/login/auth_login_page.dart';
-import 'package:money_pot/screens/groups_screen.dart';
 
 import '../../Screens/signup/signup_screen.dart';
 
@@ -17,8 +16,7 @@ class LoginScreen extends StatefulWidget {
 }
 
 class _LoginScreenState extends State<LoginScreen> {
-  bool _isSigning = false;
-  // final FirebaseAuth _auth = FirebaseAuth.instance;
+   bool _isSigning = false;
   final FirebaseAuthService _auth = FirebaseAuthService();
   TextEditingController _emailController = TextEditingController();
   TextEditingController _passwordController = TextEditingController();
@@ -70,14 +68,6 @@ class _LoginScreenState extends State<LoginScreen> {
         child: ListView(
           physics: BouncingScrollPhysics(),
           children: <Widget>[
-            // Center(
-            //   child: Image.asset(
-            //     'assets/icons/login.svg',
-            //     width: 100.0,
-            //     height: 100.0,
-            //     fit: BoxFit.cover,
-            //   ),
-            // ),
             Center(
               child: SvgPicture.asset(
                 'assets/icons/login.svg',
@@ -85,7 +75,6 @@ class _LoginScreenState extends State<LoginScreen> {
                 height: 100.0,
               ),
             ),
-
             headlinesWidget(),
             emailTextFieldWidget(),
             passwordTextFieldWidget(),
@@ -182,7 +171,6 @@ class _LoginScreenState extends State<LoginScreen> {
                   ],
                   borderRadius: new BorderRadius.circular(36.0),
                   gradient: LinearGradient(begin: FractionalOffset.centerLeft,
-// Add one stop for each color. Stops should increase from 0 to 1
                       stops: [
                         0.2,
                         1

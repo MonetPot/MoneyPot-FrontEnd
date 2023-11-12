@@ -85,6 +85,7 @@ class _LoginScreenState extends State<LoginScreen> {
                 height: 100.0,
               ),
             ),
+
             headlinesWidget(),
             emailTextFieldWidget(),
             passwordTextFieldWidget(),

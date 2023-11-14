@@ -69,10 +69,8 @@
 
 
 import 'package:flutter/material.dart';
-import 'package:flutter_svg/svg.dart';
 
 import '../../components/background.dart';
-import '../../const/gradient.dart';
 import '../../responsive.dart';
 import 'components/login_signup_button.dart';
 import 'components/welcome_image.dart';

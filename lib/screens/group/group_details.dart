@@ -1,10 +1,8 @@
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_speed_dial/flutter_speed_dial.dart';
-import 'package:money_pot/const/color_const.dart';
 
 import '../../Screens/settings/settings_screen.dart';
-import '../../const/gradient.dart';
+// import '../../const/gradient.dart';
 import '../groups_screen.dart';
 import '../search/search_screen.dart';
 import 'bills/text_scanner.dart';
@@ -57,14 +55,15 @@ class _GroupDetailsScreenState extends State<GroupDetailsScreen> with SingleTick
         flexibleSpace: Container(
           decoration: groupScreenDecoration,
         ),
-        actions: <Widget> [
+        actions: <Widget>[
           IconButton(
             icon: Icon(Icons.search),
             color: Theme
                 .of(context)
                 .primaryColor,
             onPressed: () {
-              Navigator.of(context).push(SlideFromLeftPageRoute(page: SearchScreen()));
+              Navigator.of(context).push(
+                  SlideFromLeftPageRoute(page: SearchScreen()));
             },
           ),
           IconButton(
@@ -80,7 +79,8 @@ class _GroupDetailsScreenState extends State<GroupDetailsScreen> with SingleTick
             },
           ),
         ],
-        backgroundColor: Colors.transparent, // Make the AppBar background transparent
+        backgroundColor: Colors.transparent,
+        // Make the AppBar background transparent
         elevation: 0,
       ),
       floatingActionButton: SpeedDial(
@@ -128,18 +128,25 @@ class _GroupDetailsScreenState extends State<GroupDetailsScreen> with SingleTick
               //   borderRadius: BorderRadius.circular(10), // Creates border radius for indicator
               //   color: Theme.of(context).primaryColorDark, // Background color of the indicator
               // ),
-              labelColor: Theme.of(context).primaryColor, // Color of the text when selected
-              unselectedLabelColor: Colors.blueGrey, // Color of the text when unselected
+              labelColor: Theme
+                  .of(context)
+                  .primaryColor,
+              // Color of the text when selected
+              unselectedLabelColor: Colors.blueGrey,
+              // Color of the text when unselected
               labelStyle: TextStyle(
                 fontSize: 16, // Size of the text
                 fontWeight: FontWeight.bold, // Weight of the text
               ),
               unselectedLabelStyle: TextStyle(
                 fontSize: 15, // Size of the text when unselected
-                fontWeight: FontWeight.normal, // Weight of the text when unselected
+                fontWeight: FontWeight
+                    .normal, // Weight of the text when unselected
               ),
-              indicatorSize: TabBarIndicatorSize.tab, // The indicator size should cover the entire tab
-              indicatorPadding: EdgeInsets.symmetric(horizontal: 10.0), // Padding for the indicator
+              indicatorSize: TabBarIndicatorSize.tab,
+              // The indicator size should cover the entire tab
+              indicatorPadding: EdgeInsets.symmetric(horizontal: 10.0),
+              // Padding for the indicator
               indicatorWeight: 4, // The thickness of the indicator
             ),
 
@@ -278,8 +285,7 @@ class _GroupDetailsScreenState extends State<GroupDetailsScreen> with SingleTick
                   padding: const EdgeInsets.only(right: 8.0), // Add some space between the buttons
                   child: ElevatedButton(
                     style: ElevatedButton.styleFrom(
-                      primary: Colors.blue, // Button background color
-                      onPrimary: Colors.white, // Button text color
+                      foregroundColor: Colors.white, backgroundColor: Colors.blue, // Button text color
                       shape: RoundedRectangleBorder(
                         borderRadius: BorderRadius.circular(10),
                       ),
@@ -303,8 +309,7 @@ class _GroupDetailsScreenState extends State<GroupDetailsScreen> with SingleTick
                   padding: const EdgeInsets.only(left: 8.0), // Add some space between the buttons
                   child: ElevatedButton(
                     style: ElevatedButton.styleFrom(
-                      primary: Colors.purple, // Button background color
-                      onPrimary: Colors.white, // Button text color
+                      foregroundColor: Colors.white, backgroundColor: Colors.purple, // Button text color
                       shape: RoundedRectangleBorder(
                         borderRadius: BorderRadius.circular(10),
                       ),

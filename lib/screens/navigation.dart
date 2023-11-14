@@ -1,7 +1,6 @@
 
 
 
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:money_pot/screens/group/add_group.dart';
 import 'package:money_pot/screens/groups_screen.dart';
@@ -87,7 +86,7 @@ class _NavigationState extends State<Navigation> {
                 .of(context)
                 .textTheme
                 .copyWith(
-              caption: TextStyle(color: Colors
+              bodySmall: TextStyle(color: Colors
                   .yellow), // Color for the 'unselected' item labels
             )),
         child: BottomNavigationBar(

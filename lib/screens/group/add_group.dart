@@ -80,13 +80,6 @@ class _AddGroupState extends State<AddGroup> with SingleTickerProviderStateMixin
             ),
 
           ),
-          // Padding(
-          //   padding: EdgeInsets.all(16.0),
-          //   child: ElevatedButton(
-          //     onPressed: _createGroup,
-          //     child: Text('Create Group'),
-          //   ),
-          // ),
         ],
       ),
     );

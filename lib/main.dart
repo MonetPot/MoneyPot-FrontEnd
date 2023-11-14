@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:money_pot/Screens/Welcome/welcome_screen.dart';
 import 'package:money_pot/Screens/login/login_screen.dart';
 import 'package:money_pot/constants.dart';
 import 'package:firebase_core/firebase_core.dart';
@@ -26,8 +25,7 @@ class MyApp extends StatelessWidget {
           scaffoldBackgroundColor: Colors.white,
           elevatedButtonTheme: ElevatedButtonThemeData(
             style: ElevatedButton.styleFrom(
-              elevation: 0,
-              primary: kPrimaryColor,
+              elevation: 0, backgroundColor: kPrimaryColor,
               shape: const StadiumBorder(),
               maximumSize: const Size(double.infinity, 56),
               minimumSize: const Size(double.infinity, 56),

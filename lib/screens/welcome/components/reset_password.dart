@@ -41,7 +41,7 @@ class ResetPassword extends StatelessWidget {
               onPressed: () {
                 // TODO: Implement your reset password logic here
               },
-              style: ElevatedButton.styleFrom(primary: Colors.purple[100], elevation: 0),
+              style: ElevatedButton.styleFrom(backgroundColor: Colors.purple[100], elevation: 0),
               child: Text(
                 "Next".toUpperCase(),
                 style: TextStyle(color: Colors.black),

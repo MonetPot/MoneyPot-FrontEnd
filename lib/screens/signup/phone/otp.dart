@@ -1,10 +1,8 @@
 import 'package:flutter/material.dart';
-import 'package:firebase_core/firebase_core.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:money_pot/screens/navigation.dart';
 
-import '../../groups_screen.dart';
 
 
 class OTPVerificationScreen extends StatefulWidget {

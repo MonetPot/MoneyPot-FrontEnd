@@ -1,7 +1,6 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:money_pot/Screens/login/login_screen.dart';
-import 'package:money_pot/screens/user/user_screen.dart';
 
 class SettingsScreen extends StatelessWidget {
   @override

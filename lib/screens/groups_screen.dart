@@ -2,14 +2,26 @@ import 'package:flutter/material.dart';
 import 'package:money_pot/screens/group/group_details.dart';
 import 'package:money_pot/screens/search/search_screen.dart';
 
-import '../const/gradient.dart';
+// import '../const/gradient.dart';
 import 'settings/settings_screen.dart';
-import 'group/bills/text_scanner.dart';
+
+
+// Define the gradient colors here
+const Color GREEN = Color(0xFFa8e063);
+const Color BLUE_DEEP = Color(0xFF515bd4);
+
+// Gradient decoration used in the AppBar and the body's background
+final BoxDecoration groupScreenDecoration = BoxDecoration(
+  gradient: LinearGradient(
+    begin: FractionalOffset(0.0, 0.5),
+    end: FractionalOffset(0.9, 0.7),
+    stops: [0.1, 0.5],
+    colors: [GREEN, BLUE_DEEP],
+  ),
+);
 
 class MainScreen extends StatelessWidget {
   const MainScreen({Key? key}) : super(key: key);
-
-  // @override
   @override
   Widget build(BuildContext context) {
     return Scaffold(

@@ -3,6 +3,7 @@ import 'package:flutter_speed_dial/flutter_speed_dial.dart';
 
 import '../../Screens/settings/settings_screen.dart';
 // import '../../const/gradient.dart';
+import '../../const/gradient.dart';
 import '../groups_screen.dart';
 import '../search/search_screen.dart';
 import 'bills/text_scanner.dart';
@@ -53,7 +54,7 @@ class _GroupDetailsScreenState extends State<GroupDetailsScreen> with SingleTick
           ),
         ),
         flexibleSpace: Container(
-          decoration: groupScreenDecoration,
+          decoration: BoxDecoration(gradient: SIGNUP_BACKGROUND),
         ),
         actions: <Widget>[
           IconButton(
@@ -112,7 +113,7 @@ class _GroupDetailsScreenState extends State<GroupDetailsScreen> with SingleTick
         ],
       ),
       body: Container(
-        decoration: groupScreenDecoration, // Your group screen decoration
+        decoration: BoxDecoration(gradient: SIGNUP_BACKGROUND), // Your group screen decoration
         child: Column(
           children: [
             SizedBox(height: 25),

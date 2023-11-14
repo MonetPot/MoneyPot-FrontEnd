@@ -8,7 +8,7 @@ class SignUpArrowButton extends StatelessWidget {
   final double width;
   final Color iconColor;
 
-  SignUpArrowButton({super.key,
+  SignUpArrowButton({key,
     required this.icon,
     this.iconSize = 24,
     required this.onTap,

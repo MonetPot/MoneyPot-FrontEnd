@@ -3,6 +3,7 @@ import 'package:money_pot/screens/group/group_details.dart';
 import 'package:money_pot/screens/search/search_screen.dart';
 
 // import '../const/gradient.dart';
+import '../const/gradient.dart';
 import 'settings/settings_screen.dart';
 
 
@@ -37,7 +38,7 @@ class MainScreen extends StatelessWidget {
                 ),
               ),
         flexibleSpace: Container(
-          decoration: groupScreenDecoration,
+          decoration: BoxDecoration(gradient: SIGNUP_BACKGROUND),
         ),
               actions: <Widget> [
                 IconButton(
@@ -64,7 +65,7 @@ class MainScreen extends StatelessWidget {
       ),
 
       body: Container(
-        decoration: groupScreenDecoration,
+        decoration: BoxDecoration(gradient: SIGNUP_BACKGROUND),
         child: ListView(
         children: [
           Container  (

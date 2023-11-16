@@ -1,6 +1,12 @@
 import 'package:flutter/material.dart';
 
+import '../group_details.dart';
+
 class TransactionSummaryScreen extends StatelessWidget {
+  final String amount;
+
+  TransactionSummaryScreen({Key? key, required this.amount}) : super(key: key);
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -42,7 +48,7 @@ class TransactionSummaryScreen extends StatelessWidget {
         padding: const EdgeInsets.all(16.0),
         child: Column(
           children: [
-            _buildDetailRow('Amount', '\$300'),
+            _buildDetailRow('Amount', '\$${amount}'),
             _buildDetailRow('Date', '06/14/2023'),
             _buildDetailRow('MoneyPot', 'Friday Night'),
             _buildDetailRow('Type', 'Deposit'),
@@ -69,7 +75,13 @@ class TransactionSummaryScreen extends StatelessWidget {
   Widget _buildDoneButton(BuildContext context) {
     return ElevatedButton(
       onPressed: () {
-        Navigator.of(context).pop(); // Or your logic for "Done" action
+        Navigator.push(
+          context,
+          MaterialPageRoute(
+            builder: (context) =>
+                GroupDetailsScreen(),
+          ),
+        );
       },
       child: Text('Done'),
       style: ElevatedButton.styleFrom(

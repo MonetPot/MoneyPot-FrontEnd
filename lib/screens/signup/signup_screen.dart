@@ -49,7 +49,6 @@ class _SignUpScreenState extends State<SignUpScreen> {
 
 
   void _signUp() async {
-
     setState(() {
       isSigningUp = true;
     });
@@ -113,7 +112,7 @@ class _SignUpScreenState extends State<SignUpScreen> {
             _lastNameTextField(),
             _emailTextField(),
             _passwordTextField(),
-             // _dateTextField(context),
+            // _dateTextField(context),
             SignUpButtonWidget(),
             SocialSignUp(),
             loginWidget(context),
@@ -215,13 +214,13 @@ class _SignUpScreenState extends State<SignUpScreen> {
 
   Widget _firstNameTextField() {
     return _buildGradientTextField(
-      controller: _firstnameController,
-      hintText: 'First Name',
-      focusNode: _firstnameFocusNode,
-      onFieldSubmitted: (term) {
-        _fieldFocusChange(context, _firstnameFocusNode, _emailFocusNode);
-      },
-      suffixIcon: Icon(Icons.abc_rounded)
+        controller: _firstnameController,
+        hintText: 'First Name',
+        focusNode: _firstnameFocusNode,
+        onFieldSubmitted: (term) {
+          _fieldFocusChange(context, _firstnameFocusNode, _emailFocusNode);
+        },
+        suffixIcon: Icon(Icons.abc_rounded)
     );
   }
 
@@ -259,12 +258,13 @@ class _SignUpScreenState extends State<SignUpScreen> {
         _passwordFocusNode.unfocus();
       },
       obscureText: true,
-      suffixIcon: Icon(Icons.password_rounded),// to hide the password input
+      suffixIcon: Icon(Icons.password_rounded), // to hide the password input
       // You can provide the specific icon you need here
     );
   }
 
-  void _fieldFocusChange(BuildContext context, FocusNode currentFocus, FocusNode nextFocus) {
+  void _fieldFocusChange(BuildContext context, FocusNode currentFocus,
+      FocusNode nextFocus) {
     currentFocus.unfocus();
     // This is a small delay after unfocusing the current focus node before focusing the next one.
     // This ensures the focus node has completely unfocused before attempting to focus the next node.
@@ -328,44 +328,91 @@ class _SignUpScreenState extends State<SignUpScreen> {
 
   Widget SignUpButtonWidget() {
     return Container(
-      margin: EdgeInsets.only(left: 32.0, top: 32.0),
-      child: Row(
-        children: <Widget>[
-          InkWell(
-            onTap: isSigningUp ? null : _signUp,
-            child: Container(
-              padding: EdgeInsets.symmetric(horizontal: 36.0, vertical: 13.0),
-              decoration: BoxDecoration(
-                  boxShadow: [
-                    BoxShadow(
-                        color: Colors.black12,
-                        blurRadius: 15,
-                        spreadRadius: 0,
-                        offset: Offset(0.0, 32.0)),
-                  ],
-                  borderRadius: new BorderRadius.circular(36.0),
-                  gradient: LinearGradient(begin: FractionalOffset.centerLeft,
-                      stops: [
-                        0.2,
-                        1
-                      ], colors: [
-                        Color(0xff000000),
-                        Color(0xff434343),
-                      ])),
-              child: Text(
-                'REGISTER',
-                style: TextStyle(
-                    color: Color(0xffF1EA94),
-                    fontWeight: FontWeight.bold,
-                    fontFamily: 'Montserrat'),
-              ),
-            ),
+      margin: EdgeInsets.symmetric(horizontal: 32.0, vertical: 32.0),
+      padding: EdgeInsets.symmetric(horizontal: 36.0),
+      // Add padding to define the button's width
+      decoration: BoxDecoration(
+        borderRadius: new BorderRadius.circular(36.0),
+        gradient: LinearGradient(
+          begin: FractionalOffset.centerLeft,
+          stops: [0.2, 1],
+          colors: [
+            Color(0xff000000),
+            Color(0xff434343),
+          ],
+        ),
+        boxShadow: [
+          BoxShadow(
+            color: Colors.black12,
+            blurRadius: 15,
+            spreadRadius: 0,
+            offset: Offset(0.0, 32.0),
           ),
         ],
+      ),
+      child: ElevatedButton(
+        onPressed: isSigningUp ? null : _signUp,
+        style: ElevatedButton.styleFrom(
+          primary: Colors.transparent,
+          shadowColor: Colors.transparent,
+          padding: EdgeInsets.symmetric(vertical: 16.0),
+          shape: RoundedRectangleBorder(
+            borderRadius: BorderRadius.circular(36.0),
+          ),
+          onPrimary: Color(0xffF1EA94), // Text color
+        ),
+        child: Text(
+          'Send OTP',
+          style: TextStyle(
+            fontWeight: FontWeight.bold,
+            fontFamily: 'Montserrat',
+          ),
+        ),
       ),
     );
   }
 }
+
+//   Widget SignUpButtonWidget() {
+//     return Container(
+//       margin: EdgeInsets.only(left: 32.0, top: 32.0),
+//       child: Row(
+//         children: <Widget>[
+//           InkWell(
+//             onTap: isSigningUp ? null : _signUp,
+//             child: Container(
+//               padding: EdgeInsets.symmetric(horizontal: 36.0, vertical: 13.0),
+//               decoration: BoxDecoration(
+//                   boxShadow: [
+//                     BoxShadow(
+//                         color: Colors.black12,
+//                         blurRadius: 15,
+//                         spreadRadius: 0,
+//                         offset: Offset(0.0, 32.0)),
+//                   ],
+//                   borderRadius: new BorderRadius.circular(36.0),
+//                   gradient: LinearGradient(begin: FractionalOffset.centerLeft,
+//                       stops: [
+//                         0.2,
+//                         1
+//                       ], colors: [
+//                         Color(0xff000000),
+//                         Color(0xff434343),
+//                       ])),
+//               child: Text(
+//                 'REGISTER',
+//                 style: TextStyle(
+//                     color: Color(0xffF1EA94),
+//                     fontWeight: FontWeight.bold,
+//                     fontFamily: 'Montserrat'),
+//               ),
+//             ),
+//           ),
+//         ],
+//       ),
+//     );
+//   }
+// }
 
 
 

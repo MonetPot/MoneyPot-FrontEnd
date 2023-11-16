@@ -3,7 +3,7 @@ import 'package:money_pot/screens/signup/services/auth_service.dart';
 
 import '../../../screens/signup/components/divider.dart';
 import '../../../screens/signup/components/social_icon.dart';
-import '../../Screens/signup/phone/phone.dart';
+import '../../screens/phone/phone.dart';
 
 class SocialLogin extends StatelessWidget {
   const SocialLogin({

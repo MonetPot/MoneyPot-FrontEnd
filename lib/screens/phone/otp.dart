@@ -29,46 +29,66 @@ class _OTPVerificationScreenState extends State<OTPVerificationScreen> {
 
         body: Container(
           decoration: BoxDecoration(gradient: SIGNUP_BACKGROUND),
-          child: Column(
-            mainAxisAlignment: MainAxisAlignment.center,
-            crossAxisAlignment: CrossAxisAlignment.stretch,
-            children: [
-              headlinesWidget(),
-              Padding(
-                padding: const EdgeInsets.all(16.0),
-                child:
-                TextField(
-                  controller: _otpController,
-                  style: hintAndValueStyle,
-                  keyboardType: TextInputType.number,
-                  decoration: InputDecoration(
-                    suffixIcon: Icon(Icons.confirmation_num_rounded),
-                    contentPadding: EdgeInsets.fromLTRB(40.0, 30.0, 10.0, 10.0),
-                    border: OutlineInputBorder(
-                      borderRadius: BorderRadius.circular(12.0),
-                      borderSide: BorderSide.none,
+          child:
+            Stack(
+              children: [
+                SafeArea(
+                  child: Align(
+                    alignment: Alignment.topLeft,
+                    child: Padding(
+                      padding: const EdgeInsets.all(16.0),
+                      child: IconButton(
+                        icon: Icon(Icons.arrow_back_ios),
+                        color: Colors.white,
+                        onPressed: () {
+                          Navigator.pop(context);
+                        },
+                      ),
                     ),
-                    labelText: 'OTP',
-                    hintStyle: hintAndValueStyle,
                   ),
                 ),
+                Column(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  crossAxisAlignment: CrossAxisAlignment.stretch,
+                  children: [
+                    headlinesWidget(),
+                    Padding(
+                      padding: const EdgeInsets.all(16.0),
+                      child:
+                      TextField(
+                        controller: _otpController,
+                        style: hintAndValueStyle,
+                        keyboardType: TextInputType.number,
+                        decoration: InputDecoration(
+                          suffixIcon: Icon(Icons.confirmation_num_rounded),
+                          contentPadding: EdgeInsets.fromLTRB(40.0, 30.0, 10.0, 10.0),
+                          border: OutlineInputBorder(
+                            borderRadius: BorderRadius.circular(12.0),
+                            borderSide: BorderSide.none,
+                          ),
+                          labelText: 'OTP',
+                          hintStyle: hintAndValueStyle,
+                        ),
+                      ),
 
-                // TextField(
-                //   controller: _otpController,
-                //   decoration: InputDecoration(
-                //     border: OutlineInputBorder(),
-                //     labelText: 'OTP',
-                //   ),
-                //   keyboardType: TextInputType.number,
-                // ),
-              ),
-              VerifyOTPButtonWidget(),
-              // ElevatedButton(
-              //   child: Text('Verify OTP'),
-              //   onPressed: () => _verifyOTP(),
-              // ),
-            ],
-          ),
+                      // TextField(
+                      //   controller: _otpController,
+                      //   decoration: InputDecoration(
+                      //     border: OutlineInputBorder(),
+                      //     labelText: 'OTP',
+                      //   ),
+                      //   keyboardType: TextInputType.number,
+                      // ),
+                    ),
+                    VerifyOTPButtonWidget(),
+                    // ElevatedButton(
+                    //   child: Text('Verify OTP'),
+                    //   onPressed: () => _verifyOTP(),
+                    // ),
+                  ],
+                ),
+              ],
+            )
         )
     );
   }

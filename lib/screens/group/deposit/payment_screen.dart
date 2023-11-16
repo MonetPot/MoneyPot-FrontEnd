@@ -79,7 +79,7 @@ class PaymentScreen extends StatelessWidget {
     return Row(
       children: [
         CircleAvatar(
-          backgroundImage: AssetImage("assets/images/edsheeran.png"), // Replace with your image path
+          backgroundImage: AssetImage("assets/images/edsheeran.png"),
         ),
         SizedBox(width: 8),
         Chip(label: Text('Friday Night')),
@@ -96,6 +96,7 @@ class PaymentScreen extends StatelessWidget {
     return TextField(
       controller: _amountController,
       focusNode: _amountFocusNode,
+
       decoration: InputDecoration(
         labelText: 'Amount',
         suffixText: 'USD',
@@ -107,10 +108,11 @@ class PaymentScreen extends StatelessWidget {
   Widget _buildNextButton(BuildContext context) {
     return ElevatedButton(
       onPressed: () {
+        String amount = _amountController.text;
         Navigator.push(
             context,
             MaterialPageRoute(
-                builder: (context) => ConfirmDepositScreen()));
+                builder: (context) => ConfirmDepositScreen(amount: amount)));
       },
       child: Text('Next'),
       style: ElevatedButton.styleFrom(

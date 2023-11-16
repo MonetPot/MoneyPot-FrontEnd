@@ -6,6 +6,11 @@ import 'package:money_pot/screens/group/deposit/summary_screen.dart';
 import '../../../Screens/settings/settings_screen.dart';
 
 class ConfirmDepositScreen extends StatelessWidget {
+
+  final String amount;
+
+  ConfirmDepositScreen({Key? key, required this.amount}) : super(key: key);
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -62,10 +67,10 @@ class ConfirmDepositScreen extends StatelessWidget {
           padding: const EdgeInsets.all(16.0),
           child: Column(
             children: [
-              _buildSummaryRow('Amount', '\$300'),
+              _buildSummaryRow('Amount', '\$${amount}'),
               _buildSummaryRow('Charge', '0'),
               Divider(),
-              _buildSummaryRow('Friday Night', '\$300', isTotal: true),
+              _buildSummaryRow('Friday Night', '\$${amount}', isTotal: true),
             ],
           ),
         ),
@@ -92,7 +97,7 @@ class ConfirmDepositScreen extends StatelessWidget {
         Navigator.push(
             context,
             MaterialPageRoute(
-                builder: (context) => TransactionSummaryScreen()));
+                builder: (context) => TransactionSummaryScreen(amount: amount)));
       },
       child: Text('Transfer'),
       style: ElevatedButton.styleFrom(

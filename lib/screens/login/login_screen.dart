@@ -119,8 +119,7 @@ class _LoginScreenState extends State<LoginScreen> {
           FocusScope.of(context).requestFocus(_passwordFocusNode);
         },
         decoration: new InputDecoration(
-            suffixIcon: Icon(IconData(0xe902, fontFamily: 'Icons'),
-                color: Color(0xff35AA90), size: 10.0),
+            suffixIcon: Icon(Icons.email_rounded),
             contentPadding: new EdgeInsets.fromLTRB(40.0, 30.0, 10.0, 10.0),
             border: OutlineInputBorder(
                 borderRadius: new BorderRadius.circular(12.0),
@@ -140,6 +139,7 @@ class _LoginScreenState extends State<LoginScreen> {
         style: hintAndValueStyle,
         obscureText: true,
         decoration: new InputDecoration(
+            suffixIcon: Icon(Icons.password_rounded),
             fillColor: Color(0x3305756D),
             filled: true,
             contentPadding: new EdgeInsets.fromLTRB(40.0, 30.0, 10.0, 10.0),
@@ -151,51 +151,95 @@ class _LoginScreenState extends State<LoginScreen> {
       ),
     );
   }
+   Widget loginButtonWidget() {
+     return Container(
+       margin: EdgeInsets.symmetric(horizontal: 32.0, vertical: 32.0),
+       padding: EdgeInsets.symmetric(horizontal: 36.0), // Add padding to define the button's width
+       decoration: BoxDecoration(
+         borderRadius: new BorderRadius.circular(36.0),
+         gradient: LinearGradient(
+           begin: FractionalOffset.centerLeft,
+           stops: [0.2, 1],
+           colors: [
+             Color(0xff000000),
+             Color(0xff434343),
+           ],
+         ),
+         boxShadow: [
+           BoxShadow(
+             color: Colors.black12,
+             blurRadius: 15,
+             spreadRadius: 0,
+             offset: Offset(0.0, 32.0),
+           ),
+         ],
+       ),
+       child: ElevatedButton(
+         onPressed: _isSigningIn ? null : _signIn,
+         style: ElevatedButton.styleFrom(
+           primary: Colors.transparent,
+           shadowColor: Colors.transparent,
+           padding: EdgeInsets.symmetric(vertical: 16.0),
+           shape: RoundedRectangleBorder(
+             borderRadius: BorderRadius.circular(36.0),
+           ),
+           onPrimary: Color(0xffF1EA94), // Text color
+         ),
+         child: Text(
+           'LOGIN',
+           style: TextStyle(
+             fontWeight: FontWeight.bold,
+             fontFamily: 'Montserrat',
+           ),
+         ),
+       ),
+     );
+   }
 
-  Widget loginButtonWidget() {
-    return Container(
-      margin: EdgeInsets.only(left: 32.0, top: 32.0),
-      child: Row(
-        children: <Widget>[
-          InkWell(
-            onTap: _isSigningIn ? null : _signIn,
-            child: Container(
-              padding: EdgeInsets.symmetric(horizontal: 36.0, vertical: 16.0),
-              decoration: BoxDecoration(
-                  boxShadow: [
-                    BoxShadow(
-                        color: Colors.black12,
-                        blurRadius: 15,
-                        spreadRadius: 0,
-                        offset: Offset(0.0, 32.0)),
-                  ],
-                  borderRadius: new BorderRadius.circular(36.0),
-                  gradient: LinearGradient(begin: FractionalOffset.centerLeft,
-                      stops: [
-                        0.2,
-                        1
-                      ], colors: [
-                        Color(0xff000000),
-                        Color(0xff434343),
-                      ])),
-              child: Text(
-                'LOGIN',
-                style: TextStyle(
-                    color: Color(0xffF1EA94),
-                    fontWeight: FontWeight.bold,
-                    fontFamily: 'Montserrat'),
-              ),
-            ),
-          ),
-        ],
-      ),
-    );
-  }
+  // Widget loginButtonWidget() {
+  //   return Container(
+  //     margin: EdgeInsets.only(left: 32.0, top: 32.0),
+  //     child: Row(
+  //       children: <Widget>[
+  //         InkWell(
+  //           onTap: _isSigningIn ? null : _signIn,
+  //           child: Container(
+  //             padding: EdgeInsets.symmetric(horizontal: 36.0, vertical: 16.0),
+  //             decoration: BoxDecoration(
+  //                 boxShadow: [
+  //                   BoxShadow(
+  //                       color: Colors.black12,
+  //                       blurRadius: 15,
+  //                       spreadRadius: 0,
+  //                       offset: Offset(0.0, 32.0)),
+  //                 ],
+  //                 borderRadius: new BorderRadius.circular(36.0),
+  //                 gradient: LinearGradient(begin: FractionalOffset.centerLeft,
+  //                     stops: [
+  //                       0.2,
+  //                       1
+  //                     ], colors: [
+  //                       Color(0xff000000),
+  //                       Color(0xff434343),
+  //                     ])),
+  //             child: Text(
+  //               'LOGIN',
+  //               style: TextStyle(
+  //                   color: Color(0xffF1EA94),
+  //                   fontWeight: FontWeight.bold,
+  //                   fontFamily: 'Montserrat'),
+  //             ),
+  //           ),
+  //         ),
+  //       ],
+  //     ),
+  //   );
+  // }
 }
 
 Widget signupWidget(BuildContext context) {
   return Container(
-    margin: EdgeInsets.only(left: 48.0, top: 32.0),
+    margin: EdgeInsets.only(left: 48.0, top: 5.0),
     child: Row(
       children: <Widget>[
         Text(

@@ -1,4 +1,7 @@
 import 'package:flutter/material.dart';
+import 'package:money_pot/const/color_const.dart';
+
+import '../../const/gradient.dart';
 
 
 class AddGroup extends StatefulWidget {
@@ -41,16 +44,23 @@ class _AddGroupState extends State<AddGroup> with SingleTickerProviderStateMixin
     return Scaffold(
       appBar: AppBar(
         leading: IconButton(
-          icon: Icon(Icons.close),
+          icon: Icon(Icons.close,
+          color: TEXT_BLACK),
           onPressed: () => Navigator.pop(context),
         ),
-        title: Text('MoneyPot Name', style: TextStyle(fontWeight: FontWeight.bold)),
+        title: Text('MoneyPot Name', style: TextStyle(fontWeight: FontWeight.bold,
+        color: TEXT_BLACK)),
         bottom: TabBar(
           controller: _tabController,
+          labelColor: Colors.grey[500],
+          unselectedLabelColor: TEXT_BLACK_LIGHT,
           tabs: [
             Tab(text: 'People'),
             Tab(text: 'Friends'),
           ],
+        ),
+        flexibleSpace: Container(
+          decoration: BoxDecoration(gradient: searchScreenGradient),
         ),
       ),
       floatingActionButton: FloatingActionButton.extended(
@@ -60,28 +70,32 @@ class _AddGroupState extends State<AddGroup> with SingleTickerProviderStateMixin
           // Your onPressed code here
         },
       ),
-      body: Column(
-        children: [
-          Expanded(
-            child:
-            // Inside the AddGroup StatefulWidget's build method
-            TabBarView(
-              controller: _tabController,
-              children: [
-                PeopleSearchTab(
-                  selectedMembers: _selectedMembers,
-                  toggleSelection: _toggleSelection,
+      body:
+        Container (
+            decoration: BoxDecoration(gradient: SIGNUP_BACKGROUND),
+          child: Column(
+            children: [
+              Expanded(
+                child:
+                // Inside the AddGroup StatefulWidget's build method
+                TabBarView(
+                  controller: _tabController,
+                  children: [
+                    PeopleSearchTab(
+                      selectedMembers: _selectedMembers,
+                      toggleSelection: _toggleSelection,
+                    ),
+                    FriendsTab(
+                      selectedMembers: _selectedMembers,
+                      toggleSelection: _toggleSelection,
+                    ),
+                  ],
                 ),
-                FriendsTab(
-                  selectedMembers: _selectedMembers,
-                  toggleSelection: _toggleSelection,
-                ),
-              ],
-            ),
 
+              ),
+            ],
           ),
-        ],
-      ),
+        ),
     );
   }
 }

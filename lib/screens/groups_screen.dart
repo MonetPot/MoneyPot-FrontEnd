@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:money_pot/screens/funds/access_funds.dart';
 import 'package:money_pot/screens/group/group_details.dart';
 import 'package:money_pot/screens/search/search_screen.dart';
 
@@ -38,11 +39,14 @@ class MainScreen extends StatelessWidget {
                 ),
               ),
         flexibleSpace: Container(
-          decoration: BoxDecoration(gradient: SIGNUP_BACKGROUND),
+          decoration: BoxDecoration(gradient: groupScreenGradient),
         ),
               actions: <Widget> [
                 IconButton(
                   icon: Icon(Icons.search),
+                  color: Theme
+                      .of(context)
+                      .primaryColor,
                   onPressed: () {
                     Navigator.of(context).push(SlideFromLeftPageRoute(page: SearchScreen()));
                   },
@@ -65,7 +69,7 @@ class MainScreen extends StatelessWidget {
       ),
 
       body: Container(
-        decoration: BoxDecoration(gradient: SIGNUP_BACKGROUND),
+        decoration: BoxDecoration(gradient: groupScreenGradient),
         child: ListView(
         children: [
           Container  (
@@ -164,7 +168,13 @@ class GroupTile extends StatelessWidget {
                     width: 130,
                     child: ElevatedButton(
                       onPressed: () {
-                        // Add functionality to access funds
+                        Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                            builder: (context) =>
+                                AccessFunds(),
+                          ),
+                        );
                       },
                       child: Text("Access Funds"),
                     ),

@@ -49,3 +49,39 @@ const LinearGradient SIGNUP_CIRCLE_BUTTON_BACKGROUND = LinearGradient(
   stops: [0.4, 1],
   colors: [Colors.black, Colors.black54],
 );
+
+
+// Group Screen Gradient: Light to Dark Blue
+const LinearGradient groupScreenGradient = LinearGradient(
+  begin: Alignment.topLeft,
+  end: Alignment.bottomRight,
+  colors: [BLUE_LIGHT, BLUE_DEEP],
+);
+
+// Group Details Screen Gradient: Purple to Dark Blue
+const LinearGradient groupDetailsGradient = LinearGradient(
+  begin: Alignment.topLeft,
+  end: Alignment.bottomRight,
+  colors: [PURPLE, BLUE_DEEP],
+);
+
+// User Screen Gradient: Warm Red to Light Red
+const LinearGradient userScreenGradient = LinearGradient(
+  begin: Alignment.topLeft,
+  end: Alignment.bottomRight,
+  colors: [SIGNUP_RED, RED_LIGHT],
+);
+
+// Settings Page Gradient: Neutral Dark to Main Color
+const LinearGradient settingsPageGradient = LinearGradient(
+  begin: Alignment.topLeft,
+  end: Alignment.bottomRight,
+  colors: [DARK_COLOR, MAIN_COLOR],
+);
+
+// Search Screen Gradient: Light Blue to Green
+const LinearGradient searchScreenGradient = LinearGradient(
+  begin: Alignment.topLeft,
+  end: Alignment.bottomRight,
+  colors: [BLUE_LIGHT, GREEN],
+);

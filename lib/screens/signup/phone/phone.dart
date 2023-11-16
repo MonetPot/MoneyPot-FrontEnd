@@ -145,6 +145,9 @@ import 'package:fluttertoast/fluttertoast.dart';
 import 'package:money_pot/screens/signup/phone/otp.dart';
 import 'package:country_code_picker/country_code_picker.dart';
 
+import '../../../const/gradient.dart';
+import '../../../const/styles.dart';
+
 class Phone extends StatefulWidget {
   @override
   _PhoneNumberInputScreenState createState() => _PhoneNumberInputScreenState();
@@ -161,44 +164,64 @@ class _PhoneNumberInputScreenState extends State<Phone> {
       appBar: AppBar(
         title: Text('Enter Phone Number'),
       ),
-      body: Column(
-        mainAxisAlignment: MainAxisAlignment.center,
-        crossAxisAlignment: CrossAxisAlignment.stretch,
-        children: [
-          Padding(
-            padding: const EdgeInsets.all(16.0),
-            child: Row(
-              children: [
-                CountryCodePicker(
-                  onChanged: (countryCode) {
-                    setState(() {
-                      selectedCountryCode = countryCode.dialCode!;
-                    });
-                  },
-                  initialSelection: 'US',
-                  favorite: const ['+1', 'US'],
-                  showCountryOnly: false,
-                  showOnlyCountryWhenClosed: false,
-                  alignLeft: false,
-                ),
-                Expanded(
-                  child: TextField(
-                    controller: _phoneController,
-                    decoration: InputDecoration(
-                      border: OutlineInputBorder(),
-                      labelText: 'Phone Number',
-                    ),
-                    keyboardType: TextInputType.phone,
+      body: Container(
+          decoration: BoxDecoration(gradient: SIGNUP_BACKGROUND),
+        child: Column(
+          mainAxisAlignment: MainAxisAlignment.center,
+          crossAxisAlignment: CrossAxisAlignment.stretch,
+          children: [
+            Padding(
+              padding: const EdgeInsets.all(16.0),
+              child: Row(
+                children: [
+                  CountryCodePicker(
+                    onChanged: (countryCode) {
+                      setState(() {
+                        selectedCountryCode = countryCode.dialCode!;
+                      });
+                    },
+                    initialSelection: 'US',
+                    favorite: const ['+1', 'US'],
+                    showCountryOnly: false,
+                    showOnlyCountryWhenClosed: false,
+                    alignLeft: false,
                   ),
-                ),
-              ],
+                  Expanded(
+                    child:
+                    TextField(
+                      controller: _phoneController,
+                      style: hintAndValueStyle,
+                      keyboardType: TextInputType.phone,
+
+                      decoration: InputDecoration(
+                        suffixIcon: Icon(Icons.perm_phone_msg_rounded),
+                        contentPadding: EdgeInsets.fromLTRB(40.0, 30.0, 10.0, 10.0),
+                        border: OutlineInputBorder(
+                          borderRadius: BorderRadius.circular(12.0),
+                          borderSide: BorderSide.none,
+                        ),
+                        labelText: 'Phone Number',
+                        hintStyle: hintAndValueStyle,
+                      ),
+                    ),
+                    // TextField(
+                    //   controller: _phoneController,
+                    //   decoration: InputDecoration(
+                    //     border: OutlineInputBorder(),
+                    //     labelText: 'Phone Number',
+                    //   ),
+                    //   keyboardType: TextInputType.phone,
+                    // ),
+                  ),
+                ],
+              ),
             ),
-          ),
-          ElevatedButton(
-            child: Text('Send OTP'),
-            onPressed: () => _sendOTP(),
-          ),
-        ],
+            ElevatedButton(
+              child: Text('Send OTP'),
+              onPressed: () => _sendOTP(),
+            ),
+          ],
+        )
       ),
     );
   }

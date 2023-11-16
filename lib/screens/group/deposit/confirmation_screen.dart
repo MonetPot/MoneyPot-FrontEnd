@@ -1,0 +1,107 @@
+import 'package:flutter/material.dart';
+import 'package:money_pot/const/color_const.dart';
+import 'package:money_pot/const/gradient.dart';
+import 'package:money_pot/screens/group/deposit/summary_screen.dart';
+
+import '../../../Screens/settings/settings_screen.dart';
+
+class ConfirmDepositScreen extends StatelessWidget {
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+      appBar: AppBar(
+        leading: IconButton(
+          icon: Icon(Icons.arrow_back, color: Colors.blue),
+          onPressed: () => Navigator.of(context).pop(),
+        ),
+        title: Text('Confirm', style: TextStyle(color: Colors.black)),
+        backgroundColor: Colors.white,
+        elevation: 0,
+        actions: [
+          IconButton(
+            icon: Icon(Icons.settings, color: Colors.blue),
+            onPressed: () {
+              Navigator.push(
+                  context,
+                  MaterialPageRoute(
+                      builder: (context) => SettingsScreen()));
+            },
+          ),
+        ],
+        flexibleSpace: Container(
+          decoration: BoxDecoration(gradient: groupScreenGradient),
+        ),
+      ),
+      body:
+        Container(
+            decoration: BoxDecoration(gradient: groupDetailsGradient),
+            child: Padding(
+            padding: const EdgeInsets.all(16.0),
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.stretch,
+              children: [
+                Text('Deposit', style: TextStyle(fontSize: 24.0, color: TEXT_BLACK)),
+                SizedBox(height: 16),
+                _buildSummaryCard(),
+                SizedBox(height:30),
+                // Spacer(),
+                _buildTransferButton(context),
+              ],
+            ),
+          ),
+        ),
+    );
+  }
+
+  Widget _buildSummaryCard() {
+    return Container(
+      decoration: BoxDecoration(gradient: SIGNUP_BACKGROUND),
+      child: Card(
+        elevation: 4.0,
+        child: Padding(
+          padding: const EdgeInsets.all(16.0),
+          child: Column(
+            children: [
+              _buildSummaryRow('Amount', '\$300'),
+              _buildSummaryRow('Charge', '0'),
+              Divider(),
+              _buildSummaryRow('Friday Night', '\$300', isTotal: true),
+            ],
+          ),
+        ),
+      ),
+    );
+  }
+
+  Widget _buildSummaryRow(String label, String value, {bool isTotal = false}) {
+    return Padding(
+      padding: const EdgeInsets.symmetric(vertical: 8.0),
+      child: Row(
+        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+        children: [
+          Text(label, style: TextStyle(fontSize: 16.0, color: isTotal ? Colors.black : Colors.grey)),
+          Text(value, style: TextStyle(fontSize: 16.0, color: isTotal ? Colors.black : Colors.grey)),
+        ],
+      ),
+    );
+  }
+
+  Widget _buildTransferButton(BuildContext context) {
+    return ElevatedButton(
+      onPressed: () {
+        Navigator.push(
+            context,
+            MaterialPageRoute(
+                builder: (context) => TransactionSummaryScreen()));
+      },
+      child: Text('Transfer'),
+      style: ElevatedButton.styleFrom(
+        primary: Colors.deepPurple,
+        padding: EdgeInsets.symmetric(vertical: 16.0),
+        shape: RoundedRectangleBorder(
+          borderRadius: BorderRadius.circular(8.0),
+        ),
+      ),
+    );
+  }
+}

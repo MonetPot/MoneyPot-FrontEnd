@@ -22,11 +22,13 @@ class _SignUpScreenState extends State<SignUpScreen> {
 
   final FirebaseAuthService _auth = FirebaseAuthService();
 
-  TextEditingController _usernameController = TextEditingController();
+  TextEditingController _firstnameController = TextEditingController();
+  TextEditingController _lastnameController = TextEditingController();
   TextEditingController _emailController = TextEditingController();
   TextEditingController _passwordController = TextEditingController();
   final _emailFocusNode = FocusNode();
-  final _usernameFocusNode = FocusNode();
+  final _firstnameFocusNode = FocusNode();
+  final _lastnameFocusNode = FocusNode();
   final _passwordFocusNode = FocusNode();
 
   bool isSigningUp = false;
@@ -34,11 +36,13 @@ class _SignUpScreenState extends State<SignUpScreen> {
   @override
   void dispose() {
     _dateController.dispose();
-    _usernameController.dispose();
+    _firstnameController.dispose();
+    _lastnameController.dispose();
     _emailController.dispose();
     _passwordController.dispose();
     _emailFocusNode.dispose();
-    _usernameFocusNode.dispose();
+    _firstnameFocusNode.dispose();
+    _lastnameFocusNode.dispose();
     _passwordFocusNode.dispose();
     super.dispose();
   }
@@ -50,7 +54,8 @@ class _SignUpScreenState extends State<SignUpScreen> {
       isSigningUp = true;
     });
 
-    String username = _usernameController.text;
+    String firstname = _firstnameController.text;
+    String lastname = _lastnameController.text;
     String email = _emailController.text;
     String password = _passwordController.text;
 
@@ -96,14 +101,6 @@ class _SignUpScreenState extends State<SignUpScreen> {
         child: ListView(
           physics: BouncingScrollPhysics(),
           children: <Widget>[
-            // Center(
-            //   child: Image.asset(
-            //     'assets/icons/login.svg',
-            //     width: 100.0,
-            //     height: 100.0,
-            //     fit: BoxFit.cover,
-            //   ),
-            // ),
             Center(
               child: SvgPicture.asset(
                 'assets/icons/signup.svg',
@@ -112,27 +109,15 @@ class _SignUpScreenState extends State<SignUpScreen> {
               ),
             ),
             headlinesWidget(),
-            _usernameTextField(),
+            _firstNameTextField(),
+            _lastNameTextField(),
             _emailTextField(),
             _passwordTextField(),
              // _dateTextField(context),
             SignUpButtonWidget(),
             SocialSignUp(),
             loginWidget(context),
-            // signupWidget(context)
-            // signupButton("Sign Up"), // Assuming this is a custom button widget
             const SizedBox(height: defaultPadding),
-            // AlreadyHaveAnAccountCheck(
-            //   login: false,
-            //   press: () {
-            //     Navigator.push(
-            //       context,
-            //       MaterialPageRoute(
-            //         builder: (context) => LoginScreen(),
-            //       ),
-            //     );
-            //   },
-            // ),
           ],
         ),
       ),
@@ -147,7 +132,7 @@ class _SignUpScreenState extends State<SignUpScreen> {
         crossAxisAlignment: CrossAxisAlignment.start,
         children: <Widget>[
           Text(
-            'Register an account',
+            'Register an account using Email or Phone',
             textAlign: TextAlign.left,
             style: TextStyle(
                 letterSpacing: 3,
@@ -176,7 +161,7 @@ class _SignUpScreenState extends State<SignUpScreen> {
   Widget _buildGradientTextField({
     required TextEditingController controller,
     required String hintText,
-    IconData? suffixIcon,
+    required Icon suffixIcon,
     bool obscureText = false,
     TextInputType keyboardType = TextInputType.text,
     VoidCallback? onTap,
@@ -214,9 +199,7 @@ class _SignUpScreenState extends State<SignUpScreen> {
         readOnly: onTap != null,
         onTap: onTap,
         decoration: InputDecoration(
-          suffixIcon: suffixIcon != null
-              ? Icon(suffixIcon, color: Color(0xff35AA90), size: 10.0)
-              : null,
+          suffixIcon: suffixIcon,
           contentPadding: EdgeInsets.fromLTRB(40.0, 30.0, 10.0, 10.0),
           border: OutlineInputBorder(
             borderRadius: BorderRadius.circular(12.0),
@@ -230,15 +213,27 @@ class _SignUpScreenState extends State<SignUpScreen> {
     );
   }
 
-  Widget _usernameTextField() {
+  Widget _firstNameTextField() {
     return _buildGradientTextField(
-      controller: _usernameController,
-      hintText: 'Username',
-      focusNode: _usernameFocusNode,
+      controller: _firstnameController,
+      hintText: 'First Name',
+      focusNode: _firstnameFocusNode,
       onFieldSubmitted: (term) {
-        _fieldFocusChange(context, _usernameFocusNode, _emailFocusNode);
+        _fieldFocusChange(context, _firstnameFocusNode, _emailFocusNode);
       },
-      // You can provide the specific icon you need here
+      suffixIcon: Icon(Icons.abc_rounded)
+    );
+  }
+
+  Widget _lastNameTextField() {
+    return _buildGradientTextField(
+        controller: _lastnameController,
+        hintText: 'Last Name',
+        focusNode: _lastnameFocusNode,
+        onFieldSubmitted: (term) {
+          _fieldFocusChange(context, _lastnameFocusNode, _emailFocusNode);
+        },
+        suffixIcon: Icon(Icons.abc_rounded)
     );
   }
 
@@ -251,8 +246,7 @@ class _SignUpScreenState extends State<SignUpScreen> {
       onFieldSubmitted: (term) {
         _fieldFocusChange(context, _emailFocusNode, _passwordFocusNode);
       },
-      suffixIcon: IconData(
-          0xe902, fontFamily: 'Icons'), // Change this as needed
+      suffixIcon: Icon(Icons.alternate_email_rounded),
     );
   }
 
@@ -264,7 +258,8 @@ class _SignUpScreenState extends State<SignUpScreen> {
       onFieldSubmitted: (term) {
         _passwordFocusNode.unfocus();
       },
-      obscureText: true, // to hide the password input
+      obscureText: true,
+      suffixIcon: Icon(Icons.password_rounded),// to hide the password input
       // You can provide the specific icon you need here
     );
   }
@@ -339,7 +334,7 @@ class _SignUpScreenState extends State<SignUpScreen> {
           InkWell(
             onTap: isSigningUp ? null : _signUp,
             child: Container(
-              padding: EdgeInsets.symmetric(horizontal: 36.0, vertical: 16.0),
+              padding: EdgeInsets.symmetric(horizontal: 36.0, vertical: 13.0),
               decoration: BoxDecoration(
                   boxShadow: [
                     BoxShadow(
@@ -350,7 +345,6 @@ class _SignUpScreenState extends State<SignUpScreen> {
                   ],
                   borderRadius: new BorderRadius.circular(36.0),
                   gradient: LinearGradient(begin: FractionalOffset.centerLeft,
-// Add one stop for each color. Stops should increase from 0 to 1
                       stops: [
                         0.2,
                         1

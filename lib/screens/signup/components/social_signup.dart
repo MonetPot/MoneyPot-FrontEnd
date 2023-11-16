@@ -31,14 +31,14 @@ class SocialSignUp extends StatelessWidget {
                 );
               },
             ),
-            SocialIcon(
-              iconSrc: "assets/icons/apple.svg",
-              onTap: () => AuthService().signInWithApple(context),
-            ),
-            SocialIcon(
-              iconSrc: "assets/icons/google.svg",
-              onTap: () => AuthService().signInWithGoogle(context),
-            ),
+            // SocialIcon(
+            //   iconSrc: "assets/icons/apple.svg",
+            //   onTap: () => AuthService().signInWithApple(context),
+            // ),
+            // SocialIcon(
+            //   iconSrc: "assets/icons/google.svg",
+            //   onTap: () => AuthService().signInWithGoogle(context),
+            // ),
             // SocialIcon(
             //   iconSrc: "assets/icons/facebook.svg",
             //   onTap: () {},

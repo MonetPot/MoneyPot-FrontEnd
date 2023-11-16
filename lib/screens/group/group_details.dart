@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_speed_dial/flutter_speed_dial.dart';
+import 'package:money_pot/screens/group/deposit/payment_screen.dart';
 
 import '../../Screens/settings/settings_screen.dart';
 // import '../../const/gradient.dart';
@@ -113,7 +114,7 @@ class _GroupDetailsScreenState extends State<GroupDetailsScreen> with SingleTick
         ],
       ),
       body: Container(
-        decoration: BoxDecoration(gradient: SIGNUP_BACKGROUND), // Your group screen decoration
+        decoration: BoxDecoration(gradient: groupDetailsGradient), // Your group screen decoration
         child: Column(
           children: [
             SizedBox(height: 25),
@@ -293,7 +294,10 @@ class _GroupDetailsScreenState extends State<GroupDetailsScreen> with SingleTick
                       padding: EdgeInsets.symmetric(vertical: 12.0), // Button padding
                     ),
                     onPressed: () {
-                      // Handle Deposit button press
+                      Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                              builder: (context) => PaymentScreen()));
                     },
                     child: Text(
                       'Deposit',

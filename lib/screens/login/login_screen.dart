@@ -48,13 +48,24 @@ class _LoginScreenState extends State<LoginScreen> {
 
     if (user != null) {
       showToast(message: "User is successfully signed in");
-      Navigator.of(context).pushReplacement(
-        MaterialPageRoute(builder: (context) => Navigation()),
+      if (!mounted) return;
 
+      Navigator.pushAndRemoveUntil(
+        context,
+        MaterialPageRoute(builder: (context) => Navigation()),
+            (Route<dynamic> route) => false,
       );
+      // Navigator.of(context).pushReplacement(
+      //   MaterialPageRoute(builder: (context) => Navigation()),
+      //
+      // );
     } else {
       showToast(message: "some error occurred");
     }
+
+    String? token = await FirebaseAuth.instance.currentUser?.getIdToken();
+
+
   }
 
 
@@ -195,45 +206,6 @@ class _LoginScreenState extends State<LoginScreen> {
      );
    }
 
-  // Widget loginButtonWidget() {
-  //   return Container(
-  //     margin: EdgeInsets.only(left: 32.0, top: 32.0),
-  //     child: Row(
-  //       children: <Widget>[
-  //         InkWell(
-  //           onTap: _isSigningIn ? null : _signIn,
-  //           child: Container(
-  //             padding: EdgeInsets.symmetric(horizontal: 36.0, vertical: 16.0),
-  //             decoration: BoxDecoration(
-  //                 boxShadow: [
-  //                   BoxShadow(
-  //                       color: Colors.black12,
-  //                       blurRadius: 15,
-  //                       spreadRadius: 0,
-  //                       offset: Offset(0.0, 32.0)),
-  //                 ],
-  //                 borderRadius: new BorderRadius.circular(36.0),
-  //                 gradient: LinearGradient(begin: FractionalOffset.centerLeft,
-  //                     stops: [
-  //                       0.2,
-  //                       1
-  //                     ], colors: [
-  //                       Color(0xff000000),
-  //                       Color(0xff434343),
-  //                     ])),
-  //             child: Text(
-  //               'LOGIN',
-  //               style: TextStyle(
-  //                   color: Color(0xffF1EA94),
-  //                   fontWeight: FontWeight.bold,
-  //                   fontFamily: 'Montserrat'),
-  //             ),
-  //           ),
-  //         ),
-  //       ],
-  //     ),
-  //   );
-  // }
 }
 
 Widget signupWidget(BuildContext context) {
@@ -304,3 +276,46 @@ Widget headlinesWidget() {
     ),
   );
 }
+
+
+
+
+// Widget loginButtonWidget() {
+//   return Container(
+//     margin: EdgeInsets.only(left: 32.0, top: 32.0),
+//     child: Row(
+//       children: <Widget>[
+//         InkWell(
+//           onTap: _isSigningIn ? null : _signIn,
+//           child: Container(
+//             padding: EdgeInsets.symmetric(horizontal: 36.0, vertical: 16.0),
+//             decoration: BoxDecoration(
+//                 boxShadow: [
+//                   BoxShadow(
+//                       color: Colors.black12,
+//                       blurRadius: 15,
+//                       spreadRadius: 0,
+//                       offset: Offset(0.0, 32.0)),
+//                 ],
+//                 borderRadius: new BorderRadius.circular(36.0),
+//                 gradient: LinearGradient(begin: FractionalOffset.centerLeft,
+//                     stops: [
+//                       0.2,
+//                       1
+//                     ], colors: [
+//                       Color(0xff000000),
+//                       Color(0xff434343),
+//                     ])),
+//             child: Text(
+//               'LOGIN',
+//               style: TextStyle(
+//                   color: Color(0xffF1EA94),
+//                   fontWeight: FontWeight.bold,
+//                   fontFamily: 'Montserrat'),
+//             ),
+//           ),
+//         ),
+//       ],
+//     ),
+//   );
+// }

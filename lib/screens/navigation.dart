@@ -1,9 +1,6 @@
-
-
-
 import 'package:flutter/material.dart';
 import 'package:money_pot/screens/group/add_group.dart';
-import 'package:money_pot/screens/groups_screen.dart';
+import 'package:money_pot/screens/group/groups_screen.dart';
 import 'package:money_pot/screens/user/user_screen.dart';
 
 class Navigation extends StatefulWidget {
@@ -81,20 +78,17 @@ class _NavigationState extends State<Navigation> {
         data: Theme.of(context).copyWith(
             canvasColor: Colors.black,
             primaryColor: Colors.red,
-            // If BottomNavigationBarType.shifting, this is the color of the selected item
             textTheme: Theme
                 .of(context)
                 .textTheme
                 .copyWith(
               bodySmall: TextStyle(color: Colors
-                  .yellow), // Color for the 'unselected' item labels
+                  .yellow),
             )),
         child: BottomNavigationBar(
           type: BottomNavigationBarType.fixed,
-          // Set the type to fixed for consistent background color
           unselectedItemColor: Colors.grey,
           selectedItemColor: Colors.white,
-          // Changed to white for better visibility
           items: <BottomNavigationBarItem>[
             BottomNavigationBarItem(
               icon: Icon(Icons.groups_2_rounded),

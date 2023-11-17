@@ -9,6 +9,8 @@ import '../../toast.dart';
 import 'package:money_pot/const/gradient.dart';
 import 'package:money_pot/const/styles.dart';
 import 'components/social_signup.dart';
+import 'package:http/http.dart' as http;
+import 'dart:convert';
 
 class SignUpScreen extends StatefulWidget {
   const SignUpScreen({Key? key}) : super(key: key);
@@ -19,6 +21,8 @@ class SignUpScreen extends StatefulWidget {
 
 class _SignUpScreenState extends State<SignUpScreen> {
   final TextEditingController _dateController = TextEditingController();
+
+
 
   final FirebaseAuthService _auth = FirebaseAuthService();
 
@@ -48,15 +52,74 @@ class _SignUpScreenState extends State<SignUpScreen> {
   }
 
 
+
+  // Future<void> sendUserDataToBackend(User user) async {
+  //   String firstName = _firstnameController.text;
+  //   String lastName = _lastnameController.text;
+  //   print('here');
+  //   final url = Uri.parse('http://127.0.0.1:8000/api/user/create');
+  //   final response = await http.post(
+  //     url,
+  //     headers: {'Content-Type': 'application/json'},
+  //     body: json.encode({
+  //       'firebase_id': user.uid,
+  //       'email': user.email,
+  //       'first_name': firstName,
+  //       'last_name': lastName,
+  //     }),
+  //   );
+  //   print('here2');
+  //   if (response.statusCode == 200) {
+  //     showToast(message: "User successfully registered in backend");
+  //     Navigator.push(context, MaterialPageRoute(builder: (context) => Navigation()));
+  //   } else {
+  //     showToast(message: "Backend registration failed");
+  //     //user deletion if backend registration fails
+  //   }
+  // }
+  //
+  // void _signUp() async {
+  //   setState(() {
+  //     isSigningUp = true;
+  //   });
+  //
+  //   String email = _emailController.text;
+  //   String password = _passwordController.text;
+  //
+  //   try {
+  //     UserCredential userCredential = await FirebaseAuth.instance.createUserWithEmailAndPassword(
+  //       email: email,
+  //       password: password,
+  //     );
+  //
+  //     User? user = userCredential.user;
+  //     if (user != null) {
+  //       await sendUserDataToBackend(user);
+  //     }
+  //   } on FirebaseAuthException catch (e) {
+  //     showToast(message: "Firebase Error: ${e.message}");
+  //   } catch (e) {
+  //     showToast(message: "Error: $e");
+  //   } finally {
+  //     setState(() {
+  //       isSigningUp = false;
+  //     });
+  //   }
+  // }
+
+
+  // PREVIOUS SIGNUP FUNCTION
   void _signUp() async {
     setState(() {
       isSigningUp = true;
     });
 
-    String firstname = _firstnameController.text;
-    String lastname = _lastnameController.text;
+    String firstName = _firstnameController.text;
+    String lastName = _lastnameController.text;
     String email = _emailController.text;
     String password = _passwordController.text;
+
+    String fullName = firstName + " " + lastName;
 
     User? user = await _auth.signUpWithEmailAndPassword(email, password);
 
@@ -64,17 +127,23 @@ class _SignUpScreenState extends State<SignUpScreen> {
       isSigningUp = false;
     });
     if (user != null) {
+      await user.updateDisplayName(fullName);
       showToast(message: "User is successfully created");
-      Navigator.push(
+      if (!mounted) return;
+
+      Navigator.pushAndRemoveUntil(
         context,
-        MaterialPageRoute(
-          builder: (context) {
-            return Navigation();
-          },
-        ),
+        MaterialPageRoute(builder: (context) => Navigation()),
+            (Route<dynamic> route) => false,
       );
-    } else {
-      showToast(message: "Some error happened");
+      // Navigator.push(
+      //   context,
+      //   MaterialPageRoute(
+      //     builder: (context) {
+      //       return Navigation();
+      //     },
+      //   ),
+      // );
     }
   }
 
@@ -109,7 +178,7 @@ class _SignUpScreenState extends State<SignUpScreen> {
             ),
             headlinesWidget(),
             _firstNameTextField(),
-            _lastNameTextField(),
+            // _lastNameTextField(),
             _emailTextField(),
             _passwordTextField(),
             // _dateTextField(context),
@@ -203,7 +272,7 @@ class _SignUpScreenState extends State<SignUpScreen> {
   Widget _firstNameTextField() {
     return _buildGradientTextField(
         controller: _firstnameController,
-        hintText: 'First Name',
+        hintText: 'Name',
         focusNode: _firstnameFocusNode,
         onFieldSubmitted: (term) {
           _fieldFocusChange(context, _firstnameFocusNode, _emailFocusNode);
@@ -212,17 +281,17 @@ class _SignUpScreenState extends State<SignUpScreen> {
     );
   }
 
-  Widget _lastNameTextField() {
-    return _buildGradientTextField(
-        controller: _lastnameController,
-        hintText: 'Last Name',
-        focusNode: _lastnameFocusNode,
-        onFieldSubmitted: (term) {
-          _fieldFocusChange(context, _lastnameFocusNode, _emailFocusNode);
-        },
-        suffixIcon: Icon(Icons.abc_rounded)
-    );
-  }
+  // Widget _lastNameTextField() {
+  //   return _buildGradientTextField(
+  //       controller: _lastnameController,
+  //       hintText: 'Last Name',
+  //       focusNode: _lastnameFocusNode,
+  //       onFieldSubmitted: (term) {
+  //         _fieldFocusChange(context, _lastnameFocusNode, _emailFocusNode);
+  //       },
+  //       suffixIcon: Icon(Icons.abc_rounded)
+  //   );
+  // }
 
 
   Widget _emailTextField() {
@@ -246,8 +315,7 @@ class _SignUpScreenState extends State<SignUpScreen> {
         _passwordFocusNode.unfocus();
       },
       obscureText: true,
-      suffixIcon: Icon(Icons.password_rounded), // to hide the password input
-      // You can provide the specific icon you need here
+      suffixIcon: Icon(Icons.password_rounded),
     );
   }
 
@@ -261,7 +329,7 @@ class _SignUpScreenState extends State<SignUpScreen> {
 
   Widget loginWidget(BuildContext context) {
     return Container(
-      margin: EdgeInsets.only(left: 48.0, top: 20.0),
+      margin: EdgeInsets.only(left: 48.0),
       child: Row(
         children: <Widget>[
           Text(
@@ -298,7 +366,6 @@ class _SignUpScreenState extends State<SignUpScreen> {
     return Container(
       margin: EdgeInsets.symmetric(horizontal: 32.0, vertical: 32.0),
       padding: EdgeInsets.symmetric(horizontal: 36.0),
-      // Add padding to define the button's width
       decoration: BoxDecoration(
         borderRadius: new BorderRadius.circular(36.0),
         gradient: LinearGradient(
@@ -330,7 +397,7 @@ class _SignUpScreenState extends State<SignUpScreen> {
           onPrimary: Color(0xffF1EA94), // Text color
         ),
         child: Text(
-          'Send OTP',
+          'REGISTER',
           style: TextStyle(
             fontWeight: FontWeight.bold,
             fontFamily: 'Montserrat',
@@ -395,71 +462,6 @@ class _SignUpScreenState extends State<SignUpScreen> {
 //           ),
 //         ],
 //       ),
-//     );
-//   }
-// }
-
-
-
-
-/// OLD CODE
-
-
-//   @override
-//   Widget build(BuildContext context) {
-//     return const Background(
-//       child: SingleChildScrollView(
-//         child: Responsive(
-//           mobile: MobileSignupScreen(),
-//           desktop: Row(
-//             children: [
-//               Expanded(
-//                 child: SignUpScreenTopImage(),
-//               ),
-//               Expanded(
-//                 child: Column(
-//                   mainAxisAlignment: MainAxisAlignment.center,
-//                   children: [
-//                     SizedBox(
-//                       width: 450,
-//                       child: SignUpForm(),
-//                     ),
-//                     SizedBox(height: defaultPadding / 2),
-//                     SocialSignUp(),
-//                   ],
-//                 ),
-//               )
-//             ],
-//           ),
-//         ),
-//       ),
-//     );
-//   }
-// }
-//
-// class MobileSignupScreen extends StatelessWidget {
-//   const MobileSignupScreen({
-//     Key? key,
-//   }) : super(key: key);
-//
-//   @override
-//   Widget build(BuildContext context) {
-//     return const Column(
-//       mainAxisAlignment: MainAxisAlignment.center,
-//       children: <Widget>[
-//         SignUpScreenTopImage(),
-//         Row(
-//           children: [
-//             Spacer(),
-//             Expanded(
-//               flex: 8,
-//               child: SignUpForm(),
-//             ),
-//             Spacer(),
-//           ],
-//         ),
-//         SocialSignUp(),
-//       ],
 //     );
 //   }
 // }

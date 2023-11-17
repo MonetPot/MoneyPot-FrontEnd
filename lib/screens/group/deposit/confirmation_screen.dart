@@ -48,9 +48,9 @@ class ConfirmDepositScreen extends StatelessWidget {
                 Text('Deposit', style: TextStyle(fontSize: 24.0, color: TEXT_BLACK)),
                 SizedBox(height: 16),
                 _buildSummaryCard(),
-                SizedBox(height:30),
+                SizedBox(height:10),
                 // Spacer(),
-                _buildTransferButton(context),
+                transferButtonWidget("Transfer", context),
               ],
             ),
           ),
@@ -91,6 +91,57 @@ class ConfirmDepositScreen extends StatelessWidget {
     );
   }
 
+  Widget transferButtonWidget(String text, BuildContext context) {
+    return Container(
+      margin: EdgeInsets.symmetric(horizontal: 32.0, vertical: 10.0),
+      padding: EdgeInsets.symmetric(horizontal: 4.0),
+      decoration: BoxDecoration(
+        borderRadius: new BorderRadius.circular(36.0),
+        gradient: LinearGradient(
+          begin: FractionalOffset.centerLeft,
+          stops: [0.2, 1],
+          colors: [
+            Color(0xff000000),
+            Color(0xff434343),
+          ],
+        ),
+        boxShadow: [
+          BoxShadow(
+            color: Colors.black12,
+            blurRadius: 15,
+            spreadRadius: 0,
+            offset: Offset(0.0, 32.0),
+          ),
+        ],
+      ),
+      child: ElevatedButton(
+        onPressed: () {
+          // String amount = _amountController.text;
+          Navigator.push(
+              context,
+              MaterialPageRoute(
+                  builder: (context) => TransactionSummaryScreen(amount: amount)));
+        },
+        style: ElevatedButton.styleFrom(
+          primary: Colors.transparent,
+          shadowColor: Colors.transparent,
+          padding: EdgeInsets.symmetric(vertical: 16.0),
+          shape: RoundedRectangleBorder(
+            borderRadius: BorderRadius.circular(36.0),
+          ),
+          onPrimary: Color(0xffF1EA94), // Text color
+        ),
+        child: Text(
+          text,
+          style: TextStyle(
+            fontWeight: FontWeight.bold,
+            fontFamily: 'Montserrat',
+          ),
+        ),
+      ),
+    );
+  }
+
   Widget _buildTransferButton(BuildContext context) {
     return ElevatedButton(
       onPressed: () {
@@ -109,4 +160,5 @@ class ConfirmDepositScreen extends StatelessWidget {
       ),
     );
   }
+
 }

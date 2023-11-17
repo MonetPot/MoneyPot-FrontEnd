@@ -3,9 +3,8 @@ import 'package:flutter_speed_dial/flutter_speed_dial.dart';
 import 'package:money_pot/screens/group/deposit/payment_screen.dart';
 
 import '../../Screens/settings/settings_screen.dart';
-// import '../../const/gradient.dart';
 import '../../const/gradient.dart';
-import '../groups_screen.dart';
+import 'package:money_pot/screens/group/groups_screen.dart';
 import '../search/search_screen.dart';
 import 'bills/text_scanner.dart';
 
@@ -126,30 +125,22 @@ class _GroupDetailsScreenState extends State<GroupDetailsScreen> with SingleTick
                 Tab(text: 'Members'),
                 Tab(text: 'Transactions'),
               ],
-              // indicator: BoxDecoration(
-              //   borderRadius: BorderRadius.circular(10), // Creates border radius for indicator
-              //   color: Theme.of(context).primaryColorDark, // Background color of the indicator
-              // ),
               labelColor: Theme
                   .of(context)
                   .primaryColor,
-              // Color of the text when selected
               unselectedLabelColor: Colors.blueGrey,
-              // Color of the text when unselected
               labelStyle: TextStyle(
-                fontSize: 16, // Size of the text
-                fontWeight: FontWeight.bold, // Weight of the text
+                fontSize: 16,
+                fontWeight: FontWeight.bold,
               ),
               unselectedLabelStyle: TextStyle(
-                fontSize: 15, // Size of the text when unselected
+                fontSize: 15,
                 fontWeight: FontWeight
-                    .normal, // Weight of the text when unselected
+                    .normal,
               ),
               indicatorSize: TabBarIndicatorSize.tab,
-              // The indicator size should cover the entire tab
               indicatorPadding: EdgeInsets.symmetric(horizontal: 10.0),
-              // Padding for the indicator
-              indicatorWeight: 4, // The thickness of the indicator
+              indicatorWeight: 4,
             ),
 
             Flexible(
@@ -166,7 +157,6 @@ class _GroupDetailsScreenState extends State<GroupDetailsScreen> with SingleTick
           ],
         ),
       ),
-      // ... existing floatingActionButton code ...
     );
   }
 
@@ -181,22 +171,22 @@ class _GroupDetailsScreenState extends State<GroupDetailsScreen> with SingleTick
         style: TextStyle(
           fontSize: 22,
           fontWeight: FontWeight.bold,
-          color: Colors.blue, // Adjust the color to match your theme
+          color: Colors.blue,
         ),
       ),
     ),
         ListView.builder(
 
-          shrinkWrap: true, // Use this to fit within the Column
-          itemCount: 3, // Replace with your dynamic item count
+          shrinkWrap: true,
+          itemCount: 3, // Replace with dynamic item count
           itemBuilder: (BuildContext context, int index) {
             return ListTile(
               leading: CircleAvatar(
-                // Replace with member's image
+
                 backgroundImage: AssetImage("assets/images/edsheeran.png"),
               ),
               title: Text(
-                'Member ${index + 1}', // Replace with member's name
+                'Member ${index + 1}', // Replace with group members
                 style: TextStyle(
                   fontSize: 16,
                   fontWeight: FontWeight.bold,
@@ -225,24 +215,23 @@ class _GroupDetailsScreenState extends State<GroupDetailsScreen> with SingleTick
           ),
         ),
         ListView.builder(
-          // physics: NeverScrollableScrollPhysics(), // to disable ListView's scrolling
-          shrinkWrap: true, // Use this to fit within the Column
-          itemCount: 3, // Replace with your dynamic item count
+          // physics: NeverScrollableScrollPhysics(),
+          shrinkWrap: true,
+          itemCount: 3, // Replace with dynamic item count
           itemBuilder: (BuildContext context, int index) {
             return ListTile(
               leading: CircleAvatar(
-                // Replace with member's image
                 backgroundImage: AssetImage("assets/images/edsheeran.png"),
               ),
               title: Text(
-                'Member ${index + 1}', // Replace with member's name
+                'Member ${index + 1}',
                 style: TextStyle(
                   fontSize: 16,
                   fontWeight: FontWeight.bold,
                 ),
               ),
               subtitle: Text(
-                'June 15, 2023', // Replace with the transaction date
+                'June 15, 2023',
                 style: TextStyle(
                   color: Colors.grey,
                 ),
@@ -250,11 +239,11 @@ class _GroupDetailsScreenState extends State<GroupDetailsScreen> with SingleTick
               trailing: Container(
                 padding: EdgeInsets.symmetric(horizontal: 12.0, vertical: 4.0),
                 decoration: BoxDecoration(
-                  color: index.isEven ? Colors.blue : Colors.red, // Change color based on condition
+                  color: index.isEven ? Colors.blue : Colors.red,
                   borderRadius: BorderRadius.circular(20.0),
                 ),
                 child: Text(
-                  index.isEven ? '\$50 Withdrawal' : '\$300 Deposit', // Replace with transaction amount
+                  index.isEven ? '\$50 Withdrawal' : '\$300 Deposit',
                   style: TextStyle(
                     color: Colors.white,
                     fontWeight: FontWeight.bold,
@@ -274,24 +263,24 @@ class _GroupDetailsScreenState extends State<GroupDetailsScreen> with SingleTick
       children: [
         CircleAvatar(
           radius: 40,
-          backgroundImage: AssetImage('assets/images/edsheeran.png'), // Replace with your image path
+          backgroundImage: AssetImage('assets/images/edsheeran.png'),
         ),
         Text('Group for Friday night drinks'),
         Padding(
           padding: const EdgeInsets.symmetric(horizontal: 16.0, vertical: 8.0),
           child: Row(
-            mainAxisAlignment: MainAxisAlignment.spaceEvenly, // This will space out the buttons evenly
+            mainAxisAlignment: MainAxisAlignment.spaceEvenly,
             children: [
               Expanded(
                 child: Padding(
-                  padding: const EdgeInsets.only(right: 8.0), // Add some space between the buttons
+                  padding: const EdgeInsets.only(right: 8.0),
                   child: ElevatedButton(
                     style: ElevatedButton.styleFrom(
-                      foregroundColor: Colors.white, backgroundColor: Colors.blue, // Button text color
+                      foregroundColor: Colors.white, backgroundColor: Colors.blue,
                       shape: RoundedRectangleBorder(
                         borderRadius: BorderRadius.circular(10),
                       ),
-                      padding: EdgeInsets.symmetric(vertical: 12.0), // Button padding
+                      padding: EdgeInsets.symmetric(vertical: 12.0),
                     ),
                     onPressed: () {
                       Navigator.push(
@@ -311,14 +300,14 @@ class _GroupDetailsScreenState extends State<GroupDetailsScreen> with SingleTick
               ),
               Expanded(
                 child: Padding(
-                  padding: const EdgeInsets.only(left: 8.0), // Add some space between the buttons
+                  padding: const EdgeInsets.only(left: 8.0),
                   child: ElevatedButton(
                     style: ElevatedButton.styleFrom(
-                      foregroundColor: Colors.white, backgroundColor: Colors.purple, // Button text color
+                      foregroundColor: Colors.white, backgroundColor: Colors.purple,
                       shape: RoundedRectangleBorder(
                         borderRadius: BorderRadius.circular(10),
                       ),
-                      padding: EdgeInsets.symmetric(vertical: 12.0), // Button padding
+                      padding: EdgeInsets.symmetric(vertical: 12.0),
                     ),
                     onPressed: () {
                       // Handle Add Members button press

@@ -49,6 +49,7 @@ dependencies:
   flutter_speed_dial: ^7.0.0
   country_code_picker: ^3.0.0
   flutter_localization: ^0.1.14
+  http: ^1.1.0
 
 
 dev_dependencies:

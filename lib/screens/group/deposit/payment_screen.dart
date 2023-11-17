@@ -47,12 +47,20 @@ class PaymentScreen extends StatelessWidget {
                 _buildChipSection(),
                 SizedBox(height: 24),
                 _buildAmountTextField(),
-                SizedBox(height: 24),
-                _buildNextButton(context),
+                // SizedBox(height: 24),
+                // _buildNextButton(context),
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween, // Centers the buttons horizontally
+                  children: [
+                    Expanded(child: depositButtonWidget("Deposit", context)),
+                    // SizedBox(width: 16), // Adds a gap between the buttons
+                    Expanded(child: withdrawButtonWidget("Withdraw", context)),
+                  ],
+                ),
               ],
             ),
           ),
-        )
+        ),
     );
   }
 
@@ -82,12 +90,13 @@ class PaymentScreen extends StatelessWidget {
           backgroundImage: AssetImage("assets/images/edsheeran.png"),
         ),
         SizedBox(width: 8),
-        Chip(label: Text('Friday Night')),
+        Chip(label: Text('Friday Night'),
+          backgroundColor: Colors.green,),
         SizedBox(width: 8),
-        Chip(
-          label: Text('Deposit'),
-          backgroundColor: Colors.green,
-        ),
+        // Chip(
+        //   label: Text('Deposit'),
+        //   backgroundColor: Colors.green,
+        // ),
       ],
     );
   }
@@ -104,6 +113,111 @@ class PaymentScreen extends StatelessWidget {
       keyboardType: TextInputType.numberWithOptions(decimal: true),
     );
   }
+
+  Widget depositButtonWidget(String text, BuildContext context) {
+    return Container(
+      margin: EdgeInsets.symmetric(horizontal: 32.0, vertical: 20.0),
+      padding: EdgeInsets.symmetric(horizontal: 4.0),
+      decoration: BoxDecoration(
+        borderRadius: new BorderRadius.circular(36.0),
+        gradient: LinearGradient(
+          begin: FractionalOffset.centerLeft,
+          stops: [0.2, 1],
+          colors: [
+            Color(0xff000000),
+            Color(0xff434343),
+          ],
+        ),
+        boxShadow: [
+          BoxShadow(
+            color: Colors.black12,
+            blurRadius: 15,
+            spreadRadius: 0,
+            offset: Offset(0.0, 32.0),
+          ),
+        ],
+      ),
+      child: ElevatedButton(
+        onPressed: () {
+          String amount = _amountController.text;
+          Navigator.push(
+              context,
+              MaterialPageRoute(
+                  builder: (context) => ConfirmDepositScreen(amount: amount)));
+        },
+        style: ElevatedButton.styleFrom(
+          primary: Colors.transparent,
+          shadowColor: Colors.transparent,
+          padding: EdgeInsets.symmetric(vertical: 16.0),
+          shape: RoundedRectangleBorder(
+            borderRadius: BorderRadius.circular(36.0),
+          ),
+          onPrimary: Color(0xffF1EA94), // Text color
+        ),
+        child: Text(
+          text,
+          style: TextStyle(
+            fontWeight: FontWeight.bold,
+            fontFamily: 'Montserrat',
+          ),
+        ),
+      ),
+    );
+  }
+
+  Widget withdrawButtonWidget(String text, BuildContext context) {
+    return Container(
+      margin: EdgeInsets.symmetric(horizontal: 32.0, vertical: 20.0),
+      padding: EdgeInsets.symmetric(horizontal: 4.0),
+      decoration: BoxDecoration(
+        borderRadius: new BorderRadius.circular(36.0),
+        gradient: LinearGradient(
+          begin: FractionalOffset.centerLeft,
+          stops: [0.2, 1],
+          colors: [
+            Color(0xff000000),
+            Color(0xff434343),
+          ],
+        ),
+        boxShadow: [
+          BoxShadow(
+            color: Colors.black12,
+            blurRadius: 15,
+            spreadRadius: 0,
+            offset: Offset(0.0, 32.0),
+          ),
+        ],
+      ),
+      child: ElevatedButton(
+        onPressed: () {
+          String amount = _amountController.text;
+          // Navigator.push(
+          //     context,
+          //     MaterialPageRoute(
+          //         builder: (context) => ConfirmDepositScreen(amount: amount)));
+
+          // handle withdraw functionality
+        },
+        style: ElevatedButton.styleFrom(
+          primary: Colors.transparent,
+          shadowColor: Colors.transparent,
+          padding: EdgeInsets.symmetric(vertical: 16.0),
+          shape: RoundedRectangleBorder(
+            borderRadius: BorderRadius.circular(36.0),
+          ),
+          onPrimary: Color(0xffF1EA94),
+        ),
+        child: Text(
+          text,
+          style: TextStyle(
+            fontWeight: FontWeight.bold,
+            fontFamily: 'Montserrat',
+          ),
+        ),
+      ),
+    );
+  }
+
 
   Widget _buildNextButton(BuildContext context) {
     return ElevatedButton(

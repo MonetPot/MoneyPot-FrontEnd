@@ -1,11 +1,16 @@
 import 'package:flutter/material.dart';
 import 'package:money_pot/Screens/settings/settings_screen.dart';
+import 'package:firebase_auth/firebase_auth.dart';
+
 
 import '../../const/gradient.dart';
 
 class UserScreen extends StatelessWidget {
+  final User? user = FirebaseAuth.instance.currentUser;
   @override
   Widget build(BuildContext context) {
+    String userName = user?.displayName ?? 'Update Name';
+    String userEmail = user?.email ?? 'Update Email';
     return Scaffold(
       // debugShowCheckedModeBanner: false,
       appBar: AppBar(
@@ -39,8 +44,8 @@ class UserScreen extends StatelessWidget {
                   backgroundImage: AssetImage('assets/images/edsheeran.png'),
                 ),
                 SizedBox(height: 10),
-                Text('Sai Samarth', style: TextStyle(fontSize: 24, fontWeight: FontWeight.bold)),
-                Text('@sai003sam', style: TextStyle(color: Colors.grey)),
+                Text(userName, style: TextStyle(fontSize: 24, fontWeight: FontWeight.bold)),
+                Text(userEmail, style: TextStyle(color: Colors.grey)),
                 SizedBox(height: 10),
                 Row(
                   mainAxisAlignment: MainAxisAlignment.spaceAround,
@@ -80,7 +85,6 @@ class UserScreen extends StatelessWidget {
                           ),
                         ),
                       ),
-                      // ... add more cards as required
                     ],
                   ),
                 ),
@@ -88,7 +92,7 @@ class UserScreen extends StatelessWidget {
                 Text('Transactions', style: TextStyle(fontSize: 22, fontWeight: FontWeight.bold)),
                 ListTile(
                   leading: CircleAvatar(backgroundImage: AssetImage('assets/images/edsheeran.png')),
-                  title: Text('Sai, Friday Night'),
+                  title: Text("$userName, Friday Night"),
                   subtitle: Text('June 14, 2023'),
                   trailing: Column(
                     mainAxisAlignment: MainAxisAlignment.center,
@@ -97,7 +101,7 @@ class UserScreen extends StatelessWidget {
                 ),
                   ListTile(
                     leading: CircleAvatar(backgroundImage: AssetImage('assets/images/edsheeran.png')),
-                    title: Text('Sai, Friday Night'),
+                    title: Text("$userName, Friday Night"),
                     subtitle: Text('June 14, 2023'),
                     trailing: Column(
                       mainAxisAlignment: MainAxisAlignment.center,
@@ -106,15 +110,13 @@ class UserScreen extends StatelessWidget {
                   ),
                   ListTile(
                     leading: CircleAvatar(backgroundImage: AssetImage('assets/images/edsheeran.png')),
-                    title: Text('Sai, Friday Night'),
+                    title: Text("$userName, Friday Night"),
                     subtitle: Text('June 14, 2023'),
                     trailing: Column(
                       mainAxisAlignment: MainAxisAlignment.center,
                       children: [Text('\$83.78', style: TextStyle(fontWeight: FontWeight.bold)), Text('Withdrawal')],
                     ),
                   ),
-                // ... repeat for other transactions
-
               ],
             ),
           ),

@@ -172,7 +172,7 @@ class _PhoneNumberInputScreenState extends State<Phone> {
                   padding: const EdgeInsets.all(16.0),
                   child: IconButton(
                     icon: Icon(Icons.arrow_back_ios),
-                    color: Colors.white,
+                    color: Colors.blue,
                     onPressed: () {
                       Navigator.pop(context);
                     },
@@ -309,15 +309,6 @@ Widget headlinesWidget() {
     child: Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: <Widget>[
-        // Text(
-        //   'WELCOME BACK!',
-        //   textAlign: TextAlign.left,
-        //   style: TextStyle(
-        //       letterSpacing: 3,
-        //       fontSize: 20.0,
-        //       fontFamily: 'Montserrat',
-        //       fontWeight: FontWeight.bold),
-        // ),
         Container(
           margin: EdgeInsets.only(top: 20.0),
           child: Text(

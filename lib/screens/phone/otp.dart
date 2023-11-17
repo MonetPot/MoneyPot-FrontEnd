@@ -19,6 +19,20 @@ class OTPVerificationScreen extends StatefulWidget {
 
 class _OTPVerificationScreenState extends State<OTPVerificationScreen> {
   final _otpController = TextEditingController();
+  final TextEditingController _nameController = TextEditingController();
+  final TextEditingController _emailController = TextEditingController();
+  final _nameFocusNode = FocusNode();
+  final _emailFocusNode = FocusNode();
+
+
+  @override
+  void dispose() {
+    _emailController.dispose();
+    _nameController.dispose();
+    _nameFocusNode.dispose();
+    _emailFocusNode.dispose();
+    super.dispose();
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -39,7 +53,7 @@ class _OTPVerificationScreenState extends State<OTPVerificationScreen> {
                       padding: const EdgeInsets.all(16.0),
                       child: IconButton(
                         icon: Icon(Icons.arrow_back_ios),
-                        color: Colors.white,
+                        color: Colors.blue,
                         onPressed: () {
                           Navigator.pop(context);
                         },
@@ -70,21 +84,8 @@ class _OTPVerificationScreenState extends State<OTPVerificationScreen> {
                           hintStyle: hintAndValueStyle,
                         ),
                       ),
-
-                      // TextField(
-                      //   controller: _otpController,
-                      //   decoration: InputDecoration(
-                      //     border: OutlineInputBorder(),
-                      //     labelText: 'OTP',
-                      //   ),
-                      //   keyboardType: TextInputType.number,
-                      // ),
                     ),
                     VerifyOTPButtonWidget(),
-                    // ElevatedButton(
-                    //   child: Text('Verify OTP'),
-                    //   onPressed: () => _verifyOTP(),
-                    // ),
                   ],
                 ),
               ],
@@ -149,40 +150,218 @@ class _OTPVerificationScreenState extends State<OTPVerificationScreen> {
                 fontFamily: 'Montserrat',
                 fontWeight: FontWeight.bold),
           ),
-          // Container(
-          //   margin: EdgeInsets.only(top: 48.0),
-          //   child: Text(
-          //     'Log in \nto continue.',
-          //     textAlign: TextAlign.left,
-          //     style: TextStyle(
-          //       letterSpacing: 3,
-          //       fontSize: 32.0,
-          //       fontFamily: 'Montserrat',
-          //     ),
-          //   ),
-          // )
         ],
       ),
     );
   }
 
+  Future<void> _promptUserForDetails(BuildContext context) async {
+
+
+    return showDialog<void>(
+      context: context,
+      barrierDismissible: false,
+      builder: (BuildContext context) {
+        return AlertDialog(
+          title: Text('Complete Your Profile'),
+          content: SingleChildScrollView(
+            child: ListBody(
+              children: <Widget>[
+                nameTextField(),
+                emailTextFieldWidget(),
+              ],
+            ),
+          ),
+          actions: <Widget>[
+            TextButton(
+              child: Text('Skip'),
+              onPressed: () {
+                Navigator.of(context).pop();
+                Navigator.pushAndRemoveUntil(
+                  context,
+                  MaterialPageRoute(builder: (context) => Navigation()),
+                      (Route<dynamic> route) => false,
+                );
+              },
+            ),
+            TextButton(
+              child: Text('Submit'),
+              onPressed: () {
+                _updateFirebaseUserDetails(
+                    _nameController.text,
+                    _emailController.text,
+                    context
+                );
+                Navigator.of(context).pop();
+                Navigator.pushAndRemoveUntil(
+                  context,
+                  MaterialPageRoute(builder: (context) => Navigation()),
+                      (Route<dynamic> route) => false,
+                );
+              },
+            ),
+          ],
+        );
+      },
+    );
+  }
+
+  Widget _buildGradientTextField({
+    required TextEditingController controller,
+    required String hintText,
+    required Icon suffixIcon,
+    bool obscureText = false,
+    TextInputType keyboardType = TextInputType.text,
+    VoidCallback? onTap,
+    required FocusNode focusNode,
+    Function(String)? onFieldSubmitted,
+  }) {
+    return Container(
+      margin: EdgeInsets.only(left: 20.0, right: 30.0, top: 15.0),
+      decoration: BoxDecoration(
+        boxShadow: [
+          BoxShadow(
+            color: Colors.black12,
+            blurRadius: 15,
+            spreadRadius: 0,
+            offset: Offset(0.0, 16.0),
+          ),
+        ],
+        borderRadius: new BorderRadius.circular(12.0),
+        gradient: LinearGradient(
+          begin: FractionalOffset(0.0, 0.4),
+          end: FractionalOffset(0.9, 0.7),
+          stops: [0.2, 0.9],
+          colors: [
+            Color(0xffFFC3A0),
+            Color(0xffFFAFBD),
+          ],
+        ),
+      ),
+      child: TextField(
+        controller: controller,
+        style: hintAndValueStyle,
+        focusNode: focusNode,
+        obscureText: obscureText,
+        keyboardType: keyboardType,
+        readOnly: onTap != null,
+        onTap: onTap,
+        decoration: InputDecoration(
+          suffixIcon: suffixIcon,
+          contentPadding: EdgeInsets.fromLTRB(40.0, 30.0, 10.0, 10.0),
+          border: OutlineInputBorder(
+            borderRadius: BorderRadius.circular(12.0),
+            borderSide: BorderSide.none,
+          ),
+          hintText: hintText,
+          hintStyle: hintAndValueStyle,
+        ),
+        onSubmitted: onFieldSubmitted,
+      ),
+    );
+  }
+
+  Widget nameTextField() {
+    return _buildGradientTextField(
+        controller: _nameController,
+        hintText: 'Name',
+        focusNode: _nameFocusNode,
+        onFieldSubmitted: (term) {
+          FocusScope.of(context).requestFocus(_emailFocusNode);
+        },
+        suffixIcon: Icon(Icons.abc_rounded)
+    );
+  }
+
+  Widget emailTextFieldWidget() {
+    return Container(
+      margin: EdgeInsets.only(left: 16.0, right: 32.0, top: 32.0),
+      decoration: BoxDecoration(
+          boxShadow: [
+            BoxShadow(
+                color: Colors.black12,
+                blurRadius: 15,
+                spreadRadius: 0,
+                offset: Offset(0.0, 16.0)),
+          ],
+          borderRadius: new BorderRadius.circular(12.0),
+          gradient: LinearGradient(
+              begin: FractionalOffset(0.0, 0.4),
+              end: FractionalOffset(0.9, 0.7),
+              stops: [
+                0.2,
+                0.9
+              ],
+              colors: [
+                Color(0xffFFC3A0),
+                Color(0xffFFAFBD),
+              ])),
+      child: TextField(
+        controller: _emailController,
+        style: hintAndValueStyle,
+        // onSubmitted: (value) {
+        //   _emailFocusNode.unfocus();
+        // },
+        decoration: new InputDecoration(
+            suffixIcon: Icon(Icons.email_rounded),
+            contentPadding: new EdgeInsets.fromLTRB(40.0, 30.0, 10.0, 10.0),
+            border: OutlineInputBorder(
+                borderRadius: new BorderRadius.circular(12.0),
+                borderSide: BorderSide.none),
+            hintText: 'Email',
+            hintStyle: hintAndValueStyle),
+      ),
+    );
+  }
+
+
   void _verifyOTP() async {
+    String name = _nameController.text;
     try {
       final credential = PhoneAuthProvider.credential(
         verificationId: widget.verificationId,
         smsCode: _otpController.text,
       );
 
-      await FirebaseAuth.instance.signInWithCredential(credential);
+      UserCredential userCredential = await FirebaseAuth.instance.signInWithCredential(credential);
       Fluttertoast.showToast(msg: 'Phone verified successfully!');
+
+      User? user = userCredential.user;
+      if (user != null && (user.displayName == null || user.email == null)) {
+        await _promptUserForDetails(context);
+        String name = _nameController.text;
+        String email = _emailController.text;
+        await user.updateDisplayName(name);
+        await user.updateEmail(email);
+      }
+      // } else {
+      //   _updateFirebaseUserDetails(user.displayName ?? 'No Name', user.email ?? 'noemail@example.com', context);
+      // }
+
+      if (!mounted) return;
+
       Navigator.pushAndRemoveUntil(
         context,
         MaterialPageRoute(builder: (context) => Navigation()),
-            (Route<
-            dynamic> route) => false, // Removes all the routes below the pushed route
+            (Route<dynamic> route) => false,
       );
     } catch (e) {
       Fluttertoast.showToast(msg: 'Failed to verify OTP: $e');
     }
   }
+
+  void _updateFirebaseUserDetails(String name, String email, BuildContext context) async {
+    User? user = FirebaseAuth.instance.currentUser;
+    if (user != null) {
+      await user.updateDisplayName(name);
+      await user.updateEmail(email);
+
+      // _updateBackendUserDetails(user.uid, name, email);
+    }
+  }
+
+  void _updateBackendUserDetails(String userId, String name, String email) async {
+
+  }
+
 }

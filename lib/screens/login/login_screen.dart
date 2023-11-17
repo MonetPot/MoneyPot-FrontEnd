@@ -102,7 +102,6 @@ class _LoginScreenState extends State<LoginScreen> {
           gradient: LinearGradient(
               begin: FractionalOffset(0.0, 0.4),
               end: FractionalOffset(0.9, 0.7),
-              // Add one stop for each color. Stops should increase from 0 to 1
               stops: [
                 0.2,
                 0.9
@@ -154,7 +153,7 @@ class _LoginScreenState extends State<LoginScreen> {
    Widget loginButtonWidget() {
      return Container(
        margin: EdgeInsets.symmetric(horizontal: 32.0, vertical: 32.0),
-       padding: EdgeInsets.symmetric(horizontal: 36.0), // Add padding to define the button's width
+       padding: EdgeInsets.symmetric(horizontal: 36.0),
        decoration: BoxDecoration(
          borderRadius: new BorderRadius.circular(36.0),
          gradient: LinearGradient(

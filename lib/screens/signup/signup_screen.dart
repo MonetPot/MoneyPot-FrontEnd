@@ -139,18 +139,6 @@ class _SignUpScreenState extends State<SignUpScreen> {
                 fontFamily: 'Montserrat',
                 fontWeight: FontWeight.bold),
           ),
-          // Container(
-          //   margin: EdgeInsets.only(top: 48.0),
-          //   child: Text(
-          //     'Log in \nto continue.',
-          //     textAlign: TextAlign.left,
-          //     style: TextStyle(
-          //       letterSpacing: 3,
-          //       fontSize: 32.0,
-          //       fontFamily: 'Montserrat',
-          //     ),
-          //   ),
-          // )
         ],
       ),
     );
@@ -266,30 +254,10 @@ class _SignUpScreenState extends State<SignUpScreen> {
   void _fieldFocusChange(BuildContext context, FocusNode currentFocus,
       FocusNode nextFocus) {
     currentFocus.unfocus();
-    // This is a small delay after unfocusing the current focus node before focusing the next one.
-    // This ensures the focus node has completely unfocused before attempting to focus the next node.
     Future.delayed(Duration(milliseconds: 100), () {
       FocusScope.of(context).requestFocus(nextFocus);
     });
   }
-
-//   Widget _dateTextField(BuildContext context) {
-//     return _buildGradientTextField(
-//       controller: _dateController,
-//       hintText: 'Date of Birth',
-//       suffixIcon: Icons.calendar_today,
-//       // Change this as needed
-//       keyboardType: TextInputType.none,
-//       // To prevent the keyboard from showing up
-//       onTap: () {
-//         // Prevent the focus from going to the text field (and hence, opening the keyboard)
-//         FocusScope.of(context).requestFocus(new FocusNode());
-//         // Call the method to show the date picker dialog.
-//         _selectDate(context);
-//       },
-//     );
-//   }
-
 
   Widget loginWidget(BuildContext context) {
     return Container(
@@ -372,6 +340,23 @@ class _SignUpScreenState extends State<SignUpScreen> {
     );
   }
 }
+
+//   Widget _dateTextField(BuildContext context) {
+//     return _buildGradientTextField(
+//       controller: _dateController,
+//       hintText: 'Date of Birth',
+//       suffixIcon: Icons.calendar_today,
+//       // Change this as needed
+//       keyboardType: TextInputType.none,
+//       // To prevent the keyboard from showing up
+//       onTap: () {
+//         // Prevent the focus from going to the text field (and hence, opening the keyboard)
+//         FocusScope.of(context).requestFocus(new FocusNode());
+//         // Call the method to show the date picker dialog.
+//         _selectDate(context);
+//       },
+//     );
+//   }
 
 //   Widget SignUpButtonWidget() {
 //     return Container(

@@ -1,124 +1,250 @@
 import 'dart:io';
 
-import 'package:camera/camera.dart';
+
 import 'package:flutter/material.dart';
+import 'package:camera/camera.dart';
 import 'package:google_mlkit_text_recognition/google_mlkit_text_recognition.dart';
-import 'package:permission_handler/permission_handler.dart';
 import 'package:money_pot/screens/group/bills/results_screen.dart';
 
 class TextScanner extends StatefulWidget {
-  const TextScanner({Key? key}) : super(key: key);
-
   @override
-  _TextScannerState createState() => _TextScannerState();
+  _BillScannerScreenState createState() => _BillScannerScreenState();
 }
 
-class _TextScannerState extends State<TextScanner> with WidgetsBindingObserver {
-  CameraController? cameraController;
-  final textRecognizer = TextRecognizer();
+class _BillScannerScreenState extends State<TextScanner> {
+  late CameraController _cameraController;
+  late Future<void> _initializeControllerFuture;
   bool isCameraInitialized = false;
 
   @override
   void initState() {
     super.initState();
-    WidgetsBinding.instance.addObserver(this);
-    _checkPermissionAndStartCamera();
+    _initCamera();
   }
 
-  @override
-  void dispose() {
-    WidgetsBinding.instance.removeObserver(this);
-    cameraController?.dispose();
-    textRecognizer.close();
-    super.dispose();
-  }
-
-  @override
-  void didChangeAppLifecycleState(AppLifecycleState state) {
-    if (cameraController == null || !cameraController!.value.isInitialized) {
-      return;
-    }
-    if (state == AppLifecycleState.inactive) {
-      cameraController?.dispose();
-    } else if (state == AppLifecycleState.resumed) {
-      if (cameraController != null) {
-        _initializeCamera();
-      }
-    }
-  }
-
-  @override
-  Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: AppBar(
-        title: const Text('Text Recognition Sample'),
-      ),
-      body: isCameraInitialized
-          ? Stack(
-        children: [
-          CameraPreview(cameraController!),
-          Align(
-            alignment: Alignment.bottomCenter,
-            child: Padding(
-              padding: const EdgeInsets.only(bottom: 30),
-              child: ElevatedButton(
-                onPressed: scanImage,
-                child: const Text('Scan Text'),
-              ),
-            ),
-          ),
-        ],
-      )
-          : const Center(child: CircularProgressIndicator()),
-    );
-  }
-
-  Future<void> _checkPermissionAndStartCamera() async {
-    final status = await Permission.camera.request();
-    if (status.isGranted) {
-      _initializeCamera();
-    } else {
-      ScaffoldMessenger.of(context).showSnackBar(
-        const SnackBar(content: Text('Camera permission is required for scanning.')),
-      );
-    }
-  }
-
-  Future<void> _initializeCamera() async {
+  Future<void> _initCamera() async {
     final cameras = await availableCameras();
-    final camera = cameras.firstWhere(
-          (camera) => camera.lensDirection == CameraLensDirection.back,
-      orElse: () => cameras.first,
+    final firstCamera = cameras.first;
+
+    _cameraController = CameraController(
+      firstCamera,
+      ResolutionPreset.max,
+      imageFormatGroup: ImageFormatGroup.yuv420,
     );
-    cameraController = CameraController(camera, ResolutionPreset.max, enableAudio: false);
-    await cameraController?.initialize();
-    setState(() {
-      isCameraInitialized = true;
+
+    _initializeControllerFuture = _cameraController.initialize();
+    _initializeControllerFuture.then((_) {
+      setState(() {
+        isCameraInitialized = true;
+      });
+    }).catchError((Object e) {
+      if (e is CameraException) {
+        switch (e.code) {
+          case 'CameraAccessDenied':
+            print('User denied camera access.');
+            break;
+          default:
+            print('Handle other errors.');
+            break;
+        }
+      }
     });
   }
 
-  Future<void> scanImage() async {
-    if (!isCameraInitialized) return;
-
+  Future<void> _scanBill() async {
     try {
-      final pictureFile = await cameraController!.takePicture();
-      final file = File(pictureFile.path);
-      final inputImage = InputImage.fromFile(file);
-      final recognizedText = await textRecognizer.processImage(inputImage);
+      await _initializeControllerFuture;
+      final image = await _cameraController.takePicture();
+      await _processImage(image);
+    } catch (e) {
+      print(e);
+    }
+  }
 
-      Navigator.push(
+  Future<void> _processImage(XFile image) async {
+    final inputImage = InputImage.fromFilePath(image.path);
+    final textRecognizer = TextRecognizer();
+    final RecognizedText recognizedText = await textRecognizer.processImage(inputImage);
+          Navigator.push(
         context,
         MaterialPageRoute(
           builder: (context) => ResultScreen(text: recognizedText.text),
         ),
       );
-    } catch (e) {
-      ScaffoldMessenger.of(context).showSnackBar(
-        SnackBar(content: Text('Error scanning text: $e')),
-      );
+
+    // for (TextBlock block in recognizedText.blocks) {
+    //   final String text = block.text;
+    //   for (TextLine line in block.lines) {
+    //     // Each line in a block
+    //     print(line.text);
+    //     for (TextElement element in line.elements) {
+    //       // Each element in a line
+    //       print(element.text);
+    //     }
+    //   }
+    // }
+
+    // Dispose of the recognizer when it's no longer needed
+    textRecognizer.close();
+  }
+
+  @override
+  void dispose() {
+    _cameraController?.dispose();
+    super.dispose();
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    if (!isCameraInitialized) {
+      return Center(child: CircularProgressIndicator());
     }
+
+    return Scaffold(
+      body: Column(
+        children: [
+          Expanded(
+            child: FutureBuilder<void>(
+              future: _initializeControllerFuture,
+              builder: (context, snapshot) {
+                if (snapshot.connectionState == ConnectionState.done) {
+                  return CameraPreview(_cameraController);
+                } else {
+                  return Center(child: CircularProgressIndicator());
+                }
+              },
+            ),
+          ),
+          FloatingActionButton(
+            onPressed: _scanBill,
+            child: Icon(Icons.camera),
+          ),
+        ],
+      ),
+    );
   }
 }
+
+
+// import 'package:camera/camera.dart';
+// import 'package:flutter/material.dart';
+// import 'package:google_mlkit_text_recognition/google_mlkit_text_recognition.dart';
+// import 'package:permission_handler/permission_handler.dart';
+// import 'package:money_pot/screens/group/bills/results_screen.dart';
+//
+// class TextScanner extends StatefulWidget {
+//   const TextScanner({Key? key}) : super(key: key);
+//
+//   @override
+//   _TextScannerState createState() => _TextScannerState();
+// }
+//
+// class _TextScannerState extends State<TextScanner> with WidgetsBindingObserver {
+//   CameraController? cameraController;
+//   final textRecognizer = TextRecognizer();
+//   bool isCameraInitialized = false;
+//
+//   @override
+//   void initState() {
+//     super.initState();
+//     WidgetsBinding.instance.addObserver(this);
+//     _checkPermissionAndStartCamera();
+//   }
+//
+//   @override
+//   void dispose() {
+//     WidgetsBinding.instance.removeObserver(this);
+//     cameraController?.dispose();
+//     textRecognizer.close();
+//     super.dispose();
+//   }
+//
+//   @override
+//   void didChangeAppLifecycleState(AppLifecycleState state) {
+//     if (cameraController == null || !cameraController!.value.isInitialized) {
+//       return;
+//     }
+//     if (state == AppLifecycleState.inactive) {
+//       cameraController?.dispose();
+//     } else if (state == AppLifecycleState.resumed) {
+//       if (cameraController != null) {
+//         _initializeCamera();
+//       }
+//     }
+//   }
+//
+//   @override
+//   Widget build(BuildContext context) {
+//     return Scaffold(
+//       appBar: AppBar(
+//         title: const Text('Text Recognition Sample'),
+//       ),
+//       body: isCameraInitialized
+//           ? Stack(
+//         children: [
+//           CameraPreview(cameraController!),
+//           Align(
+//             alignment: Alignment.bottomCenter,
+//             child: Padding(
+//               padding: const EdgeInsets.only(bottom: 30),
+//               child: ElevatedButton(
+//                 onPressed: scanImage,
+//                 child: const Text('Scan Text'),
+//               ),
+//             ),
+//           ),
+//         ],
+//       )
+//           : const Center(child: CircularProgressIndicator()),
+//     );
+//   }
+//
+//   Future<void> _checkPermissionAndStartCamera() async {
+//     final status = await Permission.camera.request();
+//     if (status.isGranted) {
+//       _initializeCamera();
+//     } else {
+//       ScaffoldMessenger.of(context).showSnackBar(
+//         const SnackBar(content: Text('Camera permission is required for scanning.')),
+//       );
+//     }
+//   }
+//
+//   Future<void> _initializeCamera() async {
+//     final cameras = await availableCameras();
+//     final camera = cameras.firstWhere(
+//           (camera) => camera.lensDirection == CameraLensDirection.back,
+//       orElse: () => cameras.first,
+//     );
+//     cameraController = CameraController(camera, ResolutionPreset.max, enableAudio: false);
+//     await cameraController?.initialize();
+//     setState(() {
+//       isCameraInitialized = true;
+//     });
+//   }
+//
+//   Future<void> scanImage() async {
+//     if (!isCameraInitialized) return;
+//
+//     try {
+//       final pictureFile = await cameraController!.takePicture();
+//       final file = File(pictureFile.path);
+//       final inputImage = InputImage.fromFile(file);
+//       final recognizedText = await textRecognizer.processImage(inputImage);
+//
+//       Navigator.push(
+//         context,
+//         MaterialPageRoute(
+//           builder: (context) => ResultScreen(text: recognizedText.text),
+//         ),
+//       );
+//     } catch (e) {
+//       ScaffoldMessenger.of(context).showSnackBar(
+//         SnackBar(content: Text('Error scanning text: $e')),
+//       );
+//     }
+//   }
+// }
 
 
 // class TextScanner extends StatefulWidget {

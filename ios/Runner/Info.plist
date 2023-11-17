@@ -74,6 +74,7 @@
 	</array>
 	<key>NSCameraUsageDescription</key>
     	<string>This app needs access to your camera in order to scan text.</string>
-
+    <key>NSMicrophoneUsageDescription</key>
+    <string>This app needs access to your microphone to access camera.</string>
 </dict>
 </plist>

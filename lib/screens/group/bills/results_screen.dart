@@ -93,22 +93,157 @@
 
 
 
+// import 'package:flutter/material.dart';
+//
+// class ResultScreen extends StatelessWidget {
+//   final String text;
+//   const ResultScreen({Key? key, required this.text}) : super(key: key);
+//
+//   @override
+//   Widget build(BuildContext context) {
+//     return Scaffold(
+//       appBar: AppBar(
+//         title: const Text('Text Recognition Sample'),
+//       ),
+//       body: Container(
+//         padding: EdgeInsets.all(30.0),
+//         child: SingleChildScrollView(child: Text(text)),
+//       ),
+//     );
+//   }
+// }
+
 import 'package:flutter/material.dart';
 
-class ResultScreen extends StatelessWidget {
+class ResultScreen extends StatefulWidget {
   final String text;
+
   const ResultScreen({Key? key, required this.text}) : super(key: key);
 
   @override
+  _ResultScreenState createState() => _ResultScreenState();
+}
+
+class _ResultScreenState extends State<ResultScreen> {
+  late List<Map<String, dynamic>> billItems;
+  String totalAmount = "";
+
+  @override
+  void initState() {
+    super.initState();
+    billItems = parseBillItems(widget.text);
+    print('Parsed bill items count: ${billItems.length}');
+  }
+
+
+
+  List<Map<String, dynamic>> parseBillItems(String scannedText) {
+    List<Map<String, dynamic>> parsedItems = [];
+    List<String> lines = scannedText.split('\n');
+    bool foundItemsStart = false;
+
+    for (var line in lines) {
+      print('Checking line: $line'); // Debug print each line
+
+      if (line.contains('TO GO')) {
+        foundItemsStart = true;
+        continue; // Skip the "TO GO" line itself
+      }
+
+      if (line.contains('SUBTOTAL')) {
+        break; // Stop parsing at "SUBTOTAL"
+      }
+
+      if (foundItemsStart && line.trim().isNotEmpty) {
+        print('Item captured: $line'); // Debug print captured item
+        parsedItems.add({
+          'description': line.trim(),
+          'selected': false, // Default to unselected for a checkbox
+        });
+      }
+    }
+
+    print('Parsed bill items count: ${parsedItems.length}'); // Debug print total items found
+    return parsedItems;
+  }
+
+
+
+
+
+  @override
   Widget build(BuildContext context) {
+    print('Building with bill items count: ${billItems.length}');
     return Scaffold(
       appBar: AppBar(
-        title: const Text('Text Recognition Sample'),
+        title: Text('Scanned Bill Items'),
       ),
-      body: Container(
-        padding: EdgeInsets.all(30.0),
-        child: SingleChildScrollView(child: Text(text)),
+      body: billItems.isEmpty
+          ? Center(child: Text('No items found.'))
+      : Column(
+        children: [
+          Expanded(
+            child: ListView.builder(
+              itemCount: billItems.length,
+              itemBuilder: (context, index) {
+                var item = billItems[index];
+                return CheckboxListTile(
+                  value: item['selected'],
+                  title: Text('${item['description']} - ${item['number']}'),
+                  onChanged: (bool? value) {
+                    setState(() {
+                      billItems[index]['selected'] = value!;
+                    });
+                  },
+                );
+              },
+            ),
+          ),
+          if (totalAmount.isNotEmpty)
+            Padding(
+              padding: const EdgeInsets.all(16.0),
+              child: Text(
+                'Total: $totalAmount',
+                style: TextStyle(
+                  fontSize: 18,
+                  fontWeight: FontWeight.bold,
+                ),
+              ),
+            ),
+        ],
       ),
     );
   }
 }
+
+
+
+
+// List<String> _parseBillLines(String text) {
+//   var lines = text.split('\n');
+//   var parsedLines = <String>[];
+//   bool startParsing = false;
+//
+//   // Regex to identify dashed/dotted lines
+//   var dashedLineRegex = RegExp(r'^[-. ]+$');
+//
+//   // Debug: Print each line
+//   print("Scanned Lines:");
+//   lines.forEach(print);
+//
+//   for (var line in lines) {
+//     if (!startParsing && dashedLineRegex.hasMatch(line)) {
+//       startParsing = true;
+//       continue;
+//     }
+//
+//     if (startParsing) {
+//       // Debug: Print the line that's being added
+//       print("Adding line: $line");
+//       parsedLines.add(line);
+//     }
+//   }
+//
+//   print('Total items found: ${parsedLines.length}');
+//   return parsedLines;
+// }

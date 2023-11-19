@@ -1,118 +1,3 @@
-// import 'package:flutter/material.dart';
-//
-// class ResultScreen extends StatefulWidget {
-//   final String text;
-//
-//   const ResultScreen({Key? key, required this.text}) : super(key: key);
-//
-//   @override
-//   _ResultScreenState createState() => _ResultScreenState();
-// }
-//
-// class _ResultScreenState extends State<ResultScreen> {
-//   late List<BillItem> billItems;
-//
-//   @override
-//   void initState() {
-//     super.initState();
-//     billItems = parseBillItems(widget.text);
-//   }
-//
-//   List<BillItem> parseBillItems(String text) {
-//
-//     // final itemPriceRegex1 = RegExp(r'^(.+?)\s+(\d+\.\d{2})$');
-//     // final match = itemPriceRegex.firstMatch('1 C BNLS 6 WINGS       11.49');
-//     // if (match != null) {
-//     //   final itemName1 = match.group(1)?.trim(); // '1 C BNLS 6 WINGS'
-//     //   final itemPrice1 = match.group(2)?.trim(); // '11.49'
-//     // }
-//     // Split the text by new lines to get each line as a potential item
-//     var lines = text.split('\n');
-//
-//     // Define a list to hold all the bill items
-//     List<BillItem> items = [];
-//
-//     // Regular expression to match a line with item and price
-//     var itemPriceRegex = RegExp(r'^(.+?)\s+(\d+\.\d{2})$');
-//
-//     for (var line in lines) {
-//       // Check if the line matches the item and price format
-//       var matches = itemPriceRegex.firstMatch(line);
-//       if (matches != null && matches.groupCount == 2) {
-//         print('here');
-//         // Extract the item name and price
-//         var itemName = matches.group(1)!.trim();
-//         var itemPrice = matches.group(2)!.trim();
-//         print('here1');
-//         // Add the item to the list
-//         items.add(BillItem(name: itemName, price: itemPrice, isSelected: false));
-//       }
-//     }
-//
-//     return items;
-//   }
-//
-//   @override
-//   Widget build(BuildContext context) {
-//     return Scaffold(
-//       appBar: AppBar(
-//         title: const Text('Scanned Bill Items'),
-//       ),
-//       body: ListView.builder(
-//         itemCount: billItems.length,
-//         itemBuilder: (context, index) {
-//           var item = billItems[index];
-//           return ListTile(
-//             title: Text(item.name),
-//             trailing: Text(item.price),
-//             leading: Checkbox(
-//               value: item.isSelected,
-//               onChanged: (bool? newValue) {
-//                 setState(() {
-//                   item.isSelected = newValue!;
-//                 });
-//               },
-//             ),
-//           );
-//         },
-//       ),
-//     );
-//   }
-// }
-//
-// class BillItem {
-//   String name;
-//   String price;
-//   bool isSelected;
-//
-//   BillItem({required this.name, required this.price, required this.isSelected});
-// }
-
-
-
-
-
-
-// import 'package:flutter/material.dart';
-//
-// class ResultScreen extends StatelessWidget {
-//   final String text;
-//   const ResultScreen({Key? key, required this.text}) : super(key: key);
-//
-//   @override
-//   Widget build(BuildContext context) {
-//     return Scaffold(
-//       appBar: AppBar(
-//         title: const Text('Text Recognition Sample'),
-//       ),
-//       body: Container(
-//         padding: EdgeInsets.all(30.0),
-//         child: SingleChildScrollView(child: Text(text)),
-//       ),
-//     );
-//   }
-// }
-
 import 'package:flutter/material.dart';
 
 class ResultScreen extends StatefulWidget {
@@ -125,96 +10,198 @@ class ResultScreen extends StatefulWidget {
 }
 
 class _ResultScreenState extends State<ResultScreen> {
-  late List<Map<String, dynamic>> billItems;
-  String totalAmount = "";
+  double subTotal = 0.0;
+  double taxValue = 0.0;
+  double totalValue = 0.0;
+  double selectedTipPercentage = 0.0;
+  double customTip = 0.0;
 
   @override
   void initState() {
     super.initState();
-    billItems = parseBillItems(widget.text);
-    print('Parsed bill items count: ${billItems.length}');
+    final billSummary = parseBillSummary(widget.text);
+    subTotal = billSummary.subtotal;
+    taxValue = billSummary.tax;
+    totalValue = subTotal + taxValue;
   }
 
 
+  double calculateTip(double percentage) {
+    return totalValue * (percentage / 100);
+  }
 
-  List<Map<String, dynamic>> parseBillItems(String scannedText) {
-    List<Map<String, dynamic>> parsedItems = [];
+  double getTotalWithTip() {
+    double tipAmount = (selectedTipPercentage > 0) ? calculateTip(selectedTipPercentage) : customTip;
+    return totalValue + tipAmount;
+  }
+
+  BillSummary parseBillSummary(String scannedText) {
+    double subtotal = 0.0;
+    double tax = 0.0;
+    print(scannedText);
     List<String> lines = scannedText.split('\n');
-    bool foundItemsStart = false;
-
-    for (var line in lines) {
-      print('Checking line: $line'); // Debug print each line
-
-      if (line.contains('TO GO')) {
-        foundItemsStart = true;
-        continue; // Skip the "TO GO" line itself
-      }
-
-      if (line.contains('SUBTOTAL')) {
-        break; // Stop parsing at "SUBTOTAL"
-      }
-
-      if (foundItemsStart && line.trim().isNotEmpty) {
-        print('Item captured: $line'); // Debug print captured item
-        parsedItems.add({
-          'description': line.trim(),
-          'selected': false, // Default to unselected for a checkbox
-        });
+    print(lines);
+    for (String line in lines) {
+      print(line);
+      if (line.contains('Sub Total')) {
+        print(line);
+        subtotal = _extractNumberFromLine(line);
+      } else if (line.contains('Tax')) {
+        print(line);
+        tax = _extractNumberFromLine(line);
       }
     }
 
-    print('Parsed bill items count: ${parsedItems.length}'); // Debug print total items found
-    return parsedItems;
+    return BillSummary(subtotal: subtotal, tax: tax);
   }
 
+  double _extractNumberFromLine(String line) {
+    // Attempt to find the numerical value in the line
+    var matches = RegExp(r'\b(\d+(\.\d{1,2})?)\b').allMatches(line);
+    if (matches.isNotEmpty) {
+      // Assuming the last match is the amount
+      var match = matches.last;
+      // print(match);
+      return double.tryParse(match.group(0)!) ?? 0.0;
+    }
+    return 0.0;
+  }
 
+  void navigateToTotalWithTipScreen() {
+    Navigator.push(
+      context,
+      MaterialPageRoute(
+        builder: (context) => TotalWithTipScreen(totalWithTip: getTotalWithTip()),
+      ),
+    );
+  }
 
+  Widget _tipOptionButton(String tipLabel, double tipPercentage) {
+    return Flexible(
+      child: ElevatedButton(
+        onPressed: () {
+          setState(() {
+            selectedTipPercentage = tipPercentage;
+            customTip = 0.0; // Reset custom tip
+            navigateToTotalWithTipScreen();
+          });
+        },
+        child: Text(tipLabel),
+      ),
+    );
+  }
 
 
   @override
   Widget build(BuildContext context) {
-    print('Building with bill items count: ${billItems.length}');
     return Scaffold(
       appBar: AppBar(
-        title: Text('Scanned Bill Items'),
+        title: Text('Scanned Bill Summary'),
       ),
-      body: billItems.isEmpty
-          ? Center(child: Text('No items found.'))
-      : Column(
-        children: [
-          Expanded(
-            child: ListView.builder(
-              itemCount: billItems.length,
-              itemBuilder: (context, index) {
-                var item = billItems[index];
-                return CheckboxListTile(
-                  value: item['selected'],
-                  title: Text('${item['description']} - ${item['number']}'),
-                  onChanged: (bool? value) {
-                    setState(() {
-                      billItems[index]['selected'] = value!;
-                    });
-                  },
-                );
+      body: SingleChildScrollView(
+        padding: const EdgeInsets.all(16.0),
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            Text(
+              'Subtotal: \$${subTotal.toStringAsFixed(2)}',
+              style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
+            ),
+            Text(
+              'Tax: \$${taxValue.toStringAsFixed(2)}',
+              style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
+            ),
+            SizedBox(height: 10),
+            Row(
+              mainAxisAlignment: MainAxisAlignment.spaceAround,
+              children: [
+                _tipOptionButton('15%', 15),
+                _tipOptionButton('18%', 18),
+                _tipOptionButton('20%', 20),
+              ],
+            ),
+            TextFormField(
+              decoration: InputDecoration(labelText: 'Custom Tip', border: OutlineInputBorder()),
+              keyboardType: TextInputType.number,
+              onFieldSubmitted: (value) {
+                setState(() {
+                  customTip = double.tryParse(value) ?? 0.0;
+                  selectedTipPercentage = 0.0; // Reset the selected tip percentage
+                  navigateToTotalWithTipScreen();
+                });
               },
             ),
-          ),
-          if (totalAmount.isNotEmpty)
-            Padding(
-              padding: const EdgeInsets.all(16.0),
-              child: Text(
-                'Total: $totalAmount',
-                style: TextStyle(
-                  fontSize: 18,
-                  fontWeight: FontWeight.bold,
-                ),
-              ),
-            ),
-        ],
+          ],
+        ),
       ),
     );
   }
 }
+
+
+class TotalWithTipScreen extends StatelessWidget {
+  final double totalWithTip;
+
+  const TotalWithTipScreen({Key? key, required this.totalWithTip}) : super(key: key);
+
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+      appBar: AppBar(
+        title: Text('Total with Tip'),
+      ),
+      body: Center(
+        child: Text(
+          'Total: \$${totalWithTip.toStringAsFixed(2)}',
+          style: TextStyle(fontSize: 24, fontWeight: FontWeight.bold),
+        ),
+      ),
+    );
+  }
+}
+
+
+class BillSummary {
+  final double subtotal;
+  final double tax;
+
+  BillSummary({required this.subtotal, required this.tax});
+
+  double get total => subtotal + tax;
+}
+
+
+
+
+// List<Map<String, dynamic>> parseBillItems(String scannedText) {
+//   List<Map<String, dynamic>> parsedItems = [];
+//   List<String> lines = scannedText.split('\n');
+//   bool foundItemsStart = false;
+//
+//   for (var line in lines) {
+//     print('Checking line: $line'); // Debug print each line
+//
+//     if (line.contains('TO GO')) {
+//       foundItemsStart = true;
+//       continue; // Skip the "TO GO" line itself
+//     }
+//
+//     if (line.contains('SUBTOTAL')) {
+//       break; // Stop parsing at "SUBTOTAL"
+//     }
+//
+//     if (foundItemsStart && line.trim().isNotEmpty) {
+//       print('Item captured: $line'); // Debug print captured item
+//       parsedItems.add({
+//         'description': line.trim(),
+//         'selected': false, // Default to unselected for a checkbox
+//       });
+//     }
+//   }
+//
+//   print('Parsed bill items count: ${parsedItems.length}'); // Debug print total items found
+//   return parsedItems;
+// }
 
 
 

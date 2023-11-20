@@ -41,6 +41,7 @@ class _OTPVerificationScreenState extends State<OTPVerificationScreen> {
       //   title: Text('Enter OTP'),
       // ),
 
+
         body: Container(
           decoration: BoxDecoration(gradient: SIGNUP_BACKGROUND),
           child:
@@ -134,7 +135,6 @@ class _OTPVerificationScreenState extends State<OTPVerificationScreen> {
     );
   }
 
-
   Widget headlinesWidget() {
     return Container(
       margin: EdgeInsets.only(left: 48.0, top: 32.0),
@@ -156,7 +156,6 @@ class _OTPVerificationScreenState extends State<OTPVerificationScreen> {
   }
 
   Future<void> _promptUserForDetails(BuildContext context) async {
-
 
     return showDialog<void>(
       context: context,
@@ -355,13 +354,11 @@ class _OTPVerificationScreenState extends State<OTPVerificationScreen> {
     if (user != null) {
       await user.updateDisplayName(name);
       await user.updateEmail(email);
-
       // _updateBackendUserDetails(user.uid, name, email);
     }
   }
 
   void _updateBackendUserDetails(String userId, String name, String email) async {
-
   }
 
 }

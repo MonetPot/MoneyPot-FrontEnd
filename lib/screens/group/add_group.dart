@@ -55,7 +55,7 @@ class _AddGroupState extends State<AddGroup> with SingleTickerProviderStateMixin
           labelColor: Colors.grey[500],
           unselectedLabelColor: TEXT_BLACK_LIGHT,
           tabs: [
-            Tab(text: 'People'),
+            Tab(text: 'Contacts'),
             Tab(text: 'Friends'),
           ],
         ),

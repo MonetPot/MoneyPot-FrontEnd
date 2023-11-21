@@ -7,6 +7,7 @@ import '../../const/gradient.dart';
 import 'package:money_pot/screens/group/groups_screen.dart';
 import '../search/search_screen.dart';
 import 'bills/text_scanner.dart';
+import 'package:money_pot/screens/group/add_group.dart';
 
 
 class GroupDetailsScreen extends StatefulWidget {
@@ -199,6 +200,30 @@ class _GroupDetailsScreenState extends State<GroupDetailsScreen> with SingleTick
     );
   }
 
+  void _openAddGroupScreen(BuildContext context) {
+    Navigator.of(context).push(_createRoute());
+  }
+
+  Route _createRoute() {
+    return PageRouteBuilder(
+      pageBuilder: (context, animation, secondaryAnimation) => AddGroup(),
+      transitionsBuilder: (context, animation, secondaryAnimation, child) {
+        var begin = Offset(0.0, 1.0);
+        var end = Offset.zero;
+        var curve = Curves.easeInOut;
+
+        var tween = Tween(begin: begin, end: end).chain(
+            CurveTween(curve: curve));
+        var offsetAnimation = animation.drive(tween);
+
+        return SlideTransition(
+          position: offsetAnimation,
+          child: child,
+        );
+      },
+    );
+  }
+
   Widget _buildTransactionsSection() {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
@@ -310,7 +335,7 @@ class _GroupDetailsScreenState extends State<GroupDetailsScreen> with SingleTick
                       padding: EdgeInsets.symmetric(vertical: 12.0),
                     ),
                     onPressed: () {
-                      // Handle Add Members button press
+                      _openAddGroupScreen(context);
                     },
                     child: Text(
                       'Add Members',

@@ -5,6 +5,7 @@ import 'package:money_pot/screens/search/search_screen.dart';
 import '../../const/gradient.dart';
 import '../../screens/settings/settings_screen.dart';
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:money_pot/screens/group/deposit/payment_screen.dart';
 
 
 
@@ -161,7 +162,7 @@ class GroupTile extends StatelessWidget {
                           context,
                           MaterialPageRoute(
                             builder: (context) =>
-                                AccessFunds(),
+                                PaymentScreen(),
                           ),
                         );
                       },

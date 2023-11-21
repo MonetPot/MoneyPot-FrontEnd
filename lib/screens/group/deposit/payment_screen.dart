@@ -16,7 +16,7 @@ class PaymentScreen extends StatelessWidget {
           icon: Icon(Icons.arrow_back, color: Colors.blue),
           onPressed: () => Navigator.of(context).pop(),
         ),
-        title: Text('Payments', style: TextStyle(color: Colors.black)),
+        title: Text('Funds', style: TextStyle(color: Colors.black)),
         backgroundColor: Colors.white,
         elevation: 0,
         actions: [

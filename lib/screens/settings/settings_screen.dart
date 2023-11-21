@@ -3,8 +3,26 @@ import 'package:flutter/material.dart';
 import 'package:money_pot/Screens/login/login_screen.dart';
 import 'package:money_pot/const/color_const.dart';
 import 'package:money_pot/const/gradient.dart';
+import 'package:money_pot/screens/user/update_user_details_screen.dart';
+import 'package:money_pot/screens/settings/about_us.dart';
+import 'package:money_pot/screens/settings/privacy_policy.dart';
+import 'package:money_pot/screens/settings/terms_and_conditions.dart';
 
 class SettingsScreen extends StatelessWidget {
+  final TextEditingController _nameController = TextEditingController();
+  final TextEditingController _emailController = TextEditingController();
+  final _nameFocusNode = FocusNode();
+  final _emailFocusNode = FocusNode();
+
+
+  @override
+  void dispose() {
+    _emailController.dispose();
+    _nameController.dispose();
+    _nameFocusNode.dispose();
+    _emailFocusNode.dispose();
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -24,18 +42,18 @@ class SettingsScreen extends StatelessWidget {
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: [
                     // Leading Icon
-                    CircleAvatar(
-                      backgroundColor: Theme.of(context).primaryColor,  // Adjust this color as needed
-                      child: Center(
+                    // CircleAvatar(
+                      // backgroundColor: Theme.of(context).primaryColor,  // Adjust this color as needed
+                      Center(
                         child: IconButton(
                           icon: Icon(Icons.arrow_back_ios),
-                          color: Colors.white,
+                          color: Theme.of(context).primaryColor,
                           onPressed: () {
                             Navigator.pop(context);
                           },
                         ),
                       ),
-                    ),
+                    // ),
                     // Title
                     Text(
                       'Settings',
@@ -65,24 +83,27 @@ class SettingsScreen extends StatelessWidget {
                 ),
               ),
               ListTile(
-                title: Text('Change Email'),
+                title: Text('Update user info'),
                 trailing: Icon(Icons.arrow_forward_ios),
                 onTap: () {
-                  // Handle Change Email logic
+                  Navigator.push(
+                      context,
+                      MaterialPageRoute(
+                          builder: (context) => UpdateUserDetailsScreen()));
                 },
               ),
-              ListTile(
-                title: Text('Change password'),
-                trailing: Icon(Icons.arrow_forward_ios),
-                onTap: () {
-                  // Handle Change password logic
-                },
-              ),
+              // ListTile(
+              //   title: Text('Change password'),
+              //   trailing: Icon(Icons.arrow_forward_ios),
+              //   onTap: () {
+              //     // Handle change password logic
+              //   },
+              // ),
               ListTile(
                 title: Text('Add a payment method'),
                 trailing: Icon(Icons.add),
                 onTap: () {
-                  // Handle Add a payment method logic
+                  // Handle add a payment method logic
                 },
               ),
               SwitchListTile(
@@ -92,33 +113,39 @@ class SettingsScreen extends StatelessWidget {
                   // Handle push notifications toggle logic
                 },
               ),
-              SwitchListTile(
-                title: Text('Dark mode'),
-                value: false,
-                onChanged: (bool value) {
-                  // Handle dark mode toggle logic
-                },
-              ),
+              // SwitchListTile(
+              //   title: Text('Dark mode'),
+              //   value: false,
+              //   onChanged: (bool value) {
+              //     // Handle dark mode toggle logic
+              //   },
+              // ),
               Divider(),
               ListTile(
                 title: Text('About us'),
                 trailing: Icon(Icons.arrow_forward_ios),
                 onTap: () {
-                  // Handle About us logic
+                  Navigator.of(context).push(MaterialPageRoute(
+                    builder: (context) => AboutUsScreen(),
+                  ));
                 },
               ),
               ListTile(
                 title: Text('Privacy policy'),
                 trailing: Icon(Icons.arrow_forward_ios),
                 onTap: () {
-                  // Handle Privacy policy logic
+                  Navigator.of(context).push(MaterialPageRoute(
+                    builder: (context) => PrivacyPolicyScreen(),
+                  ));
                 },
               ),
               ListTile(
                 title: Text('Terms and conditions'),
                 trailing: Icon(Icons.arrow_forward_ios),
                 onTap: () {
-                  // Handle Terms and conditions logic
+                  Navigator.of(context).push(MaterialPageRoute(
+                    builder: (context) => TermsAndConditionsScreen(),
+                  ));
                 },
               ),
               ListTile(

@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import '../../Screens/settings/settings_screen.dart';
 import '../../const/color_const.dart';
 import '../../const/gradient.dart';
+import 'package:money_pot/screens/friends/contacts.dart';
 import 'package:flutter_contacts/flutter_contacts.dart';
 
 class SearchScreen extends StatefulWidget {
@@ -64,7 +65,7 @@ class _SearchScreenState extends State<SearchScreen> with SingleTickerProviderSt
           labelColor: Colors.grey[500],
           unselectedLabelColor: TEXT_BLACK_LIGHT,
           tabs: [
-            Tab(text: 'People'),
+            Tab(text: 'Contacts'),
             Tab(text: 'Friends'),
             Tab(text: 'MoneyPots'),
           ],
@@ -80,7 +81,7 @@ class _SearchScreenState extends State<SearchScreen> with SingleTickerProviderSt
           child: TabBarView(
             controller: _tabController,
             children: [
-              FlutterContactsExample(),
+              Contacts(),
               FriendsTab(searchController: _searchController),
               MoneyPotsTab(searchController: _searchController),
             ],
@@ -103,12 +104,12 @@ class _SearchScreenState extends State<SearchScreen> with SingleTickerProviderSt
 //   }
 // }
 
-class FlutterContactsExample extends StatefulWidget {
+class Contacts extends StatefulWidget {
   @override
-  _FlutterContactsExampleState createState() => _FlutterContactsExampleState();
+  _ContactsState createState() => _ContactsState();
 }
 
-class _FlutterContactsExampleState extends State<FlutterContactsExample> {
+class _ContactsState extends State<Contacts> {
   List<Contact>? _contacts;
   bool _permissionDenied = false;
 
@@ -129,8 +130,16 @@ class _FlutterContactsExampleState extends State<FlutterContactsExample> {
 
   @override
   Widget build(BuildContext context) => MaterialApp(
+      debugShowCheckedModeBanner: false,
       home: Scaffold(
-          body: _body()));
+        body: Container(
+          decoration: BoxDecoration(
+            gradient: SIGNUP_BACKGROUND,
+          ),
+          child: _body(),
+        ),
+      ),
+  );
 
   Widget _body() {
     if (_permissionDenied) return Center(child: Text('Permission denied'));

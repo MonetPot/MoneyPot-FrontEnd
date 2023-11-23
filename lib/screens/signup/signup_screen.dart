@@ -108,7 +108,6 @@ class _SignUpScreenState extends State<SignUpScreen> {
   // }
 
 
-  // PREVIOUS SIGNUP FUNCTION
   void _signUp() async {
     setState(() {
       isSigningUp = true;
@@ -119,33 +118,74 @@ class _SignUpScreenState extends State<SignUpScreen> {
     String email = _emailController.text;
     String password = _passwordController.text;
 
-    String fullName = firstName + " " + lastName;
-
-    User? user = await _auth.signUpWithEmailAndPassword(email, password);
-
-    setState(() {
-      isSigningUp = false;
-    });
-    if (user != null) {
-      await user.updateDisplayName(fullName);
-      showToast(message: "User is successfully created");
-      if (!mounted) return;
-
-      Navigator.pushAndRemoveUntil(
-        context,
-        MaterialPageRoute(builder: (context) => Navigation()),
-            (Route<dynamic> route) => false,
+    try {
+      var response = await http.post(
+        Uri.parse('http://127.0.0.1:8000/api/users/create'),
+        headers: <String, String>{
+          'Content-Type': 'application/json',
+        },
+        body: jsonEncode({
+          'first_name': firstName,
+          'last_name': lastName,
+          'email': email,
+          'password': password,
+          // 'phone_number': phoneNumber,
+        }),
       );
-      // Navigator.push(
-      //   context,
-      //   MaterialPageRoute(
-      //     builder: (context) {
-      //       return Navigation();
-      //     },
-      //   ),
-      // );
+
+      if (response.statusCode == 200) {
+        // User creation successful
+        showToast(message: "User is successfully created");
+        Navigator.pushAndRemoveUntil(
+          context,
+          MaterialPageRoute(builder: (context) => Navigation()), // Replace with your navigation page
+              (Route<dynamic> route) => false,
+        );
+      } else {
+        // Handle server errors
+        showToast(message: "Failed to create user: ${response.body}");
+      }
+    } catch (e) {
+      // Handle any errors that occur during the process
+      showToast(message: "Error: $e");
+    } finally {
+      setState(() {
+        isSigningUp = false;
+      });
     }
   }
+
+
+  // PREVIOUS SIGNUP FUNCTION
+  // void _signUp() async {
+  //   setState(() {
+  //     isSigningUp = true;
+  //   });
+  //
+  //   String firstName = _firstnameController.text;
+  //   String lastName = _lastnameController.text;
+  //   String email = _emailController.text;
+  //   String password = _passwordController.text;
+  //
+  //   String fullName = firstName + " " + lastName;
+  //
+  //   User? user = await _auth.signUpWithEmailAndPassword(email, password);
+  //
+  //   setState(() {
+  //     isSigningUp = false;
+  //   });
+  //   if (user != null) {
+  //     await user.updateDisplayName(fullName);
+  //     showToast(message: "User is successfully created");
+  //     if (!mounted) return;
+  //
+  //     Navigator.pushAndRemoveUntil(
+  //       context,
+  //       MaterialPageRoute(builder: (context) => Navigation()),
+  //           (Route<dynamic> route) => false,
+  //     );
+  //   }
+  // }
 
   _selectDate(BuildContext context) async {
     final DateTime? selectedDate = await showDatePicker(
@@ -164,7 +204,7 @@ class _SignUpScreenState extends State<SignUpScreen> {
   Widget build(BuildContext context) {
     return Scaffold(
       body: Container(
-        padding: EdgeInsets.only(top: 64.0),
+        padding: EdgeInsets.only(top: 50.0),
         decoration: BoxDecoration(gradient: SIGNUP_BACKGROUND),
         child: ListView(
           physics: BouncingScrollPhysics(),
@@ -178,7 +218,7 @@ class _SignUpScreenState extends State<SignUpScreen> {
             ),
             headlinesWidget(),
             _firstNameTextField(),
-            // _lastNameTextField(),
+            _lastNameTextField(),
             _emailTextField(),
             _passwordTextField(),
             // _dateTextField(context),
@@ -195,12 +235,12 @@ class _SignUpScreenState extends State<SignUpScreen> {
 
   Widget headlinesWidget() {
     return Container(
-      margin: EdgeInsets.only(left: 48.0, top: 32.0),
+      margin: EdgeInsets.only(left: 35.0, top: 10.0),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: <Widget>[
           Text(
-            'Register an account using Email or Phone',
+            'Register an account',
             textAlign: TextAlign.left,
             style: TextStyle(
                 letterSpacing: 3,
@@ -281,17 +321,17 @@ class _SignUpScreenState extends State<SignUpScreen> {
     );
   }
 
-  // Widget _lastNameTextField() {
-  //   return _buildGradientTextField(
-  //       controller: _lastnameController,
-  //       hintText: 'Last Name',
-  //       focusNode: _lastnameFocusNode,
-  //       onFieldSubmitted: (term) {
-  //         _fieldFocusChange(context, _lastnameFocusNode, _emailFocusNode);
-  //       },
-  //       suffixIcon: Icon(Icons.abc_rounded)
-  //   );
-  // }
+  Widget _lastNameTextField() {
+    return _buildGradientTextField(
+        controller: _lastnameController,
+        hintText: 'Last Name',
+        focusNode: _lastnameFocusNode,
+        onFieldSubmitted: (term) {
+          _fieldFocusChange(context, _lastnameFocusNode, _emailFocusNode);
+        },
+        suffixIcon: Icon(Icons.abc_rounded)
+    );
+  }
 
 
   Widget _emailTextField() {

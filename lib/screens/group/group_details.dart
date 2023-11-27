@@ -374,6 +374,5 @@ class _GroupDetailsScreenState extends State<GroupDetailsScreen> with SingleTick
     );
   }
 
-// ... Rest of your widget code ...
 }
 

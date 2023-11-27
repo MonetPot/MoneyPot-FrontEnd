@@ -2,6 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:money_pot/screens/group/add_group.dart';
 import 'package:money_pot/screens/group/groups_screen.dart';
 import 'package:money_pot/screens/user/user_screen.dart';
+import 'package:firebase_auth/firebase_auth.dart';
+
 
 class Navigation extends StatefulWidget {
   const Navigation({Key? key}) : super(key: key);
@@ -13,6 +15,7 @@ class Navigation extends StatefulWidget {
 class _NavigationState extends State<Navigation> {
   int _selectedIndex = 0;
   final PageController _pageController = PageController();
+  String? userIdentifier;
 
   void _onNavBarTapped(int index) {
     if (index == 1) {
@@ -23,6 +26,19 @@ class _NavigationState extends State<Navigation> {
         duration: Duration(milliseconds: 300),
         curve: Curves.easeInOut,
       );
+    }
+  }
+
+  void initState() {
+    super.initState();
+    getCurrentUser();
+  }
+
+  void getCurrentUser() {
+    User? user = FirebaseAuth.instance.currentUser;
+    if (user != null) {
+
+      userIdentifier = user.email;
     }
   }
 
@@ -69,7 +85,7 @@ class _NavigationState extends State<Navigation> {
         controller: _pageController,
         onPageChanged: _onPageChanged,
         children: <Widget>[
-          MainScreen(),
+          MainScreen(identifier: userIdentifier!),
           AddGroup(),
           UserScreen(),
         ],
@@ -98,17 +114,12 @@ class _NavigationState extends State<Navigation> {
               icon: Icon(Icons.add),
               label: 'Add',
             ),
-            // BottomNavigationBarItem(
-            //   icon: Icon(Icons.emoji_people_rounded),
-            //   label: 'Friends',
-            // ),
             BottomNavigationBarItem(
               icon: CircleAvatar(
                 backgroundImage: AssetImage("assets/images/edsheeran.png"),
               ),
               label: 'Profile',
             ),
-            // ... Add other items if needed
           ],
           currentIndex: _selectedIndex,
           onTap: _onNavBarTapped,

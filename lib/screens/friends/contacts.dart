@@ -33,7 +33,14 @@ class _ContactsState extends State<Contacts> {
   Widget build(BuildContext context) => MaterialApp(
       debugShowCheckedModeBanner: false,
       home: Scaffold(
-          body: _body()));
+        body: Container(
+          decoration: BoxDecoration(
+            gradient: SIGNUP_BACKGROUND,
+          ),
+          child: _body(),
+        ),
+      ),
+  );
 
   Widget _body() {
     if (_permissionDenied) return Center(child: Text('Permission denied'));

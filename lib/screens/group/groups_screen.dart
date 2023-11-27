@@ -6,115 +6,186 @@ import '../../const/gradient.dart';
 import '../../screens/settings/settings_screen.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:money_pot/screens/group/deposit/payment_screen.dart';
+import 'package:http/http.dart' as http;
+import 'dart:convert';
 
+// import 'group.dart';  // Assuming Group is the model class
 
+class MainScreen extends StatefulWidget {
+  final String identifier;
 
+  const MainScreen({Key? key, required this.identifier}) : super(key: key);
 
-class MainScreen extends StatelessWidget {
-  const MainScreen({Key? key}) : super(key: key);
+  @override
+  _MainScreenState createState() => _MainScreenState();
+}
+
+class _MainScreenState extends State<MainScreen> {
+  List<Group>? _groups;
+  bool _isLoading = true;
+
+  @override
+  void initState() {
+    super.initState();
+    _fetchGroups();
+  }
+
+  Future<void> _fetchGroups() async {
+    final response = await http.get(Uri.parse('http://127.0.0.1:8000/api/users/${widget.identifier}/groups'));
+    if (response.statusCode == 200) {
+      List<Group> groups = (json.decode(response.body) as List)
+          .map((data) => Group.fromJson(data))
+          .toList();
+      setState(() {
+        _groups = groups;
+        _isLoading = false;
+      });
+    } else {
+      // Handle error or show a message
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
-    final user = FirebaseAuth.instance.currentUser;
-    final username = user?.displayName ?? 'Your';
     return Scaffold(
-      appBar: AppBar(
-        title: Text(
-                "Groups",
-                style: TextStyle(
-                  fontSize: 30.0,
-                  fontWeight: FontWeight.bold,
-                  color: Theme
-                      .of(context)
-                      .primaryColor,
-                ),
-              ),
-        flexibleSpace: Container(
-          decoration: BoxDecoration(gradient: groupScreenGradient),
+      appBar: AppBar(title: Text('Your Groups')),
+      body: _isLoading
+          ? Center(child: CircularProgressIndicator())
+          : ListView.builder(
+        itemCount: _groups!.length,
+        itemBuilder: (context, i) => ListTile(
+          title: Text(_groups![i].name),
+          onTap: () {
+            // Handle group item tap
+          },
         ),
-              actions: <Widget> [
-                IconButton(
-                  icon: Icon(Icons.search),
-                  color: Theme
-                      .of(context)
-                      .primaryColor,
-                  onPressed: () {
-                    Navigator.of(context).push(SlideFromLeftPageRoute(page: SearchScreen()));
-                  },
-                ),
-                IconButton(
-                  icon: Icon(Icons.settings),
-                  color: Theme
-                      .of(context)
-                      .primaryColor,
-                  onPressed: () {
-                    Navigator.push(
-                        context,
-                        MaterialPageRoute(
-                            builder: (context) => SettingsScreen()));
-                  },
-                ),
-              ],
-        backgroundColor: Colors.transparent,
-        elevation: 0,
-      ),
-
-      body: Container(
-        decoration: BoxDecoration(gradient: groupScreenGradient),
-        child: ListView(
-        children: [
-          Container  (
-            child: Column(
-              children: [
-                SizedBox(height: 25),
-                GroupTile(
-                  groupName: 'Friday Night',
-                  amount: '\$700',
-                  membersCount: '3 members',
-                  onTap: () {
-                    Navigator.push(
-                      context,
-                      MaterialPageRoute(
-                        builder: (context) =>
-                            GroupDetailsScreen(),
-                      ),
-                    );
-                  },
-                  groupImage: AssetImage("assets/images/edsheeran.png"),
-                ),
-                GroupTile(
-                  groupName: 'Travis Scott Concert',
-                  amount: '\$1000',
-                  membersCount: '5 members',
-                  groupImage: AssetImage("assets/images/edsheeran.png"),
-                ),
-                // Other GroupTile widgets...
-                GroupTile(
-                  groupName: 'Vancouver Trip',
-                  amount: '\$1,096',
-                  membersCount: '5 members',
-                  groupImage: AssetImage("assets/images/edsheeran.png"),
-                ),
-                GroupTile(
-                  groupName: 'Trip to Japan',
-                  amount: '\$0',
-                  membersCount: '2 members',
-                  groupImage: AssetImage("assets/images/edsheeran.png"),
-                ),
-                GroupTile(
-                  groupName: 'Halloween in Urbana',
-                  amount: '\$300',
-                  membersCount: '3 members',
-                  groupImage: AssetImage("assets/images/edsheeran.png"),
-                ),
-              ],
-            ),
-          )
-        ],
-      ),
       ),
     );
   }
 }
+
+
+
+// class MainScreen extends StatelessWidget {
+//   const MainScreen({Key? key}) : super(key: key);
+//   @override
+//   Widget build(BuildContext context) {
+//     final user = FirebaseAuth.instance.currentUser;
+//     final username = user?.displayName ?? 'Your';
+//     return Scaffold(
+//       appBar: AppBar(
+//         title: Text(
+//                 "Groups",
+//                 style: TextStyle(
+//                   fontSize: 30.0,
+//                   fontWeight: FontWeight.bold,
+//                   color: Theme
+//                       .of(context)
+//                       .primaryColor,
+//                 ),
+//               ),
+//         flexibleSpace: Container(
+//           decoration: BoxDecoration(gradient: groupScreenGradient),
+//         ),
+//               actions: <Widget> [
+//                 IconButton(
+//                   icon: Icon(Icons.search),
+//                   color: Theme
+//                       .of(context)
+//                       .primaryColor,
+//                   onPressed: () {
+//                     Navigator.of(context).push(SlideFromLeftPageRoute(page: SearchScreen()));
+//                   },
+//                 ),
+//                 IconButton(
+//                   icon: Icon(Icons.settings),
+//                   color: Theme
+//                       .of(context)
+//                       .primaryColor,
+//                   onPressed: () {
+//                     Navigator.push(
+//                         context,
+//                         MaterialPageRoute(
+//                             builder: (context) => SettingsScreen()));
+//                   },
+//                 ),
+//               ],
+//         backgroundColor: Colors.transparent,
+//         elevation: 0,
+//       ),
+//
+//       body: Container(
+//         decoration: BoxDecoration(gradient: groupScreenGradient),
+//         child: ListView(
+//         children: [
+//           Container  (
+//             child: Column(
+//               children: [
+//                 SizedBox(height: 25),
+//                 GroupTile(
+//                   groupName: 'Friday Night',
+//                   amount: '\$700',
+//                   membersCount: '3 members',
+//                   onTap: () {
+//                     Navigator.push(
+//                       context,
+//                       MaterialPageRoute(
+//                         builder: (context) =>
+//                             GroupDetailsScreen(),
+//                       ),
+//                     );
+//                   },
+//                   groupImage: AssetImage("assets/images/edsheeran.png"),
+//                 ),
+//                 GroupTile(
+//                   groupName: 'Travis Scott Concert',
+//                   amount: '\$1000',
+//                   membersCount: '5 members',
+//                   groupImage: AssetImage("assets/images/edsheeran.png"),
+//                 ),
+//                 // Other GroupTile widgets...
+//                 GroupTile(
+//                   groupName: 'Vancouver Trip',
+//                   amount: '\$1,096',
+//                   membersCount: '5 members',
+//                   groupImage: AssetImage("assets/images/edsheeran.png"),
+//                 ),
+//                 GroupTile(
+//                   groupName: 'Trip to Japan',
+//                   amount: '\$0',
+//                   membersCount: '2 members',
+//                   groupImage: AssetImage("assets/images/edsheeran.png"),
+//                 ),
+//                 GroupTile(
+//                   groupName: 'Halloween in Urbana',
+//                   amount: '\$300',
+//                   membersCount: '3 members',
+//                   groupImage: AssetImage("assets/images/edsheeran.png"),
+//                 ),
+//               ],
+//             ),
+//           )
+//         ],
+//       ),
+//       ),
+//     );
+//   }
+// }
+
+class Group {
+  final String id;
+  final String name;
+
+  Group({required this.id, required this.name});
+
+  factory Group.fromJson(Map<String, dynamic> json) {
+    return Group(
+      id: json['id'],
+      name: json['name'],
+    );
+  }
+}
+
 
 class GroupTile extends StatelessWidget {
   final String groupName;

@@ -33,13 +33,18 @@ class _UpdateUserDetailsScreenState extends State<UpdateUserDetailsScreen> {
 
       if (_updateUsername) {
         await user!.updateDisplayName(_newUsername);
+
       }
       if (_updateEmail) {
         await user!.updateEmail(_newEmail);
+
       }
       if (_updatePassword && _newPassword.isNotEmpty) {
         await user!.updatePassword(_newPassword);
+
       }
+
+      await user!.reload();
 
       await _sendDetailsToBackend(user!.uid, _newUsername, _newEmail);
 

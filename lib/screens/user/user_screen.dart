@@ -9,6 +9,7 @@ class UserScreen extends StatelessWidget {
   final User? user = FirebaseAuth.instance.currentUser;
   @override
   Widget build(BuildContext context) {
+
     String userName = user?.displayName ?? 'Update Name';
     String userEmail = user?.email ?? 'Update Email';
     return Scaffold(

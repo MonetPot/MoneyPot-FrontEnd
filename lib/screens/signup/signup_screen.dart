@@ -119,34 +119,53 @@ class _SignUpScreenState extends State<SignUpScreen> {
     String password = _passwordController.text;
 
     try {
-      var response = await http.post(
-        Uri.parse('http://127.0.0.1:8000/api/users/create'),
-        headers: <String, String>{
-          'Content-Type': 'application/json',
-        },
-        body: jsonEncode({
-          'first_name': firstName,
-          'last_name': lastName,
-          'email': email,
-          'password': password,
-          // 'phone_number': phoneNumber,
-        }),
-      );
 
-      if (response.statusCode == 200) {
-        // User creation successful
-        showToast(message: "User is successfully created");
-        Navigator.pushAndRemoveUntil(
-          context,
-          MaterialPageRoute(builder: (context) => Navigation()), // Replace with your navigation page
-              (Route<dynamic> route) => false,
+      UserCredential userCredential = await FirebaseAuth.instance.createUserWithEmailAndPassword(
+        email: email,
+        password: password,
+      );
+      String firebaseUid = userCredential.user!.uid;
+      User? user = userCredential.user;
+
+      if (user != null) {
+        String displayName = '$firstName $lastName';
+
+        // Update the user's profile with the display name
+        await user.updateDisplayName(displayName);
+
+
+        await user.reload();
+
+
+        var response = await http.post(
+          Uri.parse('http://127.0.0.1:8000/api/users/create'),
+          headers: <String, String>{
+            'Content-Type': 'application/json',
+          },
+          body: jsonEncode({
+            'first_name': firstName,
+            'last_name': lastName,
+            'email': email,
+            'password': password,
+            'firebase_id': firebaseUid,
+          }),
         );
-      } else {
-        // Handle server errors
-        showToast(message: "Failed to create user: ${response.body}");
+
+        if (response.statusCode == 200) {
+          showToast(message: "User is successfully created");
+          Navigator.pushAndRemoveUntil(
+            context,
+            MaterialPageRoute(builder: (context) => Navigation()),
+                (Route<dynamic> route) => false,
+          );
+        } else {
+          showToast(message: "Failed to create user: ${response.body}");
+        }
       }
+
+
+
     } catch (e) {
-      // Handle any errors that occur during the process
       showToast(message: "Error: $e");
     } finally {
       setState(() {

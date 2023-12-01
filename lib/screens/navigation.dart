@@ -85,7 +85,7 @@ class _NavigationState extends State<Navigation> {
         controller: _pageController,
         onPageChanged: _onPageChanged,
         children: <Widget>[
-          MainScreen(identifier: userIdentifier!),
+          GroupsScreen(identifier: userIdentifier!),
           AddGroup(),
           UserScreen(),
         ],

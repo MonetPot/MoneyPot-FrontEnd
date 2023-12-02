@@ -10,8 +10,9 @@ class UserScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
 
-    String userName = user?.displayName ?? 'Update Name';
-    String userEmail = user?.email ?? 'Update Email';
+    String userName = user?.displayName ?? user?.phoneNumber ?? 'No Name Available';
+    String userEmail = user?.email ?? 'No Email Available';
+
     return Scaffold(
       // debugShowCheckedModeBanner: false,
       appBar: AppBar(

@@ -15,6 +15,8 @@ class Navigation extends StatefulWidget {
 class _NavigationState extends State<Navigation> {
   int _selectedIndex = 0;
   final PageController _pageController = PageController();
+  // final user = FirebaseAuth.instance.currentUser;
+  // final userEmail = user?.email ?? '';
   String? userIdentifier;
 
   void _onNavBarTapped(int index) {
@@ -39,6 +41,7 @@ class _NavigationState extends State<Navigation> {
     if (user != null) {
 
       userIdentifier = user.email;
+      print(userIdentifier);
     }
   }
 

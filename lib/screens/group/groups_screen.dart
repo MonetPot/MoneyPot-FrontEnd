@@ -215,8 +215,16 @@ class _GroupsScreenState extends State<GroupsScreen> {
     _fetchGroups();
   }
 
+  @override
+  void didChangeDependencies() {
+    super.didChangeDependencies();
+    _fetchGroups();
+  }
+
   Future<void> _fetchGroups() async {
+    setState(() => _isLoading = true);
     final response = await http.get(Uri.parse('http://127.0.0.1:8000/api/users/${widget.identifier}/groups'));
+
     if (response.statusCode == 200) {
       List<Group> groups = (json.decode(response.body) as List)
           .map((data) => Group.fromJson(data))
@@ -225,13 +233,62 @@ class _GroupsScreenState extends State<GroupsScreen> {
         _groups = groups;
         _isLoading = false;
       });
+      print("Fetched Groups: $_groups");  // Debug print
     } else {
+      print("Failed to fetch groups: ${response.body}");  // Debug print
       setState(() {
         _isLoading = false;
         _groups = [];
       });
     }
   }
+
+  // Future<void> _fetchGroups() async {
+  //   setState(() => _isLoading = true);
+  //   try {
+  //     final response = await http.get(Uri.parse('http://127.0.0.1:8000/api/users/${widget.identifier}/groups'));
+  //     if (response.statusCode == 200) {
+  //       List<Group> groups = (json.decode(response.body) as List)
+  //           .map((data) => Group.fromJson(data))
+  //           .toList();
+  //       setState(() {
+  //         _groups = groups;
+  //         _isLoading = false;
+  //       });
+  //     } else {
+  //       // Handle non-200 response
+  //       setState(() {
+  //         _isLoading = false;
+  //         _groups = [];
+  //       });
+  //     }
+  //   } catch (e) {
+  //     // Handle network error or invalid JSON response
+  //     setState(() {
+  //       _isLoading = false;
+  //       _groups = [];
+  //     });
+  //     print('Error fetching groups: $e');
+  //   }
+  // }
+  // Future<void> _fetchGroups() async {
+  //   setState(() => _isLoading = true);
+  //   final response = await http.get(Uri.parse('http://127.0.0.1:8000/api/users/${widget.identifier}/groups'));
+  //   if (response.statusCode == 200) {
+  //     List<Group> groups = (json.decode(response.body) as List)
+  //         .map((data) => Group.fromJson(data))
+  //         .toList();
+  //     setState(() {
+  //       _groups = groups;
+  //       _isLoading = false;
+  //     });
+  //   } else {
+  //     setState(() {
+  //       _isLoading = false;
+  //       _groups = [];
+  //     });
+  //   }
+  // }
 
   @override
   Widget build(BuildContext context) {

@@ -2,6 +2,9 @@ import 'package:flutter/material.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:money_pot/screens/navigation.dart';
+import 'package:http/http.dart' as http;
+import 'dart:convert';
+
 
 import '../../../const/gradient.dart';
 import '../../../const/styles.dart';
@@ -326,24 +329,51 @@ class _OTPVerificationScreenState extends State<OTPVerificationScreen> {
       Fluttertoast.showToast(msg: 'Phone verified successfully!');
 
       User? user = userCredential.user;
-      if (user != null && (user.displayName == null || user.email == null)) {
-        await _promptUserForDetails(context);
+      if (user != null) {
+        // await _promptUserForDetails(context);
         String name = _nameController.text;
+        List<String> nameParts = name.split(' ');
+        String firstName = nameParts.first;
+        String lastName = nameParts.length > 1 ? nameParts.last : '';
         String email = _emailController.text;
-        await user.updateDisplayName(name);
-        await user.updateEmail(email);
+        // await user.updateDisplayName(name);
+        // await user.updateEmail(email);
+
+
+        var response = await http.post(
+          Uri.parse('http://127.0.0.1:8000/api/users/create'),
+          headers: <String, String>{
+            'Content-Type': 'application/json',
+          },
+          body: jsonEncode({
+            if (firstName.isNotEmpty) 'first_name': firstName,
+            if (lastName.isNotEmpty) 'last_name': lastName,
+            if (email.isNotEmpty) 'email': email,
+            'firebase_id': user.uid,
+            'phone_number': user.phoneNumber,
+          }),
+        );
+
+        if (response.statusCode == 200) {
+          Fluttertoast.showToast(msg: 'User created successfully!');
+          // Proceed with navigation or other logic
+        } else {
+          Fluttertoast.showToast(msg: 'Failed to create user: ${response.body}');
+        }
+
+        if (!mounted) return;
+
+        Navigator.pushAndRemoveUntil(
+          context,
+          MaterialPageRoute(builder: (context) => Navigation()),
+              (Route<dynamic> route) => false,
+        );
       }
       // } else {
       //   _updateFirebaseUserDetails(user.displayName ?? 'No Name', user.email ?? 'noemail@example.com', context);
       // }
 
-      if (!mounted) return;
 
-      Navigator.pushAndRemoveUntil(
-        context,
-        MaterialPageRoute(builder: (context) => Navigation()),
-            (Route<dynamic> route) => false,
-      );
     } catch (e) {
       Fluttertoast.showToast(msg: 'Failed to verify OTP: $e');
     }
@@ -358,7 +388,5 @@ class _OTPVerificationScreenState extends State<OTPVerificationScreen> {
     }
   }
 
-  void _updateBackendUserDetails(String userId, String name, String email) async {
-  }
 
 }

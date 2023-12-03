@@ -152,8 +152,12 @@ class _AddGroupState extends State<AddGroup> {
 
   void _createGroup() async {
     final user = FirebaseAuth.instance.currentUser;
-    final userId = user?.email ?? '';
+    final userId = user?.uid;  // Get the current user's Firebase UID
 
+    if (userId == null) {
+      print('User not logged in');
+      return; // Exit if user is not logged in
+    }
     // Get selected member IDs (if any)
     final selectedMemberIds = _selectedMembers
         .asMap()

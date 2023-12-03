@@ -21,9 +21,6 @@ class SignUpScreen extends StatefulWidget {
 
 class _SignUpScreenState extends State<SignUpScreen> {
   final TextEditingController _dateController = TextEditingController();
-
-
-
   final FirebaseAuthService _auth = FirebaseAuthService();
 
   TextEditingController _firstnameController = TextEditingController();
@@ -52,62 +49,6 @@ class _SignUpScreenState extends State<SignUpScreen> {
   }
 
 
-
-  // Future<void> sendUserDataToBackend(User user) async {
-  //   String firstName = _firstnameController.text;
-  //   String lastName = _lastnameController.text;
-  //   print('here');
-  //   final url = Uri.parse('http://127.0.0.1:8000/api/user/create');
-  //   final response = await http.post(
-  //     url,
-  //     headers: {'Content-Type': 'application/json'},
-  //     body: json.encode({
-  //       'firebase_id': user.uid,
-  //       'email': user.email,
-  //       'first_name': firstName,
-  //       'last_name': lastName,
-  //     }),
-  //   );
-  //   print('here2');
-  //   if (response.statusCode == 200) {
-  //     showToast(message: "User successfully registered in backend");
-  //     Navigator.push(context, MaterialPageRoute(builder: (context) => Navigation()));
-  //   } else {
-  //     showToast(message: "Backend registration failed");
-  //     //user deletion if backend registration fails
-  //   }
-  // }
-  //
-  // void _signUp() async {
-  //   setState(() {
-  //     isSigningUp = true;
-  //   });
-  //
-  //   String email = _emailController.text;
-  //   String password = _passwordController.text;
-  //
-  //   try {
-  //     UserCredential userCredential = await FirebaseAuth.instance.createUserWithEmailAndPassword(
-  //       email: email,
-  //       password: password,
-  //     );
-  //
-  //     User? user = userCredential.user;
-  //     if (user != null) {
-  //       await sendUserDataToBackend(user);
-  //     }
-  //   } on FirebaseAuthException catch (e) {
-  //     showToast(message: "Firebase Error: ${e.message}");
-  //   } catch (e) {
-  //     showToast(message: "Error: $e");
-  //   } finally {
-  //     setState(() {
-  //       isSigningUp = false;
-  //     });
-  //   }
-  // }
-
-
   void _signUp() async {
     setState(() {
       isSigningUp = true;
@@ -130,7 +71,6 @@ class _SignUpScreenState extends State<SignUpScreen> {
       if (user != null) {
         String displayName = '$firstName $lastName';
 
-        // Update the user's profile with the display name
         await user.updateDisplayName(displayName);
 
 
@@ -174,37 +114,6 @@ class _SignUpScreenState extends State<SignUpScreen> {
     }
   }
 
-
-  // PREVIOUS SIGNUP FUNCTION
-  // void _signUp() async {
-  //   setState(() {
-  //     isSigningUp = true;
-  //   });
-  //
-  //   String firstName = _firstnameController.text;
-  //   String lastName = _lastnameController.text;
-  //   String email = _emailController.text;
-  //   String password = _passwordController.text;
-  //
-  //   String fullName = firstName + " " + lastName;
-  //
-  //   User? user = await _auth.signUpWithEmailAndPassword(email, password);
-  //
-  //   setState(() {
-  //     isSigningUp = false;
-  //   });
-  //   if (user != null) {
-  //     await user.updateDisplayName(fullName);
-  //     showToast(message: "User is successfully created");
-  //     if (!mounted) return;
-  //
-  //     Navigator.pushAndRemoveUntil(
-  //       context,
-  //       MaterialPageRoute(builder: (context) => Navigation()),
-  //           (Route<dynamic> route) => false,
-  //     );
-  //   }
-  // }
 
   _selectDate(BuildContext context) async {
     final DateTime? selectedDate = await showDatePicker(
@@ -466,6 +375,96 @@ class _SignUpScreenState extends State<SignUpScreen> {
     );
   }
 }
+
+// PREVIOUS SIGNUP FUNCTION
+// void _signUp() async {
+//   setState(() {
+//     isSigningUp = true;
+//   });
+//
+//   String firstName = _firstnameController.text;
+//   String lastName = _lastnameController.text;
+//   String email = _emailController.text;
+//   String password = _passwordController.text;
+//
+//   String fullName = firstName + " " + lastName;
+//
+//   User? user = await _auth.signUpWithEmailAndPassword(email, password);
+//
+//   setState(() {
+//     isSigningUp = false;
+//   });
+//   if (user != null) {
+//     await user.updateDisplayName(fullName);
+//     showToast(message: "User is successfully created");
+//     if (!mounted) return;
+//
+//     Navigator.pushAndRemoveUntil(
+//       context,
+//       MaterialPageRoute(builder: (context) => Navigation()),
+//           (Route<dynamic> route) => false,
+//     );
+//   }
+// }
+
+
+
+// PREVIOUS SIGN UP
+
+// Future<void> sendUserDataToBackend(User user) async {
+//   String firstName = _firstnameController.text;
+//   String lastName = _lastnameController.text;
+//   print('here');
+//   final url = Uri.parse('http://127.0.0.1:8000/api/user/create');
+//   final response = await http.post(
+//     url,
+//     headers: {'Content-Type': 'application/json'},
+//     body: json.encode({
+//       'firebase_id': user.uid,
+//       'email': user.email,
+//       'first_name': firstName,
+//       'last_name': lastName,
+//     }),
+//   );
+//   print('here2');
+//   if (response.statusCode == 200) {
+//     showToast(message: "User successfully registered in backend");
+//     Navigator.push(context, MaterialPageRoute(builder: (context) => Navigation()));
+//   } else {
+//     showToast(message: "Backend registration failed");
+//     //user deletion if backend registration fails
+//   }
+// }
+//
+// void _signUp() async {
+//   setState(() {
+//     isSigningUp = true;
+//   });
+//
+//   String email = _emailController.text;
+//   String password = _passwordController.text;
+//
+//   try {
+//     UserCredential userCredential = await FirebaseAuth.instance.createUserWithEmailAndPassword(
+//       email: email,
+//       password: password,
+//     );
+//
+//     User? user = userCredential.user;
+//     if (user != null) {
+//       await sendUserDataToBackend(user);
+//     }
+//   } on FirebaseAuthException catch (e) {
+//     showToast(message: "Firebase Error: ${e.message}");
+//   } catch (e) {
+//     showToast(message: "Error: $e");
+//   } finally {
+//     setState(() {
+//       isSigningUp = false;
+//     });
+//   }
+// }
+
 
 //   Widget _dateTextField(BuildContext context) {
 //     return _buildGradientTextField(

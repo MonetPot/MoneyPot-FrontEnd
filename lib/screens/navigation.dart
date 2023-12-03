@@ -40,7 +40,7 @@ class _NavigationState extends State<Navigation> {
     User? user = FirebaseAuth.instance.currentUser;
     if (user != null) {
 
-      userIdentifier = user.email;
+      userIdentifier = user?.uid;
       print(userIdentifier);
     }
   }

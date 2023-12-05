@@ -13,8 +13,9 @@ class TransactionSummaryScreen extends StatelessWidget {
   final int groupId;
   late String groupName;
   late int funds;
+  final String identifier;
   // late List<Member> members;
-  TransactionSummaryScreen({Key? key, required this.amount, required this.groupId, required this.groupName}) : super(key: key);
+  TransactionSummaryScreen({Key? key, required this.amount, required this.groupId, required this.groupName, required this.identifier}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -120,7 +121,7 @@ class TransactionSummaryScreen extends StatelessWidget {
             context,
             MaterialPageRoute(
               builder: (context) =>
-                  GroupDetailsScreen(groupId: groupId),
+                  GroupDetailsScreen(groupId: groupId, identifier: identifier),
             ),
           );
         },

@@ -7,15 +7,16 @@ import '../../const/gradient.dart';
 import 'package:money_pot/screens/group/groups_screen.dart';
 import '../search/search_screen.dart';
 import 'bills/text_scanner.dart';
-import 'package:money_pot/screens/group/add_group.dart';
+import 'package:money_pot/screens/group/add_members.dart';
 import 'package:http/http.dart' as http;
 import 'dart:convert';
 
 
 class GroupDetailsScreen extends StatefulWidget {
   final int groupId;
+  final String identifier;
 
-  const GroupDetailsScreen({Key? key, required this.groupId}) : super(key: key);
+  const GroupDetailsScreen({Key? key, required this.groupId, required this.identifier}) : super(key: key);
 
   @override
   _GroupDetailsScreenState createState() => _GroupDetailsScreenState();
@@ -42,10 +43,17 @@ class _GroupDetailsScreenState extends State<GroupDetailsScreen> with SingleTick
   }
 
   void fetchGroupDetails() async {
-    groupName = "";
+    groupName = "Group Name";
+    funds = 0;
+    members = [];
+    isLoading = true;
     var response = await http.get(Uri.parse('http://127.0.0.1:8000/api/groups/${widget.groupId}'));
     if (response.statusCode == 200) {
       var groupData = json.decode(response.body);
+      groupName = groupData['name'];
+      funds = groupData['funds'];
+      members = (groupData['members'] as List<dynamic>).map((m) => Member.fromJson(m as Map<String, dynamic>)).toList();
+      isLoading = false;
       if (mounted) { // fix to ensure the group name is always visible
         setState(() {
           groupName = groupData['name'];
@@ -133,10 +141,10 @@ class _GroupDetailsScreenState extends State<GroupDetailsScreen> with SingleTick
             },
           ),
           SpeedDialChild(
-            child: Icon(Icons.credit_card),
-            label: 'Use Card',
+            child: Icon(Icons.credit_card_rounded),
+            label: 'Add members',
             onTap: () {
-              // Handle Option 2
+
             },
           ),
         ],
@@ -216,15 +224,18 @@ class _GroupDetailsScreenState extends State<GroupDetailsScreen> with SingleTick
         ListView.builder(
 
           shrinkWrap: true,
-          itemCount: 3, // Replace with dynamic item count
+          physics: NeverScrollableScrollPhysics(),
+          itemCount: members.length,
+
           itemBuilder: (BuildContext context, int index) {
+            Member member = members[index];
             return ListTile(
               leading: CircleAvatar(
 
                 backgroundImage: AssetImage("assets/images/edsheeran.png"),
               ),
               title: Text(
-                'Member ${index + 1}', // Replace with group members
+                member.email,
                 style: TextStyle(
                   fontSize: 16,
                   fontWeight: FontWeight.bold,
@@ -243,7 +254,7 @@ class _GroupDetailsScreenState extends State<GroupDetailsScreen> with SingleTick
 
   Route _createRoute() {
     return PageRouteBuilder(
-      pageBuilder: (context, animation, secondaryAnimation) => AddGroup(),
+      pageBuilder: (context, animation, secondaryAnimation) => AddMembers(groupId: widget.groupId, identifier: widget.identifier),
       transitionsBuilder: (context, animation, secondaryAnimation, child) {
         var begin = Offset(0.0, 1.0);
         var end = Offset.zero;
@@ -348,10 +359,10 @@ class _GroupDetailsScreenState extends State<GroupDetailsScreen> with SingleTick
                       Navigator.push(
                           context,
                           MaterialPageRoute(
-                              builder: (context) => PaymentScreen(groupId: widget.groupId, groupName: groupName)));
+                              builder: (context) => PaymentScreen(groupId: widget.groupId, groupName: groupName, identifier: widget.identifier)));
                     },
                     child: Text(
-                      'Deposit',
+                      'Funds',
                       style: TextStyle(
                         fontSize: 18,
                         fontWeight: FontWeight.bold,

@@ -297,13 +297,14 @@ class _GroupsScreenState extends State<GroupsScreen> {
             : ListView.builder(
           itemCount: _groups!.length,
           itemBuilder: (context, i) => GroupTile(
+            identifier: widget.identifier,
             groupName: _groups![i].name,
             amount: _groups![i].funds,  // Replace with actual amount
             membersCount: '0 members',  // Replace with actual member count
             groupImage: AssetImage("assets/images/edsheeran.png"),
             groupId: _groups![i].id,
             onTap: () {
-              Navigator.push(context, MaterialPageRoute(builder: (context) => GroupDetailsScreen(groupId: _groups![i].id)));  // Pass group details to GroupDetailsScreen
+              Navigator.push(context, MaterialPageRoute(builder: (context) => GroupDetailsScreen(groupId: _groups![i].id, identifier: widget.identifier)));  // Pass group details to GroupDetailsScreen
             },
           ),
         ),
@@ -349,6 +350,7 @@ class GroupTile extends StatelessWidget {
   final AssetImage groupImage;
   final VoidCallback? onTap;
   final int groupId;
+  final String identifier;
 
   GroupTile({
     Key? key,
@@ -357,6 +359,7 @@ class GroupTile extends StatelessWidget {
     required this.membersCount,
     required this.groupImage,
     required this.groupId,
+    required this.identifier,
     this.onTap,
   }) : super(key: key);
 
@@ -390,7 +393,7 @@ class GroupTile extends StatelessWidget {
                           context,
                           MaterialPageRoute(
                             builder: (context) =>
-                                PaymentScreen(groupId: groupId, groupName: groupName),
+                                PaymentScreen(groupId: groupId, groupName: groupName, identifier: identifier),
                           ),
                         );
                       },

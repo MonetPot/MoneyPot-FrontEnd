@@ -3,16 +3,50 @@ import 'package:flutter/material.dart';
 import '../../../Screens/settings/settings_screen.dart';
 import '../../../const/gradient.dart';
 import 'confirmation_screen.dart';
+import 'package:http/http.dart' as http;
 
-class PaymentScreen extends StatelessWidget {
-  final TextEditingController _amountController = TextEditingController();
-  final FocusNode _amountFocusNode = FocusNode();
+class PaymentScreen extends StatefulWidget {
+
   final int groupId;
   late String groupName;
-  late int funds;
+
+  final String identifier;
+
   // late List<Member> members;
 
-  PaymentScreen({Key? key, required this.groupId, required this.groupName}) : super(key: key);
+  PaymentScreen(
+      {Key? key, required this.groupId, required this.groupName, required this.identifier})
+      : super(key: key);
+
+
+  @override
+  _PaymentScreenState createState() => _PaymentScreenState();
+}
+
+
+class _PaymentScreenState extends State<PaymentScreen> {
+
+  final TextEditingController _amountController = TextEditingController();
+  final FocusNode _amountFocusNode = FocusNode();
+  int funds = 0;
+
+
+  @override
+  void initState() {
+    super.initState();
+    fetchGroupFunds();
+  }
+
+  void fetchGroupFunds() async {
+    var response = await http.get(Uri.parse('http://127.0.0.1:8000/api/groups/${widget.groupId}/funds'));
+    if (response.statusCode == 200) {
+      setState(() {
+        funds = int.parse(response.body); // Update funds with the response
+      });
+    } else {
+      // Handle error or show a message
+    }
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -78,7 +112,7 @@ class PaymentScreen extends StatelessWidget {
         borderRadius: BorderRadius.circular(10.0),
       ),
       child: Text(
-        'MoneyPot\n\$1,000',
+        'MoneyPot\n\$$funds',
         style: TextStyle(
           color: Colors.blue,
           fontSize: 24.0,
@@ -96,7 +130,7 @@ class PaymentScreen extends StatelessWidget {
           backgroundImage: AssetImage("assets/images/edsheeran.png"),
         ),
         SizedBox(width: 8),
-        Chip(label: Text(groupName),
+        Chip(label: Text(widget.groupName),
           backgroundColor: Colors.green,),
         SizedBox(width: 8),
         // Chip(
@@ -149,7 +183,7 @@ class PaymentScreen extends StatelessWidget {
           Navigator.push(
               context,
               MaterialPageRoute(
-                  builder: (context) => ConfirmDepositScreen(amount: amount, groupId: groupId, groupName: groupName)));
+                  builder: (context) => ConfirmDepositScreen(amount: amount, groupId: widget.groupId, groupName: widget.groupName, identifier: widget.identifier)));
         },
         style: ElevatedButton.styleFrom(
           primary: Colors.transparent,
@@ -232,7 +266,7 @@ class PaymentScreen extends StatelessWidget {
         Navigator.push(
             context,
             MaterialPageRoute(
-                builder: (context) => ConfirmDepositScreen(amount: amount, groupId: groupId, groupName: groupName)));
+                builder: (context) => ConfirmDepositScreen(amount: amount, groupId: widget.groupId, groupName: widget.groupName, identifier: widget.identifier)));
       },
       child: Text('Next'),
       style: ElevatedButton.styleFrom(

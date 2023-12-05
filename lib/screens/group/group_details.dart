@@ -8,10 +8,14 @@ import 'package:money_pot/screens/group/groups_screen.dart';
 import '../search/search_screen.dart';
 import 'bills/text_scanner.dart';
 import 'package:money_pot/screens/group/add_group.dart';
+import 'package:http/http.dart' as http;
+import 'dart:convert';
 
 
 class GroupDetailsScreen extends StatefulWidget {
-  const GroupDetailsScreen({Key? key}) : super(key: key);
+  final int groupId;
+
+  const GroupDetailsScreen({Key? key, required this.groupId}) : super(key: key);
 
   @override
   _GroupDetailsScreenState createState() => _GroupDetailsScreenState();
@@ -19,17 +23,41 @@ class GroupDetailsScreen extends StatefulWidget {
 
 class _GroupDetailsScreenState extends State<GroupDetailsScreen> with SingleTickerProviderStateMixin {
   late TabController _tabController;
+  late String groupName;
+  late int funds;
+  late List<Member> members;
+  bool isLoading = true;
 
   @override
   void initState() {
     super.initState();
     _tabController = TabController(length: 2, vsync: this);
+    fetchGroupDetails();
   }
 
   @override
   void dispose() {
     _tabController.dispose();
     super.dispose();
+  }
+
+  void fetchGroupDetails() async {
+    groupName = "";
+    var response = await http.get(Uri.parse('http://127.0.0.1:8000/api/groups/${widget.groupId}'));
+    if (response.statusCode == 200) {
+      var groupData = json.decode(response.body);
+      if (mounted) { // fix to ensure the group name is always visible
+        setState(() {
+          groupName = groupData['name'];
+          funds = groupData['funds'];
+          members = (groupData['members'] as List<dynamic>).map((m) => Member.fromJson(m as Map<String, dynamic>)).toList();
+          isLoading = false;
+        });
+      }
+
+    } else {
+      print("Failed to fetch group details: ${response.body}");
+    }
   }
 
   @override
@@ -45,7 +73,7 @@ class _GroupDetailsScreenState extends State<GroupDetailsScreen> with SingleTick
           onPressed: () => Navigator.of(context).pop(),
         ),
         title: Text(
-          'Group Name',
+          groupName,
           style: TextStyle(
             fontSize: 30.0,
             fontWeight: FontWeight.bold,
@@ -160,6 +188,15 @@ class _GroupDetailsScreenState extends State<GroupDetailsScreen> with SingleTick
       ),
     );
   }
+
+  // Add an add members to group feature to add people
+
+  // Should send a text message to members to join when added.
+
+  // Get transactions from backend
+
+
+ // fix to get the actual members from backend
 
   Widget _buildMembersSection() {
     return Column(
@@ -311,7 +348,7 @@ class _GroupDetailsScreenState extends State<GroupDetailsScreen> with SingleTick
                       Navigator.push(
                           context,
                           MaterialPageRoute(
-                              builder: (context) => PaymentScreen()));
+                              builder: (context) => PaymentScreen(groupId: widget.groupId, groupName: groupName)));
                     },
                     child: Text(
                       'Deposit',

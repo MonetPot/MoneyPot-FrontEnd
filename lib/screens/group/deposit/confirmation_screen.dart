@@ -8,8 +8,12 @@ import '../../../Screens/settings/settings_screen.dart';
 class ConfirmDepositScreen extends StatelessWidget {
 
   final String amount;
+  final int groupId;
+  late String groupName = " ";
+  late int funds;
+  // late List<Member> members;
 
-  ConfirmDepositScreen({Key? key, required this.amount}) : super(key: key);
+  ConfirmDepositScreen({Key? key, required this.amount, required this.groupId, required this.groupName}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -70,7 +74,7 @@ class ConfirmDepositScreen extends StatelessWidget {
               _buildSummaryRow('Amount', '\$${amount}'),
               _buildSummaryRow('Charge', '0'),
               Divider(),
-              _buildSummaryRow('Friday Night', '\$${amount}', isTotal: true),
+              _buildSummaryRow(groupName, '\$${amount}', isTotal: true),
             ],
           ),
         ),
@@ -120,7 +124,7 @@ class ConfirmDepositScreen extends StatelessWidget {
           Navigator.push(
               context,
               MaterialPageRoute(
-                  builder: (context) => TransactionSummaryScreen(amount: amount)));
+                  builder: (context) => TransactionSummaryScreen(amount: amount, groupId: groupId, groupName: groupName)));
         },
         style: ElevatedButton.styleFrom(
           primary: Colors.transparent,
@@ -148,7 +152,7 @@ class ConfirmDepositScreen extends StatelessWidget {
         Navigator.push(
             context,
             MaterialPageRoute(
-                builder: (context) => TransactionSummaryScreen(amount: amount)));
+                builder: (context) => TransactionSummaryScreen(amount: amount, groupId: groupId, groupName: groupName)));
       },
       child: Text('Transfer'),
       style: ElevatedButton.styleFrom(

@@ -10,7 +10,11 @@ class TransactionSummaryScreen extends StatelessWidget {
   late final String userName;
   late final String userEmail;
   final User? user = FirebaseAuth.instance.currentUser;
-  TransactionSummaryScreen({Key? key, required this.amount}) : super(key: key);
+  final int groupId;
+  late String groupName;
+  late int funds;
+  // late List<Member> members;
+  TransactionSummaryScreen({Key? key, required this.amount, required this.groupId, required this.groupName}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -63,8 +67,8 @@ class TransactionSummaryScreen extends StatelessWidget {
         child: Column(
           children: [
             _buildDetailRow('Amount', '\$${amount}'),
-            _buildDetailRow('Date', '06/14/2023'),
-            _buildDetailRow('MoneyPot', 'Friday Night'),
+            _buildDetailRow('Date', '06/14/2023'), // fix to current date
+            _buildDetailRow('MoneyPot', groupName),
             _buildDetailRow('Type', 'Deposit'),
             _buildDetailRow('Member', userName),
           ],
@@ -116,7 +120,7 @@ class TransactionSummaryScreen extends StatelessWidget {
             context,
             MaterialPageRoute(
               builder: (context) =>
-                  GroupDetailsScreen(),
+                  GroupDetailsScreen(groupId: groupId),
             ),
           );
         },

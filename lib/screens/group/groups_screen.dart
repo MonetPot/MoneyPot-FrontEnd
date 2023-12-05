@@ -222,13 +222,21 @@ class _GroupsScreenState extends State<GroupsScreen> {
   }
 
   Future<void> _fetchGroups() async {
-    setState(() => _isLoading = true);
+    if (mounted){
+      setState(() => _isLoading = true);
+    }
+
     final response = await http.get(Uri.parse('http://127.0.0.1:8000/api/users/${widget.identifier}/groups'));
 
     if (response.statusCode == 200) {
       List<Group> groups = (json.decode(response.body) as List)
           .map((data) => Group.fromJson(data))
           .toList();
+
+      for (var group in groups) {
+        await group.fetchFunds();
+      }
+
       setState(() {
         _groups = groups;
         _isLoading = false;
@@ -290,11 +298,12 @@ class _GroupsScreenState extends State<GroupsScreen> {
           itemCount: _groups!.length,
           itemBuilder: (context, i) => GroupTile(
             groupName: _groups![i].name,
-            amount: '\$0',  // Replace with actual amount
+            amount: _groups![i].funds,  // Replace with actual amount
             membersCount: '0 members',  // Replace with actual member count
             groupImage: AssetImage("assets/images/edsheeran.png"),
+            groupId: _groups![i].id,
             onTap: () {
-              Navigator.push(context, MaterialPageRoute(builder: (context) => GroupDetailsScreen()));  // Pass group details to GroupDetailsScreen
+              Navigator.push(context, MaterialPageRoute(builder: (context) => GroupDetailsScreen(groupId: _groups![i].id)));  // Pass group details to GroupDetailsScreen
             },
           ),
         ),
@@ -304,10 +313,11 @@ class _GroupsScreenState extends State<GroupsScreen> {
 }
 
 class Group {
-  final String id;
+  final int id;
   final String name;
+  int funds;
 
-  Group({required this.id, required this.name});
+  Group({required this.id, required this.name, this.funds = 0});
 
   factory Group.fromJson(Map<String, dynamic> json) {
     return Group(
@@ -315,14 +325,30 @@ class Group {
       name: json['name'],
     );
   }
+
+  Future<void> fetchFunds() async {
+    try {
+      final response = await http.get(
+        Uri.parse('http://127.0.0.1:8000/api/groups/${this.id}/funds'),
+      );
+      if (response.statusCode == 200) {
+        this.funds = int.parse(response.body);
+      } else {
+        print('Failed to fetch group funds: ${response.body}');
+      }
+    } catch (e) {
+      print('Error fetching group funds: $e');
+    }
+  }
 }
 
 class GroupTile extends StatelessWidget {
   final String groupName;
-  final String amount;
+  final int amount;
   final String membersCount;
   final AssetImage groupImage;
   final VoidCallback? onTap;
+  final int groupId;
 
   GroupTile({
     Key? key,
@@ -330,6 +356,7 @@ class GroupTile extends StatelessWidget {
     required this.amount,
     required this.membersCount,
     required this.groupImage,
+    required this.groupId,
     this.onTap,
   }) : super(key: key);
 
@@ -351,7 +378,7 @@ class GroupTile extends StatelessWidget {
                   subtitle: Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
-                      Text(amount),
+                      Text('\$$amount'),
                       Text(membersCount),
                     ],
                   ),
@@ -363,7 +390,7 @@ class GroupTile extends StatelessWidget {
                           context,
                           MaterialPageRoute(
                             builder: (context) =>
-                                PaymentScreen(),
+                                PaymentScreen(groupId: groupId, groupName: groupName),
                           ),
                         );
                       },

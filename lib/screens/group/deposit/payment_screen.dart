@@ -7,6 +7,12 @@ import 'confirmation_screen.dart';
 class PaymentScreen extends StatelessWidget {
   final TextEditingController _amountController = TextEditingController();
   final FocusNode _amountFocusNode = FocusNode();
+  final int groupId;
+  late String groupName;
+  late int funds;
+  // late List<Member> members;
+
+  PaymentScreen({Key? key, required this.groupId, required this.groupName}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -90,7 +96,7 @@ class PaymentScreen extends StatelessWidget {
           backgroundImage: AssetImage("assets/images/edsheeran.png"),
         ),
         SizedBox(width: 8),
-        Chip(label: Text('Friday Night'),
+        Chip(label: Text(groupName),
           backgroundColor: Colors.green,),
         SizedBox(width: 8),
         // Chip(
@@ -143,7 +149,7 @@ class PaymentScreen extends StatelessWidget {
           Navigator.push(
               context,
               MaterialPageRoute(
-                  builder: (context) => ConfirmDepositScreen(amount: amount)));
+                  builder: (context) => ConfirmDepositScreen(amount: amount, groupId: groupId, groupName: groupName)));
         },
         style: ElevatedButton.styleFrom(
           primary: Colors.transparent,
@@ -226,7 +232,7 @@ class PaymentScreen extends StatelessWidget {
         Navigator.push(
             context,
             MaterialPageRoute(
-                builder: (context) => ConfirmDepositScreen(amount: amount)));
+                builder: (context) => ConfirmDepositScreen(amount: amount, groupId: groupId, groupName: groupName)));
       },
       child: Text('Next'),
       style: ElevatedButton.styleFrom(

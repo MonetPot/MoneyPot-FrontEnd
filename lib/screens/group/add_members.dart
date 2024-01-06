@@ -178,7 +178,7 @@ class _FriendsTabState extends State<FriendsTab> {
         _isLoading = false;
       });
     } else {
-      // Handle error or show a message
+      // Handle error
     }
   }
 
@@ -192,7 +192,6 @@ class _FriendsTabState extends State<FriendsTab> {
     );
   }
 }
-
 
 class _SelectableMemberList extends StatelessWidget {
   final List<Member> members;

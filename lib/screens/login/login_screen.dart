@@ -55,10 +55,6 @@ class _LoginScreenState extends State<LoginScreen> {
         MaterialPageRoute(builder: (context) => Navigation()),
             (Route<dynamic> route) => false,
       );
-      // Navigator.of(context).pushReplacement(
-      //   MaterialPageRoute(builder: (context) => Navigation()),
-      //
-      // );
     } else {
       showToast(message: "some error occurred");
     }
@@ -125,7 +121,6 @@ class _LoginScreenState extends State<LoginScreen> {
         controller: _emailController,
         style: hintAndValueStyle,
         onSubmitted: (value) {
-          // When the user presses "Enter", focus the password field
           FocusScope.of(context).requestFocus(_passwordFocusNode);
         },
         decoration: new InputDecoration(
@@ -193,7 +188,7 @@ class _LoginScreenState extends State<LoginScreen> {
            shape: RoundedRectangleBorder(
              borderRadius: BorderRadius.circular(36.0),
            ),
-           onPrimary: Color(0xffF1EA94), // Text color
+           onPrimary: Color(0xffF1EA94),
          ),
          child: Text(
            'LOGIN',

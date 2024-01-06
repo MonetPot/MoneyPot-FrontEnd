@@ -134,7 +134,7 @@ class ConfirmDepositScreen extends StatelessWidget {
           shape: RoundedRectangleBorder(
             borderRadius: BorderRadius.circular(36.0),
           ),
-          onPrimary: Color(0xffF1EA94), // Text color
+          onPrimary: Color(0xffF1EA94),
         ),
         child: Text(
           text,

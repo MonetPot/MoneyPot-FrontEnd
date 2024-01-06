@@ -41,10 +41,10 @@ class _PaymentScreenState extends State<PaymentScreen> {
     var response = await http.get(Uri.parse('http://127.0.0.1:8000/api/groups/${widget.groupId}/funds'));
     if (response.statusCode == 200) {
       setState(() {
-        funds = int.parse(response.body); // Update funds with the response
+        funds = int.parse(response.body);
       });
     } else {
-      // Handle error or show a message
+      // Handle error
     }
   }
 
@@ -90,7 +90,7 @@ class _PaymentScreenState extends State<PaymentScreen> {
                 // SizedBox(height: 24),
                 // _buildNextButton(context),
                 Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceBetween, // Centers the buttons horizontally
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: [
                     Expanded(child: depositButtonWidget("Deposit", context)),
                     // SizedBox(width: 16), // Adds a gap between the buttons
@@ -133,10 +133,6 @@ class _PaymentScreenState extends State<PaymentScreen> {
         Chip(label: Text(widget.groupName),
           backgroundColor: Colors.green,),
         SizedBox(width: 8),
-        // Chip(
-        //   label: Text('Deposit'),
-        //   backgroundColor: Colors.green,
-        // ),
       ],
     );
   }
@@ -192,7 +188,7 @@ class _PaymentScreenState extends State<PaymentScreen> {
           shape: RoundedRectangleBorder(
             borderRadius: BorderRadius.circular(36.0),
           ),
-          onPrimary: Color(0xffF1EA94), // Text color
+          onPrimary: Color(0xffF1EA94),
         ),
         child: Text(
           text,
@@ -235,8 +231,6 @@ class _PaymentScreenState extends State<PaymentScreen> {
           //     context,
           //     MaterialPageRoute(
           //         builder: (context) => ConfirmDepositScreen(amount: amount)));
-
-          // handle withdraw functionality
         },
         style: ElevatedButton.styleFrom(
           primary: Colors.transparent,

@@ -87,13 +87,11 @@ class _PaymentScreenState extends State<PaymentScreen> {
                 _buildChipSection(),
                 SizedBox(height: 24),
                 _buildAmountTextField(),
-                // SizedBox(height: 24),
-                // _buildNextButton(context),
+
                 Row(
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: [
                     Expanded(child: depositButtonWidget("Deposit", context)),
-                    // SizedBox(width: 16), // Adds a gap between the buttons
                     Expanded(child: withdrawButtonWidget("Withdraw", context)),
                   ],
                 ),
@@ -227,10 +225,7 @@ class _PaymentScreenState extends State<PaymentScreen> {
       child: ElevatedButton(
         onPressed: () {
           String amount = _amountController.text;
-          // Navigator.push(
-          //     context,
-          //     MaterialPageRoute(
-          //         builder: (context) => ConfirmDepositScreen(amount: amount)));
+
         },
         style: ElevatedButton.styleFrom(
           primary: Colors.transparent,

@@ -152,13 +152,13 @@ class _AddGroupState extends State<AddGroup> {
 
   void _createGroup() async {
     final user = FirebaseAuth.instance.currentUser;
-    final userId = user?.uid;  // Get the current user's Firebase UID
+    final userId = user?.uid;
 
     if (userId == null) {
       print('User not logged in');
-      return; // Exit if user is not logged in
+      return;
     }
-    // Get selected member IDs (if any)
+
     final selectedMemberIds = _selectedMembers
         .asMap()
         .entries
@@ -168,9 +168,9 @@ class _AddGroupState extends State<AddGroup> {
     selectedMemberIds.add(userId);
 
     var groupData = {
-      'name': _groupNameController.text, // Group name from input
-      'funds': 0.0, // Default funds
-      'members': selectedMemberIds, // List of selected members
+      'name': _groupNameController.text,
+      'funds': 0.0,
+      'members': selectedMemberIds,
     };
 
     var response = await http.post(
@@ -183,7 +183,7 @@ class _AddGroupState extends State<AddGroup> {
 
     if (response.statusCode == 200) {
       print('Group created successfully');
-      // Handle successful response
+
       Navigator.pop(context);
     } else {
       print('Failed to create group');
@@ -223,7 +223,7 @@ class _AddGroupState extends State<AddGroup> {
                 border: OutlineInputBorder(),
               ),
             ),
-            // Additional UI elements (e.g., member selection) can be added here
+
           ],
         ),
       ),
@@ -244,7 +244,7 @@ class _AddGroupState extends State<AddGroup> {
 
 class Member {
   final String name;
-  final String email;  // or any other identifier you have
+  final String email;
 
   Member({required this.name, required this.email});
 

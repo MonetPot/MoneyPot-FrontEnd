@@ -12,7 +12,6 @@ class ConfirmDepositScreen extends StatelessWidget {
   late String groupName = " ";
   late int funds;
   final String identifier;
-  // late List<Member> members;
 
   ConfirmDepositScreen({Key? key, required this.amount, required this.groupId, required this.groupName, required this.identifier}) : super(key: key);
 

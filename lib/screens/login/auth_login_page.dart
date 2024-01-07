@@ -32,9 +32,6 @@ class FirebaseAuthService {
       if (user != null) {
 
         String? idToken = await user.getIdToken();
-        // Now you can use this idToken to authenticate with your backend or manage sessions
-
-        // After getting the token, navigate to the respective user page
         Navigator.of(context).pushReplacement(
           MaterialPageRoute(builder: (context) => Navigation()),
         );

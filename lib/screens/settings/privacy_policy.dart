@@ -89,9 +89,6 @@ class PrivacyPolicyScreen extends StatelessWidget {
             ),
             SizedBox(height: 20),
 
-            // Include other sections as necessary
-            // ...
-
             Text(
               'Contact Us',
               style: TextStyle(fontSize: 22, fontWeight: FontWeight.bold),

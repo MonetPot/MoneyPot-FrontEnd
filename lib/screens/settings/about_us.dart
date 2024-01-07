@@ -18,7 +18,7 @@ class AboutUsScreen extends StatelessWidget {
             ),
             SizedBox(height: 10),
             Text(
-              'Describe your mission here. This might include what you aim to achieve, how you plan to make a difference, or the values that drive your team.',
+              'Describe  mission here. This might include what we aim to achieve, how we plan to make a difference, or the values that drive the team.',
               style: TextStyle(fontSize: 18),
             ),
             SizedBox(height: 20),
@@ -28,7 +28,7 @@ class AboutUsScreen extends StatelessWidget {
             ),
             SizedBox(height: 10),
             Text(
-              'Your vision statement goes here. This could be a description of where you see your app or company in the future, the ultimate goal you are working towards, or the ideal impact you wish to have on your users or the world.',
+              'Our vision statement goes here. This could be a description of where we see our app or company in the future, the ultimate goal we are working towards, or the ideal impact we wish to have on our users or the world.',
               style: TextStyle(fontSize: 18),
             ),
             SizedBox(height: 20),
@@ -38,12 +38,11 @@ class AboutUsScreen extends StatelessWidget {
             ),
             SizedBox(height: 10),
             Text(
-              'Introduce your team members here. You could include brief bios, roles, or interesting facts about each team member.',
+              'Introduce our team members here. We could include brief bios, roles, or interesting facts about each team member.',
               style: TextStyle(fontSize: 18),
             ),
             SizedBox(height: 20),
-            // Add images or additional text here if needed
-            // ...
+
           ],
         ),
       ),

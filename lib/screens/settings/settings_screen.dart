@@ -34,16 +34,11 @@ class SettingsScreen extends StatelessWidget {
               Container(
                 padding: EdgeInsets.symmetric(horizontal: 16.0, vertical: 8.0),
                 decoration: BoxDecoration(gradient: SIGNUP_BACKGROUND),
-                // decoration: BoxDecoration(
-                //   decoration:
-                //   color: Colors.white,
-                // ),
+
                 child: Row(
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: [
-                    // Leading Icon
-                    // CircleAvatar(
-                      // backgroundColor: Theme.of(context).primaryColor,  // Adjust this color as needed
+
                       Center(
                         child: IconButton(
                           icon: Icon(Icons.arrow_back_ios),
@@ -70,7 +65,6 @@ class SettingsScreen extends StatelessWidget {
                       color: Colors.white,
                       onPressed: () async {
                     await FirebaseAuth.instance.signOut();
-                    // Use the following line if you have defined the route '/sign-in' in your route table.
                     // Navigator.of(context).pushReplacementNamed('/sign-in');
 
                     // If you haven't defined named routes, use MaterialPageRoute directly as below:
@@ -153,12 +147,11 @@ class SettingsScreen extends StatelessWidget {
                 trailing: Icon(Icons.exit_to_app),
                 onTap: () async {
                   await FirebaseAuth.instance.signOut();
-                  // Use the following line if you have defined the route '/sign-in' in your route table.
                   // Navigator.of(context).pushReplacementNamed('/sign-in');
 
-                  // If you haven't defined named routes, use MaterialPageRoute directly as below:
+
                   Navigator.of(context).pushReplacement(MaterialPageRoute(
-                    builder: (context) => LoginScreen(), // Make sure you have imported LoginScreen at the top
+                    builder: (context) => LoginScreen(),
                   ));
                 },
               ),

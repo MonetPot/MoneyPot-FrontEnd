@@ -99,7 +99,7 @@ class FriendsTab extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    // Here you would build the UI for the 'Friends' tab
+
     return Center(child: Text('Friends Tab',
         style: TextStyle(color: TEXT_BLACK)));
   }
@@ -112,7 +112,7 @@ class MoneyPotsTab extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    // Here you would build the UI for the 'MoneyPots' tab
+
     return Center(child: Text('MoneyPots Tab',
         style: TextStyle(color: TEXT_BLACK)));
   }

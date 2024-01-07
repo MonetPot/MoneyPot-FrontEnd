@@ -100,8 +100,6 @@ class TermsAndConditionsScreen extends StatelessWidget {
             ),
             SizedBox(height: 20),
 
-            // Include other sections as necessary
-            // ...
 
             Text(
               'Contact Information',

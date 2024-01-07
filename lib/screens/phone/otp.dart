@@ -369,9 +369,6 @@ class _OTPVerificationScreenState extends State<OTPVerificationScreen> {
               (Route<dynamic> route) => false,
         );
       }
-      // } else {
-      //   _updateFirebaseUserDetails(user.displayName ?? 'No Name', user.email ?? 'noemail@example.com', context);
-      // }
 
 
     } catch (e) {

@@ -488,18 +488,4 @@ class SlideFromLeftPageRoute extends PageRouteBuilder {
 //     });
 //   }
 // }
-
-
-
-// const Color GREEN = Color(0xFFa8e063);
-// const Color BLUE_DEEP = Color(0xFF515bd4);
-//
-//
-// final BoxDecoration groupScreenDecoration = BoxDecoration(
-//   gradient: LinearGradient(
-//     begin: FractionalOffset(0.0, 0.5),
-//     end: FractionalOffset(0.9, 0.7),
-//     stops: [0.1, 0.5],
-//     colors: [GREEN, BLUE_DEEP],
-//   ),
 // );

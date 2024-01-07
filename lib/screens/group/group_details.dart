@@ -416,7 +416,6 @@ class _GroupDetailsScreenState extends State<GroupDetailsScreen> with SingleTick
         children: [
           Text('Money Pot'),
           Text('\$700'),
-          // Include other details like Total Members and Transactions
         ],
       ),
     );

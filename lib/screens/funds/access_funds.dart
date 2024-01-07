@@ -28,7 +28,7 @@ class AccessFunds extends StatelessWidget {
         elevation: 0,
         actions: [
           IconButton(
-            icon: Icon(Icons.settings, color: Colors.blue), // Settings/Options icon
+            icon: Icon(Icons.settings, color: Colors.blue),
             onPressed: () {
               Navigator.push(
                   context,
@@ -64,8 +64,7 @@ class AccessFunds extends StatelessWidget {
             Row(
               children: [
                 CircleAvatar(
-                  // User avatar
-                  backgroundImage: NetworkImage('https://via.placeholder.com/150'), // Placeholder image
+                  backgroundImage: NetworkImage('https://via.placeholder.com/150'),
                 ),
                 SizedBox(width: 10),
                 Chip(
@@ -79,13 +78,10 @@ class AccessFunds extends StatelessWidget {
             ),
             SizedBox(height: 20),
             TextField(
-            //   controller: controller,
               style: hintAndValueStyle,
-              // focusNode: focusNode,
-              // obscureText: obscureText,
+
               keyboardType: TextInputType.number,
-              // readOnly: onTap != null,
-              // onTap: onTap,
+
               decoration: InputDecoration(
                 suffixIcon: Icon(Icons.attach_money_rounded),
                 contentPadding: EdgeInsets.fromLTRB(40.0, 30.0, 10.0, 10.0),
@@ -98,39 +94,12 @@ class AccessFunds extends StatelessWidget {
               ),
               // onSubmitted: onFieldSubmitted,
             ),
-            // TextField(
-            //   decoration: InputDecoration(
-            //     labelText: 'Amount',
-            //     border: OutlineInputBorder(),
-            //   ),
-            //   keyboardType: TextInputType.number,
-            // ),
-            // SizedBox(height: 10),
             Row(
               children: [
                 WithdrawButtonWidget(),
-                // Expanded(
-                //   child:
-                //     WithdrawButtonWidget(),
-                //   // ElevatedButton(
-                //   //   onPressed: () {
-                //   //     // Handle withdraw press
-                //   //   },
-                //   //   child: Text('Withdraw'),
-                //   //   style: ElevatedButton.styleFrom(primary: Colors.deepPurple),
-                //   // ),
-                // ),
+
                 SizedBox(width: 10),
                 TransferButtonWidget(),
-                // Expanded(
-                //   child: ElevatedButton(
-                //     onPressed: () {
-                //       // Handle transfer press
-                //     },
-                //     child: Text('Transfer'),
-                //     style: ElevatedButton.styleFrom(primary: Colors.deepPurple),
-                //   ),
-                // ),
               ],
             ),
           ],

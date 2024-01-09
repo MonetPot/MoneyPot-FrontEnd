@@ -13,18 +13,17 @@ class _DatePickerState extends State<DatePicker> {
   Future<void> _selectDate(BuildContext context) async {
     final DateTime? picker = await showDatePicker(
       context: context,
-      initialDate: date, // make sure `date` is initialized to a non-nullable DateTime
+      initialDate: date,
       firstDate: DateTime(1900),
       lastDate: DateTime.now(),
     );
 
-    if (picker != null && picker != date) { // Check if the date is different too if needed
+    if (picker != null && picker != date) {
       setState(() {
         date = picker;
       });
     }
   }
-
 
   @override
   Widget build(BuildContext context) {

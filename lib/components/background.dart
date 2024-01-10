@@ -8,8 +8,8 @@ class Background extends StatelessWidget {
     this.topImage = "assets/images/main_top.png",
     this.bottomImage = "assets/images/login_bottom.png",
   }) : super(key: key);
-
   final String topImage, bottomImage;
+
 
   @override
   Widget build(BuildContext context) {

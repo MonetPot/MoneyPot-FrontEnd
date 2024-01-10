@@ -11,6 +11,13 @@ import 'package:money_pot/screens/group/add_members.dart';
 import 'package:http/http.dart' as http;
 import 'dart:convert';
 
+// Add an add members to group feature to add people
+
+// Should send a text message to members to join when added.
+
+// Get transactions from backend
+
+// fix to get the actual members from backend
 
 class GroupDetailsScreen extends StatefulWidget {
   final int groupId;
@@ -118,7 +125,6 @@ class _GroupDetailsScreenState extends State<GroupDetailsScreen> with SingleTick
           ),
         ],
         backgroundColor: Colors.transparent,
-        // Make the AppBar background transparent
         elevation: 0,
       ),
       floatingActionButton: SpeedDial(
@@ -150,7 +156,7 @@ class _GroupDetailsScreenState extends State<GroupDetailsScreen> with SingleTick
         ],
       ),
       body: Container(
-        decoration: BoxDecoration(gradient: groupDetailsGradient), // Your group screen decoration
+        decoration: BoxDecoration(gradient: groupDetailsGradient),
         child: Column(
           children: [
             SizedBox(height: 25),
@@ -197,14 +203,7 @@ class _GroupDetailsScreenState extends State<GroupDetailsScreen> with SingleTick
     );
   }
 
-  // Add an add members to group feature to add people
 
-  // Should send a text message to members to join when added.
-
-  // Get transactions from backend
-
-
- // fix to get the actual members from backend
 
   Widget _buildMembersSection() {
     return Column(

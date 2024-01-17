@@ -149,6 +149,13 @@ class _AddGroupState extends State<AddGroup> {
   final _groupNameController = TextEditingController();
   final List<bool> _selectedMembers = List.generate(10, (index) => false);
 
+  bool isExpanded = false;
+
+  void toggleFAB() {
+    setState(() {
+      isExpanded = !isExpanded;
+    });
+  }
 
   void _createGroup() async {
     final user = FirebaseAuth.instance.currentUser;
@@ -206,12 +213,24 @@ class _AddGroupState extends State<AddGroup> {
           decoration: BoxDecoration(gradient: searchScreenGradient),
         ),
       ),
-
-      floatingActionButton: FloatingActionButton.extended(
-        icon: Icon(Icons.add_circle_rounded),
-        label: Text('Create Group'),
-        onPressed: _createGroup,
+      floatingActionButton: Stack(
+        alignment: Alignment.bottomRight,
+        children: [
+          // Replace with your other actions
+          _buildFabOption(icon: Icons.add, onPressed: () {}),
+          _buildFabOption(icon: Icons.camera_alt, onPressed: () {}, yOffset: 60),
+          _buildFabOption(icon: Icons.group_add, onPressed: _createGroup, yOffset: 120),
+          FloatingActionButton(
+            onPressed: toggleFAB,
+            child: Icon(isExpanded ? Icons.close : Icons.menu),
+          ),
+        ],
       ),
+      // floatingActionButton: FloatingActionButton.extended(
+      //   icon: Icon(Icons.add_circle_rounded),
+      //   label: Text('Create Group'),
+      //   onPressed: _createGroup,
+      // ),
       body: Container(
         decoration: BoxDecoration(gradient: SIGNUP_BACKGROUND),
         padding: EdgeInsets.all(16),
@@ -230,6 +249,21 @@ class _AddGroupState extends State<AddGroup> {
       ),
     );
   }
+
+  Widget _buildFabOption({required IconData icon, required VoidCallback onPressed, double yOffset = 0}) {
+    return Visibility(
+      visible: isExpanded,
+      child: Padding(
+        padding: EdgeInsets.only(bottom: yOffset),
+        child: FloatingActionButton(
+          mini: true,
+          onPressed: onPressed,
+          child: Icon(icon),
+        ),
+      ),
+    );
+  }
+
 
   @override
   void dispose() {

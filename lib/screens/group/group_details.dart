@@ -282,7 +282,7 @@ class _GroupDetailsScreenState extends State<GroupDetailsScreen> with SingleTick
             style: TextStyle(
               fontSize: 22,
               fontWeight: FontWeight.bold,
-              color: Colors.blue, // Adjust the color to match your theme
+              color: Colors.blue,
             ),
           ),
         ),

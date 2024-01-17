@@ -397,7 +397,11 @@ class GroupTile extends StatelessWidget {
                           ),
                         );
                       },
-                      child: Text("Access Funds"),
+                      child: Text("Access Funds",
+                        style: TextStyle(
+                          color: Colors.white, // Change to your desired color
+                        ),
+                      ),
                     ),
                   ),
                 ),

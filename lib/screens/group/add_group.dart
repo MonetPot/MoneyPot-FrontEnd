@@ -206,6 +206,7 @@ class _AddGroupState extends State<AddGroup> {
           decoration: BoxDecoration(gradient: searchScreenGradient),
         ),
       ),
+
       floatingActionButton: FloatingActionButton.extended(
         icon: Icon(Icons.add_circle_rounded),
         label: Text('Create Group'),

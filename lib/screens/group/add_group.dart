@@ -138,6 +138,8 @@ import 'package:money_pot/const/color_const.dart';
 import 'package:money_pot/const/gradient.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 
+import 'bills/text_scanner.dart';
+
 class AddGroup extends StatefulWidget {
   const AddGroup({Key? key}) : super(key: key);
 
@@ -218,7 +220,11 @@ class _AddGroupState extends State<AddGroup> {
         children: [
           // Replace with your other actions
           _buildFabOption(icon: Icons.add, onPressed: () {}),
-          _buildFabOption(icon: Icons.camera_alt, onPressed: () {}, yOffset: 60),
+          _buildFabOption(icon: Icons.camera_alt, onPressed: () {
+            Navigator.push(
+              context,
+              MaterialPageRoute(builder: (context) => TextScanner())
+          );}, yOffset: 60),
           _buildFabOption(icon: Icons.group_add, onPressed: _createGroup, yOffset: 120),
           FloatingActionButton(
             onPressed: toggleFAB,

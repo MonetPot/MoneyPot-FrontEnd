@@ -270,18 +270,12 @@ class _AddGroupState extends State<AddGroup> {
     );
   }
 
-
   @override
   void dispose() {
     _groupNameController.dispose();
     super.dispose();
   }
 }
-
-
-
-
-
 
 class Member {
   final String name;
@@ -300,6 +294,7 @@ class Member {
 
 class FriendsTab extends StatefulWidget {
   final Function(int) toggleSelection;
+
 
   const FriendsTab({
     Key? key,

@@ -267,7 +267,7 @@ class _GroupsScreenState extends State<GroupsScreen> {
           ),
         ),
         flexibleSpace: Container(
-          decoration: BoxDecoration(gradient: groupScreenGradient),
+          decoration: BoxDecoration(gradient: SIGNUP_BACKGROUND),
         ),
         actions: <Widget>[
           IconButton(
@@ -289,7 +289,7 @@ class _GroupsScreenState extends State<GroupsScreen> {
         elevation: 0,
       ),
       body: Container(
-        decoration: BoxDecoration(gradient: groupScreenGradient),
+        decoration: BoxDecoration(gradient: SIGNUP_BACKGROUND),
         child: _isLoading
             ? Center(child: CircularProgressIndicator())
             : _groups!.isEmpty

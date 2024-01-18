@@ -31,11 +31,11 @@ class UserScreen extends StatelessWidget {
           ),
         ],
         flexibleSpace: Container(
-          decoration: BoxDecoration(gradient: userScreenGradient),
+          decoration: BoxDecoration(gradient: SIGNUP_BACKGROUND),
         ),
       ),
       body: Container(
-          decoration: BoxDecoration(gradient: userScreenGradient),
+          decoration: BoxDecoration(gradient: SIGNUP_BACKGROUND),
           child: SingleChildScrollView(
               child: Column(
                 children: [

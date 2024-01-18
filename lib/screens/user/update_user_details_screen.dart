@@ -3,6 +3,8 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:http/http.dart' as http;
 import 'dart:convert';
 
+import '../../const/gradient.dart';
+
 class UpdateUserDetailsScreen extends StatefulWidget {
   @override
   _UpdateUserDetailsScreenState createState() => _UpdateUserDetailsScreenState();
@@ -65,66 +67,80 @@ class _UpdateUserDetailsScreenState extends State<UpdateUserDetailsScreen> {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: AppBar(title: Text('Update User Details')),
-      body: _isLoading
-          ? Center(child: CircularProgressIndicator())
-          : Form(
-        key: _formKey,
-        child: Column(
-          children: <Widget>[
-            SwitchListTile(
-              title: Text("Update Username"),
-              value: _updateUsername,
-              onChanged: (bool value) {
-                setState(() { _updateUsername = value; });
-              },
-            ),
-            if (_updateUsername)
-              TextFormField(
-                decoration: InputDecoration(labelText: 'New Username'),
-                onSaved: (value) {
-                  _newUsername = value!;
-                },
-              ),
-            SwitchListTile(
-              title: Text("Update Email"),
-              value: _updateEmail,
-              onChanged: (bool value) {
-                setState(() { _updateEmail = value; });
-              },
-            ),
-            if (_updateEmail)
-              TextFormField(
-                decoration: InputDecoration(labelText: 'New Email'),
-                keyboardType: TextInputType.emailAddress,
-                onSaved: (value) {
-                  _newEmail = value!;
-                },
-              ),
-            SwitchListTile(
-              title: Text("Change Password"),
-              value: _updatePassword,
-              onChanged: (bool value) {
-                setState(() { _updatePassword = value; });
-              },
-            ),
-            if (_updatePassword)
-              TextFormField(
-                decoration: InputDecoration(labelText: 'New Password'),
-                obscureText: true,
-                onSaved: (value) {
-                  _newPassword = value!;
-                },
-              ),
-            SizedBox(height: 20),
-            ElevatedButton(
-              onPressed: _updateUserDetails,
-              child: Text('Update Details'),
-            ),
-          ],
+    return Container (
+        decoration: BoxDecoration(
+          gradient: SIGNUP_BACKGROUND,
         ),
-      ),
+
+      child: Scaffold(
+        backgroundColor: Colors.transparent,
+        appBar: AppBar(
+                title: Text('Update User Details'),
+                flexibleSpace: Container(
+                decoration: BoxDecoration(
+                gradient: SIGNUP_BACKGROUND))),
+        body: _isLoading
+            ? Center(child: CircularProgressIndicator())
+            : Form(
+          key: _formKey,
+          child: Column(
+            children: <Widget>[
+              SwitchListTile(
+                title: Text("Update Username"),
+                value: _updateUsername,
+                onChanged: (bool value) {
+                  setState(() { _updateUsername = value; });
+                },
+              ),
+              if (_updateUsername)
+                TextFormField(
+                  decoration: InputDecoration(labelText: 'New Username'),
+                  onSaved: (value) {
+                    _newUsername = value!;
+                  },
+                ),
+              SwitchListTile(
+                title: Text("Update Email"),
+                value: _updateEmail,
+                onChanged: (bool value) {
+                  setState(() { _updateEmail = value; });
+                },
+              ),
+              if (_updateEmail)
+                TextFormField(
+                  decoration: InputDecoration(labelText: 'New Email'),
+                  keyboardType: TextInputType.emailAddress,
+                  onSaved: (value) {
+                    _newEmail = value!;
+                  },
+                ),
+              SwitchListTile(
+                title: Text("Change Password"),
+                value: _updatePassword,
+                onChanged: (bool value) {
+                  setState(() { _updatePassword = value; });
+                },
+              ),
+              if (_updatePassword)
+                TextFormField(
+                  decoration: InputDecoration(labelText: 'New Password'),
+                  obscureText: true,
+                  onSaved: (value) {
+                    _newPassword = value!;
+                  },
+                ),
+              SizedBox(height: 20),
+              ElevatedButton(
+                onPressed: _updateUserDetails,
+                child: Text('Update Details',
+                  style: TextStyle(
+                    color: Colors.white, // Replace with your desired color
+                  ),),
+              ),
+            ],
+          ),
+        ),
+      )
     );
   }
 }

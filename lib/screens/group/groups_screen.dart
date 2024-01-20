@@ -385,25 +385,25 @@ class GroupTile extends StatelessWidget {
                       Text(membersCount),
                     ],
                   ),
-                  trailing: SizedBox(
-                    width: 130,
-                    child: ElevatedButton(
-                      onPressed: () {
-                        Navigator.push(
-                          context,
-                          MaterialPageRoute(
-                            builder: (context) =>
-                                PaymentScreen(groupId: groupId, groupName: groupName, identifier: identifier),
-                          ),
-                        );
-                      },
-                      child: Text("Access Funds",
-                        style: TextStyle(
-                          color: Colors.white, // Change to your desired color
-                        ),
-                      ),
-                    ),
-                  ),
+                  // trailing: SizedBox(
+                  //   width: 130,
+                  //   child: ElevatedButton(
+                  //     onPressed: () {
+                  //       Navigator.push(
+                  //         context,
+                  //         MaterialPageRoute(
+                  //           builder: (context) =>
+                  //               PaymentScreen(groupId: groupId, groupName: groupName, identifier: identifier),
+                  //         ),
+                  //       );
+                  //     },
+                  //     child: Text("Access Funds",
+                  //       style: TextStyle(
+                  //         color: Colors.white, // Change to your desired color
+                  //       ),
+                  //     ),
+                  //   ),
+                  // ),
                 ),
               ],
             ),

@@ -43,7 +43,7 @@ class UserScreen extends StatelessWidget {
                   CircleAvatar(
 
                   radius: 50,
-                  backgroundImage: AssetImage('assets/images/edsheeran.png'),
+                  // backgroundImage: AssetImage('assets/images/edsheeran.png'),
                 ),
                 SizedBox(height: 10),
                 Text(userName, style: TextStyle(fontSize: 24, fontWeight: FontWeight.bold)),
@@ -57,7 +57,7 @@ class UserScreen extends StatelessWidget {
                   ],
                 ),
                 SizedBox(height: 20),
-                Text('MoneyPots', style: TextStyle(fontSize: 22, fontWeight: FontWeight.bold)),
+                Text('Groups', style: TextStyle(fontSize: 22, fontWeight: FontWeight.bold)),
                 SizedBox(height: 20),
                 SingleChildScrollView(
                   scrollDirection: Axis.horizontal,

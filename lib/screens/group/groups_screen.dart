@@ -270,13 +270,13 @@ class _GroupsScreenState extends State<GroupsScreen> {
           decoration: BoxDecoration(gradient: SIGNUP_BACKGROUND),
         ),
         actions: <Widget>[
-          IconButton(
-            icon: Icon(Icons.search),
-            color: Theme.of(context).primaryColor,
-            onPressed: () {
-              Navigator.of(context).push(SlideFromLeftPageRoute(page: SearchScreen()));
-            },
-          ),
+          // IconButton(
+          //   icon: Icon(Icons.search),
+          //   color: Theme.of(context).primaryColor,
+          //   onPressed: () {
+          //     Navigator.of(context).push(SlideFromLeftPageRoute(page: SearchScreen()));
+          //   },
+          // ),
           IconButton(
             icon: Icon(Icons.settings),
             color: Theme.of(context).primaryColor,

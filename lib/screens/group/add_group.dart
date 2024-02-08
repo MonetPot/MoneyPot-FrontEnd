@@ -130,7 +130,6 @@
 //   }
 // }
 
-
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
 import 'dart:convert';
@@ -208,7 +207,8 @@ class _AddGroupState extends State<AddGroup> {
           icon: Icon(Icons.close, color: TEXT_BLACK),
           onPressed: () => Navigator.pop(context),
         ),
-        title: Text('Create New Group', style: TextStyle(fontWeight: FontWeight.bold, color: TEXT_BLACK)),
+        title: Text('Create New Group',
+            style: TextStyle(fontWeight: FontWeight.bold, color: TEXT_BLACK)),
         backgroundColor: Colors.transparent,
         elevation: 0,
         flexibleSpace: Container(
@@ -220,17 +220,18 @@ class _AddGroupState extends State<AddGroup> {
         children: [
           // Replace with your other actions
           _buildFabOption(icon: Icons.add, onPressed: () {}),
-          _buildFabOption(icon: Icons.camera_alt, onPressed: () {
-            Navigator.push(
-              context,
-              MaterialPageRoute(builder: (context) => TextScanner())
-          );}, yOffset: 60),
-          _buildFabOption(icon: Icons.group_add, onPressed: _createGroup, yOffset: 120),
+          _buildFabOption(
+              icon: Icons.camera_alt,
+              onPressed: () {
+                Navigator.push(context,
+                    MaterialPageRoute(builder: (context) => TextScanner()));
+              },
+              yOffset: 60),
+          _buildFabOption(
+              icon: Icons.group_add, onPressed: _createGroup, yOffset: 120),
           FloatingActionButton(
             onPressed: toggleFAB,
-
             child: Icon(isExpanded ? Icons.close : Icons.menu),
-
           ),
         ],
       ),
@@ -246,14 +247,16 @@ class _AddGroupState extends State<AddGroup> {
                 border: OutlineInputBorder(),
               ),
             ),
-
           ],
         ),
       ),
     );
   }
 
-  Widget _buildFabOption({required IconData icon, required VoidCallback onPressed, double yOffset = 0}) {
+  Widget _buildFabOption(
+      {required IconData icon,
+      required VoidCallback onPressed,
+      double yOffset = 0}) {
     return Visibility(
       visible: isExpanded,
       child: Padding(
@@ -288,10 +291,8 @@ class Member {
   }
 }
 
-
 class FriendsTab extends StatefulWidget {
   final Function(int) toggleSelection;
-
 
   const FriendsTab({
     Key? key,
@@ -313,7 +314,8 @@ class _FriendsTabState extends State<FriendsTab> {
   }
 
   Future<void> _fetchFriends() async {
-    final response = await http.get(Uri.parse('http://127.0.0.1:8000/api/users/{identifier}/friends'));
+    final response = await http
+        .get(Uri.parse('http://127.0.0.1:8000/api/users/{identifier}/friends'));
     if (response.statusCode == 200) {
       List<Member> friends = (json.decode(response.body) as List)
           .map((data) => Member.fromJson(data))
@@ -332,12 +334,11 @@ class _FriendsTabState extends State<FriendsTab> {
     return _isLoading
         ? Center(child: CircularProgressIndicator())
         : _SelectableMemberList(
-      members: _friends!,
-      toggleSelection: widget.toggleSelection,
-    );
+            members: _friends!,
+            toggleSelection: widget.toggleSelection,
+          );
   }
 }
-
 
 class _SelectableMemberList extends StatelessWidget {
   final List<Member> members;
@@ -357,10 +358,8 @@ class _SelectableMemberList extends StatelessWidget {
         return ListTile(
           title: Text(members[index].name),
           onTap: () => toggleSelection(index),
-
         );
       },
     );
   }
 }
-

@@ -1,7 +1,6 @@
-import 'dart:math' as math;
-
 import 'package:flutter/material.dart';
 import 'package:money_pot/screens/group/add_group.dart';
+import 'package:money_pot/screens/group/bills/text_scanner.dart';
 import 'package:money_pot/screens/group/groups_screen.dart';
 import 'package:money_pot/screens/user/user_screen.dart';
 import 'package:firebase_auth/firebase_auth.dart';
@@ -31,6 +30,34 @@ class _NavigationState extends State<Navigation> {
     }
   }
 
+  void _openAddGroupScreen(BuildContext context) {
+    Navigator.of(context).push(_createRoute((ctx) => AddGroup()));
+  }
+
+  void _openScanBillScreen(BuildContext context) {
+    Navigator.of(context).push(_createRoute((ctx) =>
+        TextScanner())); // Replace with your actual scan bill screen widget
+  }
+
+  Route _createRoute(WidgetBuilder pageContentBuilder) {
+    return PageRouteBuilder(
+      pageBuilder: (context, animation, secondaryAnimation) =>
+          pageContentBuilder(context),
+      transitionsBuilder: (context, animation, secondaryAnimation, child) {
+        var begin = Offset(0.0, 1.0);
+        var end = Offset.zero;
+        var curve = Curves.easeInOut;
+        var tween =
+            Tween(begin: begin, end: end).chain(CurveTween(curve: curve));
+        var offsetAnimation = animation.drive(tween);
+        return SlideTransition(
+          position: offsetAnimation,
+          child: child,
+        );
+      },
+    );
+  }
+
   @override
   void initState() {
     super.initState();
@@ -50,9 +77,9 @@ class _NavigationState extends State<Navigation> {
     super.dispose();
   }
 
-  void _showAction(BuildContext context, int index) {
-    // Your action code here
-  }
+  // void _showAction(BuildContext context, int index) {
+  //   // Your action code here
+  // }
 
   @override
   Widget build(BuildContext context) {
@@ -70,11 +97,13 @@ class _NavigationState extends State<Navigation> {
         distance: 90.0,
         children: [
           ActionButton(
-            onPressed: () => _showAction(context, 0),
+            heroTag: 'add_group_button',
+            onPressed: () => _openAddGroupScreen(context),
             icon: const Icon(Icons.group_add_rounded),
           ),
           ActionButton(
-            onPressed: () => _showAction(context, 1),
+            heroTag: 'add_bill_button',
+            onPressed: () => _openScanBillScreen(context),
             icon: const Icon(Icons.camera_alt_rounded),
           ),
         ],
@@ -101,7 +130,6 @@ class _NavigationState extends State<Navigation> {
                 ),
                 onPressed: () => _onNavBarTapped(0),
               ),
-              // The second IconButton should be removed or repositioned since the FAB will be in the center.
               IconButton(
                 iconSize: 35.0,
                 icon: Icon(Icons.person, color: Colors.white),
@@ -280,16 +308,19 @@ class _ExpandingActionButton extends StatelessWidget {
 class ActionButton extends StatelessWidget {
   final VoidCallback onPressed;
   final Widget icon;
+  final String heroTag;
 
   const ActionButton({
     Key? key,
     required this.onPressed,
     required this.icon,
+    required this.heroTag,
   }) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
     return FloatingActionButton(
+      heroTag: heroTag,
       onPressed: onPressed,
       child: icon,
     );

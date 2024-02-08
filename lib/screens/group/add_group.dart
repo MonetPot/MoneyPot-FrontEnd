@@ -230,6 +230,7 @@ class _AddGroupState extends State<AddGroup> {
           _buildFabOption(
               icon: Icons.group_add, onPressed: _createGroup, yOffset: 120),
           FloatingActionButton(
+            heroTag: 'main_fab',
             onPressed: toggleFAB,
             child: Icon(isExpanded ? Icons.close : Icons.menu),
           ),

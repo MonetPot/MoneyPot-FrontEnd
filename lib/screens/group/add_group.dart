@@ -228,15 +228,12 @@ class _AddGroupState extends State<AddGroup> {
           _buildFabOption(icon: Icons.group_add, onPressed: _createGroup, yOffset: 120),
           FloatingActionButton(
             onPressed: toggleFAB,
+
             child: Icon(isExpanded ? Icons.close : Icons.menu),
+
           ),
         ],
       ),
-      // floatingActionButton: FloatingActionButton.extended(
-      //   icon: Icon(Icons.add_circle_rounded),
-      //   label: Text('Create Group'),
-      //   onPressed: _createGroup,
-      // ),
       body: Container(
         decoration: BoxDecoration(gradient: SIGNUP_BACKGROUND),
         padding: EdgeInsets.all(16),

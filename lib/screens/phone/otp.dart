@@ -5,11 +5,8 @@ import 'package:money_pot/screens/navigation.dart';
 import 'package:http/http.dart' as http;
 import 'dart:convert';
 
-
 import '../../../const/gradient.dart';
 import '../../../const/styles.dart';
-
-
 
 class OTPVerificationScreen extends StatefulWidget {
   final String verificationId;
@@ -27,7 +24,6 @@ class _OTPVerificationScreenState extends State<OTPVerificationScreen> {
   final _nameFocusNode = FocusNode();
   final _emailFocusNode = FocusNode();
 
-
   @override
   void dispose() {
     _emailController.dispose();
@@ -40,15 +36,13 @@ class _OTPVerificationScreenState extends State<OTPVerificationScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      // appBar: AppBar(
-      //   title: Text('Enter OTP'),
-      // ),
-
+        // appBar: AppBar(
+        //   title: Text('Enter OTP'),
+        // ),
 
         body: Container(
-          decoration: BoxDecoration(gradient: SIGNUP_BACKGROUND),
-          child:
-            Stack(
+            decoration: BoxDecoration(gradient: SIGNUP_BACKGROUND),
+            child: Stack(
               children: [
                 SafeArea(
                   child: Align(
@@ -72,14 +66,14 @@ class _OTPVerificationScreenState extends State<OTPVerificationScreen> {
                     headlinesWidget(),
                     Padding(
                       padding: const EdgeInsets.all(16.0),
-                      child:
-                      TextField(
+                      child: TextField(
                         controller: _otpController,
                         style: hintAndValueStyle,
                         keyboardType: TextInputType.number,
                         decoration: InputDecoration(
                           suffixIcon: Icon(Icons.confirmation_num_rounded),
-                          contentPadding: EdgeInsets.fromLTRB(40.0, 30.0, 10.0, 10.0),
+                          contentPadding:
+                              EdgeInsets.fromLTRB(40.0, 30.0, 10.0, 10.0),
                           border: OutlineInputBorder(
                             borderRadius: BorderRadius.circular(12.0),
                             borderSide: BorderSide.none,
@@ -93,9 +87,7 @@ class _OTPVerificationScreenState extends State<OTPVerificationScreen> {
                   ],
                 ),
               ],
-            )
-        )
-    );
+            )));
   }
 
   Widget VerifyOTPButtonWidget() {
@@ -116,11 +108,13 @@ class _OTPVerificationScreenState extends State<OTPVerificationScreen> {
                         offset: Offset(0.0, 32.0)),
                   ],
                   borderRadius: new BorderRadius.circular(36.0),
-                  gradient: LinearGradient(begin: FractionalOffset.centerLeft,
+                  gradient: LinearGradient(
+                      begin: FractionalOffset.centerLeft,
                       stops: [
                         0.2,
                         1
-                      ], colors: [
+                      ],
+                      colors: [
                         Color(0xff000000),
                         Color(0xff434343),
                       ])),
@@ -159,7 +153,6 @@ class _OTPVerificationScreenState extends State<OTPVerificationScreen> {
   }
 
   Future<void> _promptUserForDetails(BuildContext context) async {
-
     return showDialog<void>(
       context: context,
       barrierDismissible: false,
@@ -182,7 +175,7 @@ class _OTPVerificationScreenState extends State<OTPVerificationScreen> {
                 Navigator.pushAndRemoveUntil(
                   context,
                   MaterialPageRoute(builder: (context) => Navigation()),
-                      (Route<dynamic> route) => false,
+                  (Route<dynamic> route) => false,
                 );
               },
             ),
@@ -190,15 +183,12 @@ class _OTPVerificationScreenState extends State<OTPVerificationScreen> {
               child: Text('Submit'),
               onPressed: () {
                 _updateFirebaseUserDetails(
-                    _nameController.text,
-                    _emailController.text,
-                    context
-                );
+                    _nameController.text, _emailController.text, context);
                 Navigator.of(context).pop();
                 Navigator.pushAndRemoveUntil(
                   context,
                   MaterialPageRoute(builder: (context) => Navigation()),
-                      (Route<dynamic> route) => false,
+                  (Route<dynamic> route) => false,
                 );
               },
             ),
@@ -271,8 +261,7 @@ class _OTPVerificationScreenState extends State<OTPVerificationScreen> {
         onFieldSubmitted: (term) {
           FocusScope.of(context).requestFocus(_emailFocusNode);
         },
-        suffixIcon: Icon(Icons.abc_rounded)
-    );
+        suffixIcon: Icon(Icons.abc_rounded));
   }
 
   Widget emailTextFieldWidget() {
@@ -316,7 +305,6 @@ class _OTPVerificationScreenState extends State<OTPVerificationScreen> {
     );
   }
 
-
   void _verifyOTP() async {
     String name = _nameController.text;
     try {
@@ -325,7 +313,8 @@ class _OTPVerificationScreenState extends State<OTPVerificationScreen> {
         smsCode: _otpController.text,
       );
 
-      UserCredential userCredential = await FirebaseAuth.instance.signInWithCredential(credential);
+      UserCredential userCredential =
+          await FirebaseAuth.instance.signInWithCredential(credential);
       Fluttertoast.showToast(msg: 'Phone verified successfully!');
 
       User? user = userCredential.user;
@@ -338,7 +327,6 @@ class _OTPVerificationScreenState extends State<OTPVerificationScreen> {
         String email = _emailController.text;
         // await user.updateDisplayName(name);
         // await user.updateEmail(email);
-
 
         var response = await http.post(
           Uri.parse('http://127.0.0.1:8000/api/users/create'),
@@ -355,10 +343,11 @@ class _OTPVerificationScreenState extends State<OTPVerificationScreen> {
         );
 
         if (response.statusCode == 200) {
-          Fluttertoast.showToast(msg: 'User created successfully!');
+          // Fluttertoast.showToast(msg: 'User created successfully!');
           // Proceed with navigation or other logic
         } else {
-          Fluttertoast.showToast(msg: 'Failed to create user: ${response.body}');
+          Fluttertoast.showToast(
+              msg: 'Failed to create user: ${response.body}');
         }
 
         if (!mounted) return;
@@ -366,17 +355,16 @@ class _OTPVerificationScreenState extends State<OTPVerificationScreen> {
         Navigator.pushAndRemoveUntil(
           context,
           MaterialPageRoute(builder: (context) => Navigation()),
-              (Route<dynamic> route) => false,
+          (Route<dynamic> route) => false,
         );
       }
-
-
     } catch (e) {
       Fluttertoast.showToast(msg: 'Failed to verify OTP: $e');
     }
   }
 
-  void _updateFirebaseUserDetails(String name, String email, BuildContext context) async {
+  void _updateFirebaseUserDetails(
+      String name, String email, BuildContext context) async {
     User? user = FirebaseAuth.instance.currentUser;
     if (user != null) {
       await user.updateDisplayName(name);
@@ -384,6 +372,4 @@ class _OTPVerificationScreenState extends State<OTPVerificationScreen> {
       // _updateBackendUserDetails(user.uid, name, email);
     }
   }
-
-
 }

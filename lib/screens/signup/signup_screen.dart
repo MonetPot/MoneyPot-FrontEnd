@@ -48,7 +48,6 @@ class _SignUpScreenState extends State<SignUpScreen> {
     super.dispose();
   }
 
-
   void _signUp() async {
     setState(() {
       isSigningUp = true;
@@ -60,8 +59,8 @@ class _SignUpScreenState extends State<SignUpScreen> {
     String password = _passwordController.text;
 
     try {
-
-      UserCredential userCredential = await FirebaseAuth.instance.createUserWithEmailAndPassword(
+      UserCredential userCredential =
+          await FirebaseAuth.instance.createUserWithEmailAndPassword(
         email: email,
         password: password,
       );
@@ -73,9 +72,7 @@ class _SignUpScreenState extends State<SignUpScreen> {
 
         await user.updateDisplayName(displayName);
 
-
         await user.reload();
-
 
         var response = await http.post(
           Uri.parse('http://127.0.0.1:8000/api/users/create'),
@@ -92,19 +89,16 @@ class _SignUpScreenState extends State<SignUpScreen> {
         );
 
         if (response.statusCode == 200) {
-          showToast(message: "User is successfully created");
+          // showToast(message: "User is successfully created");
           Navigator.pushAndRemoveUntil(
             context,
             MaterialPageRoute(builder: (context) => Navigation()),
-                (Route<dynamic> route) => false,
+            (Route<dynamic> route) => false,
           );
         } else {
           showToast(message: "Failed to create user: ${response.body}");
         }
       }
-
-
-
     } catch (e) {
       showToast(message: "Error: $e");
     } finally {
@@ -113,7 +107,6 @@ class _SignUpScreenState extends State<SignUpScreen> {
       });
     }
   }
-
 
   _selectDate(BuildContext context) async {
     final DateTime? selectedDate = await showDatePicker(
@@ -126,7 +119,6 @@ class _SignUpScreenState extends State<SignUpScreen> {
       _dateController.text = "${selectedDate.toLocal()}".split(' ')[0];
     }
   }
-
 
   @override
   Widget build(BuildContext context) {
@@ -160,7 +152,6 @@ class _SignUpScreenState extends State<SignUpScreen> {
     );
   }
 
-
   Widget headlinesWidget() {
     return Container(
       margin: EdgeInsets.only(left: 35.0, top: 10.0),
@@ -180,7 +171,6 @@ class _SignUpScreenState extends State<SignUpScreen> {
       ),
     );
   }
-
 
   Widget _buildGradientTextField({
     required TextEditingController controller,
@@ -245,8 +235,7 @@ class _SignUpScreenState extends State<SignUpScreen> {
         onFieldSubmitted: (term) {
           _fieldFocusChange(context, _firstnameFocusNode, _emailFocusNode);
         },
-        suffixIcon: Icon(Icons.abc_rounded)
-    );
+        suffixIcon: Icon(Icons.abc_rounded));
   }
 
   Widget _lastNameTextField() {
@@ -257,10 +246,8 @@ class _SignUpScreenState extends State<SignUpScreen> {
         onFieldSubmitted: (term) {
           _fieldFocusChange(context, _lastnameFocusNode, _emailFocusNode);
         },
-        suffixIcon: Icon(Icons.abc_rounded)
-    );
+        suffixIcon: Icon(Icons.abc_rounded));
   }
-
 
   Widget _emailTextField() {
     return _buildGradientTextField(
@@ -287,8 +274,8 @@ class _SignUpScreenState extends State<SignUpScreen> {
     );
   }
 
-  void _fieldFocusChange(BuildContext context, FocusNode currentFocus,
-      FocusNode nextFocus) {
+  void _fieldFocusChange(
+      BuildContext context, FocusNode currentFocus, FocusNode nextFocus) {
     currentFocus.unfocus();
     Future.delayed(Duration(milliseconds: 100), () {
       FocusScope.of(context).requestFocus(nextFocus);
@@ -407,8 +394,6 @@ class _SignUpScreenState extends State<SignUpScreen> {
 //   }
 // }
 
-
-
 // PREVIOUS SIGN UP
 
 // Future<void> sendUserDataToBackend(User user) async {
@@ -464,7 +449,6 @@ class _SignUpScreenState extends State<SignUpScreen> {
 //     });
 //   }
 // }
-
 
 //   Widget _dateTextField(BuildContext context) {
 //     return _buildGradientTextField(

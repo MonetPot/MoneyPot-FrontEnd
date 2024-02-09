@@ -16,7 +16,7 @@ class LoginScreen extends StatefulWidget {
 }
 
 class _LoginScreenState extends State<LoginScreen> {
-   bool _isSigning = false;
+  bool _isSigning = false;
   final FirebaseAuthService _auth = FirebaseAuthService();
   TextEditingController _emailController = TextEditingController();
   TextEditingController _passwordController = TextEditingController();
@@ -32,7 +32,6 @@ class _LoginScreenState extends State<LoginScreen> {
   }
 
   void _signIn() async {
-
     setState(() {
       _isSigning = true;
     });
@@ -40,31 +39,28 @@ class _LoginScreenState extends State<LoginScreen> {
     String email = _emailController.text;
     String password = _passwordController.text;
 
-    User? user = await _auth.signInWithEmailAndPassword(email, password, context);
+    User? user =
+        await _auth.signInWithEmailAndPassword(email, password, context);
 
     setState(() {
       _isSigning = false;
     });
 
     if (user != null) {
-      showToast(message: "User is successfully signed in");
+      // showToast(message: "User is successfully signed in");
       if (!mounted) return;
 
       Navigator.pushAndRemoveUntil(
         context,
         MaterialPageRoute(builder: (context) => Navigation()),
-            (Route<dynamic> route) => false,
+        (Route<dynamic> route) => false,
       );
     } else {
       showToast(message: "some error occurred");
     }
 
     String? token = await FirebaseAuth.instance.currentUser?.getIdToken();
-
-
   }
-
-
 
   @override
   Widget build(BuildContext context) {
@@ -156,51 +152,51 @@ class _LoginScreenState extends State<LoginScreen> {
       ),
     );
   }
-   Widget loginButtonWidget() {
-     return Container(
-       margin: EdgeInsets.symmetric(horizontal: 32.0, vertical: 32.0),
-       padding: EdgeInsets.symmetric(horizontal: 36.0),
-       decoration: BoxDecoration(
-         borderRadius: new BorderRadius.circular(36.0),
-         gradient: LinearGradient(
-           begin: FractionalOffset.centerLeft,
-           stops: [0.2, 1],
-           colors: [
-             Color(0xff000000),
-             Color(0xff434343),
-           ],
-         ),
-         boxShadow: [
-           BoxShadow(
-             color: Colors.black12,
-             blurRadius: 15,
-             spreadRadius: 0,
-             offset: Offset(0.0, 32.0),
-           ),
-         ],
-       ),
-       child: ElevatedButton(
-         onPressed: _isSigningIn ? null : _signIn,
-         style: ElevatedButton.styleFrom(
-           primary: Colors.transparent,
-           shadowColor: Colors.transparent,
-           padding: EdgeInsets.symmetric(vertical: 16.0),
-           shape: RoundedRectangleBorder(
-             borderRadius: BorderRadius.circular(36.0),
-           ),
-           onPrimary: Color(0xffF1EA94),
-         ),
-         child: Text(
-           'LOGIN',
-           style: TextStyle(
-             fontWeight: FontWeight.bold,
-             fontFamily: 'Montserrat',
-           ),
-         ),
-       ),
-     );
-   }
 
+  Widget loginButtonWidget() {
+    return Container(
+      margin: EdgeInsets.symmetric(horizontal: 32.0, vertical: 32.0),
+      padding: EdgeInsets.symmetric(horizontal: 36.0),
+      decoration: BoxDecoration(
+        borderRadius: new BorderRadius.circular(36.0),
+        gradient: LinearGradient(
+          begin: FractionalOffset.centerLeft,
+          stops: [0.2, 1],
+          colors: [
+            Color(0xff000000),
+            Color(0xff434343),
+          ],
+        ),
+        boxShadow: [
+          BoxShadow(
+            color: Colors.black12,
+            blurRadius: 15,
+            spreadRadius: 0,
+            offset: Offset(0.0, 32.0),
+          ),
+        ],
+      ),
+      child: ElevatedButton(
+        onPressed: _isSigningIn ? null : _signIn,
+        style: ElevatedButton.styleFrom(
+          primary: Colors.transparent,
+          shadowColor: Colors.transparent,
+          padding: EdgeInsets.symmetric(vertical: 16.0),
+          shape: RoundedRectangleBorder(
+            borderRadius: BorderRadius.circular(36.0),
+          ),
+          onPrimary: Color(0xffF1EA94),
+        ),
+        child: Text(
+          'LOGIN',
+          style: TextStyle(
+            fontWeight: FontWeight.bold,
+            fontFamily: 'Montserrat',
+          ),
+        ),
+      ),
+    );
+  }
 }
 
 Widget signupWidget(BuildContext context) {

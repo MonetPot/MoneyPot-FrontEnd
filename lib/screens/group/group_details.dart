@@ -23,13 +23,16 @@ class GroupDetailsScreen extends StatefulWidget {
   final int groupId;
   final String identifier;
 
-  const GroupDetailsScreen({Key? key, required this.groupId, required this.identifier}) : super(key: key);
+  const GroupDetailsScreen(
+      {Key? key, required this.groupId, required this.identifier})
+      : super(key: key);
 
   @override
   _GroupDetailsScreenState createState() => _GroupDetailsScreenState();
 }
 
-class _GroupDetailsScreenState extends State<GroupDetailsScreen> with SingleTickerProviderStateMixin {
+class _GroupDetailsScreenState extends State<GroupDetailsScreen>
+    with SingleTickerProviderStateMixin {
   late TabController _tabController;
   late String groupName;
   late int funds;
@@ -54,22 +57,27 @@ class _GroupDetailsScreenState extends State<GroupDetailsScreen> with SingleTick
     funds = 0;
     members = [];
     isLoading = true;
-    var response = await http.get(Uri.parse('http://127.0.0.1:8000/api/groups/${widget.groupId}'));
+    var response = await http
+        .get(Uri.parse('http://127.0.0.1:8000/api/groups/${widget.groupId}'));
     if (response.statusCode == 200) {
       var groupData = json.decode(response.body);
       groupName = groupData['name'];
       funds = groupData['funds'];
-      members = (groupData['members'] as List<dynamic>).map((m) => Member.fromJson(m as Map<String, dynamic>)).toList();
+      members = (groupData['members'] as List<dynamic>)
+          .map((m) => Member.fromJson(m as Map<String, dynamic>))
+          .toList();
       isLoading = false;
-      if (mounted) { // fix to ensure the group name is always visible
+      if (mounted) {
+        // fix to ensure the group name is always visible
         setState(() {
           groupName = groupData['name'];
           funds = groupData['funds'];
-          members = (groupData['members'] as List<dynamic>).map((m) => Member.fromJson(m as Map<String, dynamic>)).toList();
+          members = (groupData['members'] as List<dynamic>)
+              .map((m) => Member.fromJson(m as Map<String, dynamic>))
+              .toList();
           isLoading = false;
         });
       }
-
     } else {
       print("Failed to fetch group details: ${response.body}");
     }
@@ -79,12 +87,9 @@ class _GroupDetailsScreenState extends State<GroupDetailsScreen> with SingleTick
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        leading:
-        IconButton(
+        leading: IconButton(
           icon: Icon(Icons.arrow_back),
-          color: Theme
-              .of(context)
-              .primaryColor,
+          color: Theme.of(context).primaryColor,
           onPressed: () => Navigator.of(context).pop(),
         ),
         title: Text(
@@ -92,9 +97,7 @@ class _GroupDetailsScreenState extends State<GroupDetailsScreen> with SingleTick
           style: TextStyle(
             fontSize: 30.0,
             fontWeight: FontWeight.bold,
-            color: Theme
-                .of(context)
-                .primaryColor,
+            color: Theme.of(context).primaryColor,
           ),
         ),
         flexibleSpace: Container(
@@ -103,24 +106,18 @@ class _GroupDetailsScreenState extends State<GroupDetailsScreen> with SingleTick
         actions: <Widget>[
           IconButton(
             icon: Icon(Icons.search),
-            color: Theme
-                .of(context)
-                .primaryColor,
+            color: Theme.of(context).primaryColor,
             onPressed: () {
-              Navigator.of(context).push(
-                  SlideFromLeftPageRoute(page: SearchScreen()));
+              Navigator.of(context)
+                  .push(SlideFromLeftPageRoute(page: SearchScreen()));
             },
           ),
           IconButton(
             icon: Icon(Icons.settings),
-            color: Theme
-                .of(context)
-                .primaryColor,
+            color: Theme.of(context).primaryColor,
             onPressed: () {
-              Navigator.push(
-                  context,
-                  MaterialPageRoute(
-                      builder: (context) => SettingsScreen()));
+              Navigator.push(context,
+                  MaterialPageRoute(builder: (context) => SettingsScreen()));
             },
           ),
         ],
@@ -150,7 +147,7 @@ class _GroupDetailsScreenState extends State<GroupDetailsScreen> with SingleTick
             child: Icon(Icons.credit_card_rounded),
             label: 'Add members',
             onTap: () {
-
+              _openAddGroupScreen(context);
             },
           ),
         ],
@@ -166,11 +163,9 @@ class _GroupDetailsScreenState extends State<GroupDetailsScreen> with SingleTick
               controller: _tabController,
               tabs: [
                 Tab(text: 'Members'),
-                Tab(text: 'Transactions'),
+                Tab(text: 'Activity'),
               ],
-              labelColor: Theme
-                  .of(context)
-                  .primaryColor,
+              labelColor: Theme.of(context).primaryColor,
               unselectedLabelColor: Colors.blueGrey,
               labelStyle: TextStyle(
                 fontSize: 16,
@@ -178,8 +173,7 @@ class _GroupDetailsScreenState extends State<GroupDetailsScreen> with SingleTick
               ),
               unselectedLabelStyle: TextStyle(
                 fontSize: 15,
-                fontWeight: FontWeight
-                    .normal,
+                fontWeight: FontWeight.normal,
               ),
               indicatorSize: TabBarIndicatorSize.tab,
               indicatorPadding: EdgeInsets.symmetric(horizontal: 10.0),
@@ -203,34 +197,29 @@ class _GroupDetailsScreenState extends State<GroupDetailsScreen> with SingleTick
     );
   }
 
-
-
   Widget _buildMembersSection() {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
-    Padding(
-    padding: const EdgeInsets.all(16.0),
-      child:         Text(
-        'Members',
-        style: TextStyle(
-          fontSize: 22,
-          fontWeight: FontWeight.bold,
-          color: Colors.blue,
+        Padding(
+          padding: const EdgeInsets.all(16.0),
+          child: Text(
+            'Members',
+            style: TextStyle(
+              fontSize: 22,
+              fontWeight: FontWeight.bold,
+              color: Colors.blue,
+            ),
+          ),
         ),
-      ),
-    ),
         ListView.builder(
-
           shrinkWrap: true,
           physics: NeverScrollableScrollPhysics(),
           itemCount: members.length,
-
           itemBuilder: (BuildContext context, int index) {
             Member member = members[index];
             return ListTile(
               leading: CircleAvatar(
-
                 backgroundImage: AssetImage("assets/images/edsheeran.png"),
               ),
               title: Text(
@@ -253,14 +242,15 @@ class _GroupDetailsScreenState extends State<GroupDetailsScreen> with SingleTick
 
   Route _createRoute() {
     return PageRouteBuilder(
-      pageBuilder: (context, animation, secondaryAnimation) => AddMembers(groupId: widget.groupId, identifier: widget.identifier),
+      pageBuilder: (context, animation, secondaryAnimation) =>
+          AddMembers(groupId: widget.groupId, identifier: widget.identifier),
       transitionsBuilder: (context, animation, secondaryAnimation, child) {
         var begin = Offset(0.0, 1.0);
         var end = Offset.zero;
         var curve = Curves.easeInOut;
 
-        var tween = Tween(begin: begin, end: end).chain(
-            CurveTween(curve: curve));
+        var tween =
+            Tween(begin: begin, end: end).chain(CurveTween(curve: curve));
         var offsetAnimation = animation.drive(tween);
 
         return SlideTransition(
@@ -329,7 +319,6 @@ class _GroupDetailsScreenState extends State<GroupDetailsScreen> with SingleTick
     );
   }
 
-
   Widget _buildTopSection() {
     return Column(
       children: [
@@ -348,7 +337,8 @@ class _GroupDetailsScreenState extends State<GroupDetailsScreen> with SingleTick
                   padding: const EdgeInsets.only(right: 8.0),
                   child: ElevatedButton(
                     style: ElevatedButton.styleFrom(
-                      foregroundColor: Colors.white, backgroundColor: Colors.blue,
+                      foregroundColor: Colors.white,
+                      backgroundColor: Colors.blue,
                       shape: RoundedRectangleBorder(
                         borderRadius: BorderRadius.circular(10),
                       ),
@@ -358,10 +348,13 @@ class _GroupDetailsScreenState extends State<GroupDetailsScreen> with SingleTick
                       Navigator.push(
                           context,
                           MaterialPageRoute(
-                              builder: (context) => PaymentScreen(groupId: widget.groupId, groupName: groupName, identifier: widget.identifier)));
+                              builder: (context) => PaymentScreen(
+                                  groupId: widget.groupId,
+                                  groupName: groupName,
+                                  identifier: widget.identifier)));
                     },
                     child: Text(
-                      'Funds',
+                      'View Bills',
                       style: TextStyle(
                         fontSize: 18,
                         fontWeight: FontWeight.bold,
@@ -375,17 +368,18 @@ class _GroupDetailsScreenState extends State<GroupDetailsScreen> with SingleTick
                   padding: const EdgeInsets.only(left: 8.0),
                   child: ElevatedButton(
                     style: ElevatedButton.styleFrom(
-                      foregroundColor: Colors.white, backgroundColor: Colors.purple,
+                      foregroundColor: Colors.white,
+                      backgroundColor: Colors.purple,
                       shape: RoundedRectangleBorder(
                         borderRadius: BorderRadius.circular(10),
                       ),
                       padding: EdgeInsets.symmetric(vertical: 12.0),
                     ),
                     onPressed: () {
-                      _openAddGroupScreen(context);
+                      // _openAddGroupScreen(context);
                     },
                     child: Text(
-                      'Add Members',
+                      'Pay',
                       style: TextStyle(
                         fontSize: 18,
                         fontWeight: FontWeight.bold,
@@ -418,6 +412,4 @@ class _GroupDetailsScreenState extends State<GroupDetailsScreen> with SingleTick
       ),
     );
   }
-
 }
-

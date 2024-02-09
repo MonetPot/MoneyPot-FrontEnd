@@ -104,14 +104,14 @@ class _GroupDetailsScreenState extends State<GroupDetailsScreen>
           decoration: BoxDecoration(gradient: SIGNUP_BACKGROUND),
         ),
         actions: <Widget>[
-          IconButton(
-            icon: Icon(Icons.search),
-            color: Theme.of(context).primaryColor,
-            onPressed: () {
-              Navigator.of(context)
-                  .push(SlideFromLeftPageRoute(page: SearchScreen()));
-            },
-          ),
+          // IconButton(
+          //   icon: Icon(Icons.search),
+          //   color: Theme.of(context).primaryColor,
+          //   onPressed: () {
+          //     Navigator.of(context)
+          //         .push(SlideFromLeftPageRoute(page: SearchScreen()));
+          //   },
+          // ),
           IconButton(
             icon: Icon(Icons.settings),
             color: Theme.of(context).primaryColor,
@@ -153,7 +153,7 @@ class _GroupDetailsScreenState extends State<GroupDetailsScreen>
         ],
       ),
       body: Container(
-        decoration: BoxDecoration(gradient: groupDetailsGradient),
+        decoration: BoxDecoration(gradient: SIGNUP_BACKGROUND),
         child: Column(
           children: [
             SizedBox(height: 25),

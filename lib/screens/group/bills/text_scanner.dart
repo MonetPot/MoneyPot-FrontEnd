@@ -55,7 +55,8 @@ class _BillScannerScreenState extends State<TextScanner> {
       final image = await _cameraController.takePicture();
       final inputImage = InputImage.fromFilePath(image.path);
       final textRecognizer = TextRecognizer();
-      final RecognizedText recognizedText = await textRecognizer.processImage(inputImage);
+      final RecognizedText recognizedText =
+          await textRecognizer.processImage(inputImage);
 
       // Navigator.push(
       //   context,
@@ -69,8 +70,6 @@ class _BillScannerScreenState extends State<TextScanner> {
       print(e);
     }
   }
-
-
 
   // Future<void> _processImage(XFile image) async {
   //   final inputImage = InputImage.fromFilePath(image.path);
@@ -135,7 +134,6 @@ class _BillScannerScreenState extends State<TextScanner> {
     );
   }
 }
-
 
 // import 'package:camera/camera.dart';
 // import 'package:flutter/material.dart';
@@ -256,7 +254,6 @@ class _BillScannerScreenState extends State<TextScanner> {
 //     }
 //   }
 // }
-
 
 // class TextScanner extends StatefulWidget {
 //   const TextScanner({Key? key}) : super(key: key);
@@ -446,7 +443,6 @@ class _BillScannerScreenState extends State<TextScanner> {
 //
 // }
 
-
 // void _checkPermissionAndStartCamera() async {
 //   bool hasPermission = await requestCameraPermission();
 //   if (hasPermission) {
@@ -466,7 +462,6 @@ class _BillScannerScreenState extends State<TextScanner> {
 //     return status.isGranted;
 //   }
 // }
-
 
 // Future<void> requestCameraPermission() async {
 //   final status = await Permission.camera.request();

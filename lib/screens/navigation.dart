@@ -89,7 +89,7 @@ class _NavigationState extends State<Navigation> {
         onPageChanged: (index) => setState(() => _selectedIndex = index),
         children: <Widget>[
           GroupsScreen(identifier: userIdentifier!),
-          Container(), // Placeholder for the second tab
+          //Container(), // Placeholder for the second tab
           UserScreen(),
         ],
       ),
